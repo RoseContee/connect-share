@@ -1,0 +1,249 @@
+.navbar-expand .navbar-nav .nav-link {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.storage-usage-container {
+    width: 100%;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+@media (min-width: 576px) {
+    .storage-usage-container {
+        width: 100%;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+.usage-info {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    text-align: center;
+}
+
+@media (min-width: 576px) {
+    .usage-info {
+        justify-content: space-between;
+    }
+}
+
+.usage-info .blank-space {
+    flex: 0 0 10%;
+}
+
+@media (min-width: 768px) {
+    .usage-info .blank-space {
+        flex: 0 0 20%;
+    }
+}
+
+@media (min-width: 992px) {
+    .usage-info .blank-space {
+        flex: 0 0 30%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .usage-info .blank-space {
+        flex: 0 0 40%;
+    }
+}
+
+.required {
+    color: #dc3545 !important;
+}
+
+.auth-page {
+    height: 100vh !important;
+    display: flex;
+}
+
+.auth-bg {
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.align-center {
+    height: 100vh;
+    display: flex;
+    display: -ms-flexbox;
+    -ms-flex-align: center;
+    align-items: center;
+    flex-direction: column;
+    -ms-flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.google-sign {
+    background-color: #4285f4;
+    border: none;
+    color: #fff !important;
+    border-radius: 1px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: background-color .218s,border-color .218s,box-shadow .218s;
+    transition: background-color .218s,border-color .218s,box-shadow .218s;
+    -webkit-user-select: none;
+    -webkit-appearance: none;
+    background-image: none;
+    cursor: pointer;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+}
+
+.google-sign:hover {
+    box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
+}
+
+.google-sign-container {
+    height: 100%;
+    width: 100%;
+    border: 1px solid transparent;
+}
+
+.google-sign-icon {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 1px;
+    float: left;
+}
+
+.google-sign-icon-image {
+    width: 18px;
+    height: 18px;
+}
+
+.google-sign-button-contents {
+    font-size: 16px;
+    line-height: 48px;
+    font-family: Roboto,arial,sans-serif;
+    font-weight: 500;
+    letter-spacing: .21px;
+    margin-left: 6px;
+    margin-right: 6px;
+    vertical-align: top;
+}
+
+/* Start OrgChart */
+#orgchart {
+    height: 100%;
+    text-align: center;
+    overflow: auto !important;
+}
+.orgchart .node {
+    margin-bottom: 30px;
+}
+
+.orgchart .node.highlight-parent {
+    background-color: rgba(0, 0, 255, 0.2);
+    transition: background-color .5s;
+}
+
+.orgchart .node.highlight-siblings {
+    background-color: rgba(174, 174, 174, 0.2);
+}
+
+.orgchart .node.highlight-children {
+    background-color: rgba(0, 255, 255, 0.2);
+}
+
+.orgchart .nodes {
+    justify-content: center;
+}
+
+.orgchart .parentNodeSymbol,
+.orgchart .topEdge {
+    display: none;
+}
+
+.orgchart .node .edge::before {
+    border-color: #212529;
+}
+
+.orgchart .node:not(:only-child)::after {
+    width: 1px;
+    height: 15px;
+    bottom: -17px;
+    background-color: rgb(178, 179, 193);
+}
+
+.orgchart > ul > li > ul li > .node::before {
+    width: 1px;
+    height: 15px;
+    top: -17px;
+    background-color: rgb(178, 179, 193);
+}
+
+.orgchart > ul > li > ul li.isSiblingsCollapsed > .node::before {
+    height: 15px;
+    top: -17px;
+}
+
+.orgchart .hierarchy::before {
+    top: -16px;
+    border-top: 1px solid rgb(178, 179, 193);
+}
+
+.orgchart .node .card {
+    min-width: 100px;
+    min-height: 76px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.orgchart .node .card-body {
+    padding: 1rem 0.5rem 1.25rem 0.5rem;
+}
+
+.orgchart .node .card-body .avatar {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.orgchart .node .card-body .avatar img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.orgchart .node .card-body .info {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0.3rem;
+    line-height: 1;
+    font-size: 80%;
+}
+/* End OrgChart */
+
+.right-sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.icon-32 {
+    width: 32px;
+}

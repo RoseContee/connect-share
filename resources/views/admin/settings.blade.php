@@ -29,7 +29,7 @@
                 @include('partials.messages')
 
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <form action="{{ route('admin.settings.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="card">
@@ -92,6 +92,22 @@
                                             </label>
                                         @enderror
                                     </div>--}}
+                                    <div class="form-group">
+                                        <label for="banner_image">Banner Image</label>
+                                        <div class="banner mb-2"
+                                             style="background-image: url('{{ getBannerImage($settings['banner_image'] ?? null) }}')">
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" id="banner_image" name="banner_image" accept="image/*"
+                                                   class="custom-file-input @error('banner_image') is-invalid @enderror">
+                                            <label for="banner_image" class="custom-file-label">Choose file</label>
+                                        </div>
+                                        @error('banner_image')
+                                            <label for="banner_image" class="text-danger small mb-0 font-weight-normal">
+                                                {{ $message }}
+                                            </label>
+                                        @enderror
+                                    </div>
                                     <div class="form-group">
                                         <div class="form-check">
                                             <input type="checkbox" id="shortcut" name="shortcut"

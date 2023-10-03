@@ -17,6 +17,15 @@ if (!function_exists('getLogo')) {
     }
 }
 
+if (!function_exists('getBannerImage')) {
+    function getBannerImage($image) {
+        if ($image && file_exists(public_path($image))) {
+            return asset($image);
+        }
+        return asset('assets/img/banner-bg.jpg');
+    }
+}
+
 if (!function_exists('byte_format')) {
     function byte_formate($byte) {
         if ($byte < 1024) return round($byte, 2).' bytes';

@@ -23,14 +23,21 @@ class LinkController extends Controller
     }
 
     public function create() {
+        $user = auth()->user();
+        if (!$user['is_admin']) {
+            return redirect()->route('useful-links.index');
+        }
         return view('user.home.links.add');
     }
 
     public function store(Request $request) {
+        $user = auth()->user();
+        if (!$user['is_admin']) {
+            return redirect()->route('useful-links.index');
+        }
         $request->validate([
             'link' => ['required', 'url'],
         ]);
-        $user = auth()->user();
         $user->links()->create([
             'domain' => $user['domain'],
             'link' => $request['link'],
@@ -40,22 +47,24 @@ class LinkController extends Controller
     }
 
     public function edit($id) {
-        $link = auth()->user()
-            ->links()
-            ->where('id', $id)
-            ->first();
-        if (!$link) return back();
+        $user = auth()->user();
+        if (!$user['is_admin']
+            || !($link = $user->links()->where('id', $id)->first())
+        ) {
+            return redirect()->route('useful-links.index');
+        }
         return view('user.home.links.add', [
             'link' => $link,
         ]);
     }
 
     public function update(Request $request, $id) {
-        $link = auth()->user()
-            ->links()
-            ->where('id', $id)
-            ->first();
-        if (!$link) return back();
+        $user = auth()->user();
+        if (!$user['is_admin']
+            || !($link = $user->links()->where('id', $id)->first())
+        ) {
+            return redirect()->route('useful-links.index');
+        }
         $request->validate([
             'link' => ['required', 'url'],
         ]);
@@ -66,11 +75,12 @@ class LinkController extends Controller
     }
 
     public function destroy($id) {
-        $link = auth()->user()
-            ->links()
-            ->where('id', $id)
-            ->first();
-        if (!$link) return back();
+        $user = auth()->user();
+        if (!$user['is_admin']
+            || !($link = $user->links()->where('id', $id)->first())
+        ) {
+            return redirect()->route('useful-links.index');
+        }
         $link->delete();
         return back()->with('error_message', 'Link has been removed.');
     }

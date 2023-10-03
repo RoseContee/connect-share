@@ -11,7 +11,7 @@ $route = $add ? route('documents.store') : route('documents.update', $document['
 @section('home-content')
     <div class="row">
         <div class="col-md-8">
-            <div class="card mt-3">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">{{ $add ? 'Add' : 'Edit' }} Document</h3>
                 </div>

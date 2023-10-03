@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('gmail_usage', 20)->nullable();
             $table->string('photos_usage', 20)->nullable();
             $table->string('manager_id')->nullable();
+            $table->boolean('show_in_org')->default(true);
             $table->boolean('is_admin')->default(false);
             $table->string('domain');
             $table->string('access_token')->nullable();

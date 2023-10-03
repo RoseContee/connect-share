@@ -16,12 +16,16 @@ class User extends Authenticatable
         'google_id', 'email', 'given_name', 'family_name', 'phone', 'avatar',
         'org_title', 'org_department',
         'drive_usage', 'gmail_usage', 'photos_usage',
-        'manager_id', 'is_admin',
+        'manager_id', 'show_in_org', 'is_admin',
         'domain', 'access_token', 'refresh_token',
     ];
 
     public function scopeDomain($query, $domain) {
         $query->where('domain', $domain);
+    }
+
+    public function scopeShowInOrg($query) {
+        $query->where('show_in_org', true);
     }
 
     public function intranet() {

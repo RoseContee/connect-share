@@ -26,6 +26,9 @@ class SettingsSeeder extends Seeder
             'key' => 'contact_phone',
             'value' => null,
         ], [
+            'key' => 'banner_image',
+            'value' => null,
+        ], [
             'key' => 'shortcut',
             'value' => true,
         ], [

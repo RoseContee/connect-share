@@ -12,76 +12,72 @@ $user = auth()->user();
 @endpush
 
 @section('home-content')
-    <div class="row">
-        <div class="col-12">
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h3 class="card-title">Holiday Approval</h3>
-                </div>
-                <div class="card-body">
-                    <table id="approvals" class="table table-bordered table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th style="width: 20px;">No</th>
-                            <th>User</th>
-                            <th>Title</th>
-                            <th>Period</th>
-                            <th>Note</th>
-                            <th style="width: 52px;"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($requests as $index => $request)
-                            @php $r = $request['latestReply'] ?? $request; @endphp
-                            @continue($r['status'] != 'pending')
-                            <tr>
-                                <td>{{ ++$index }}</td>
-                                <td>
-                                    @if ($request['user'])
-                                        <a href="mailto:{{ $request['user']['email'] }}">
-                                            {{ $request['user']['given_name'].' '.$request['user']['family_name'] }}
-                                        </a>
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ $request['title'] }}
-                                    <p class="mb-0">({{ $request['type'] }})</p>
-                                </td>
-                                <td>
-                                    @php $period = explode(' - ', $request['period']); @endphp
-                                    {{ date('m/d/Y', strtotime($period[0])) }} - {{ date('m/d/Y', strtotime($period[1])) }}
-                                </td>
-                                <td>{{ $r['note'] }}</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm px-1 py-0"
-                                            onclick="acceptRequest({{ $request['id'] }})" title="Accept">
-                                        <i class="fa fa-check"></i>
-                                    </button>
-                                    <a href="{{ route('holiday-reject', $request['id']) }}"
-                                       class="btn btn-danger btn-sm px-1 py-0" title="Reject">
-                                        <i class="fa fa-ban"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>User</th>
-                            <th>Title</th>
-                            <th>Period</th>
-                            <th>Note</th>
-                            <th></th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Holiday Approval</h3>
         </div>
+        <div class="card-body">
+            <table id="approvals" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 20px;">No</th>
+                    <th>User</th>
+                    <th>Title</th>
+                    <th>Period</th>
+                    <th>Note</th>
+                    <th style="width: 52px;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($requests as $index => $request)
+                    @php $r = $request['latestReply'] ?? $request; @endphp
+                    @continue($r['status'] != 'pending')
+                    <tr>
+                        <td>{{ ++$index }}</td>
+                        <td>
+                            @if ($request['user'])
+                                <a href="mailto:{{ $request['user']['email'] }}">
+                                    {{ $request['user']['given_name'].' '.$request['user']['family_name'] }}
+                                </a>
+                            @endif
+                        </td>
+                        <td>
+                            {{ $request['title'] }}
+                            <p class="mb-0">({{ $request['type'] }})</p>
+                        </td>
+                        <td>
+                            @php $period = explode(' - ', $request['period']); @endphp
+                            {{ date('m/d/Y', strtotime($period[0])) }} - {{ date('m/d/Y', strtotime($period[1])) }}
+                        </td>
+                        <td>{{ $r['note'] }}</td>
+                        <td>
+                            <button class="btn btn-success btn-sm px-1 py-0"
+                                    onclick="acceptRequest({{ $request['id'] }})" title="Accept">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <a href="{{ route('holiday-reject', $request['id']) }}"
+                               class="btn btn-danger btn-sm px-1 py-0" title="Reject">
+                                <i class="fa fa-ban"></i>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>No</th>
+                    <th>User</th>
+                    <th>Title</th>
+                    <th>Period</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
     </div>
+    <!-- /.card -->
 
     <!-- Accept Modal -->
     <div id="accept-modal" class="modal fade">

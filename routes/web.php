@@ -4,6 +4,7 @@ use App\Http\Controllers\User\AuthController as UserAuth;
 use App\Http\Controllers\User\AuthGoogleController as GoogleAuth;
 use App\Http\Controllers\User\IntranetSetupController as IntranetSetup;
 use App\Http\Controllers\User\HomeController as UserHome;
+use App\Http\Controllers\User\PeopleController as UserPeople;
 use App\Http\Controllers\User\HolidayRequestController as UserHolidayRequest;
 use App\Http\Controllers\User\LinkController as UserUsefulLink;
 use App\Http\Controllers\User\DocumentController as UserDocument;
@@ -67,7 +68,9 @@ Route::group([
             Route::get('profile', [UserHome::class, 'profile'])->name('profile');
             Route::get('storage-usage', [UserHome::class, 'storageUsage'])->name('storage-usage');
 
-            Route::get('organization', [UserHome::class, 'organization'])->name('organization');
+            Route::get('members', [UserPeople::class, 'members'])->name('members');
+            Route::get('organization', [UserPeople::class, 'organization'])->name('organization');
+            Route::delete('organization', [UserPeople::class, 'removeOrganization']);
 
             Route::get('holiday-requests', [UserHolidayRequest::class, 'index'])->name('holiday-requests');
             Route::get('new-holiday-request', [UserHolidayRequest::class, 'send'])->name('new-holiday-request');

@@ -31,12 +31,13 @@ class Google
             'grant_type' => 'refresh_token',
         ]);
         $result = $response->json();
-        if ($accessToken = $this->accessToken = $result['access_token'] ?? null) {
-            $user = auth()->user();
-            $user['access_token'] = $accessToken;
+        if (($this->accessToken = $result['access_token'] ?? null)
+            && ($user = auth()->user())
+        ) {
+            $user['access_token'] = $this->accessToken;
             $user->save();
         }
-        return $accessToken;
+        return $this->accessToken;
     }
 
     public function getUser(string $email) {
@@ -92,6 +93,19 @@ class Google
             }
         } catch (\Exception $exception) {}
         return null;
+    }
+
+    public function hasMember($managerEmail) {
+        try {
+            foreach ($this->users as $user) {
+                foreach ($user['relations'] ?? [] as $relation) {
+                    if ($relation['type'] == 'manager' && $relation['value'] == $managerEmail) {
+                        return true;
+                    }
+                }
+            }
+        } catch (\Exception $exception) {}
+        return false;
     }
 
     public function getStorageUsage() {

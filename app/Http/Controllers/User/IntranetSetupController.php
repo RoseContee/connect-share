@@ -16,7 +16,7 @@ class IntranetSetupController extends Controller
     public function installUsers() {
         $user = auth()->user();
         $domain = $user['domain'];
-        $google = new Google($user['access_token']);
+        $google = new Google($user['access_token'], $user['refresh_token']);
         $members = $google->getUsers($domain);
         foreach ($members as $member) {
             User::updateOrCreate([
@@ -31,7 +31,7 @@ class IntranetSetupController extends Controller
                 'org_department' => $member['organizations'][0]['department'] ?? null,
                 'manager_id' => $google->getGoogleId($google->getManagerEmail($member)),
                 'is_admin' => !empty($member['isAdmin']),
-                'domain' => $user['domain'],
+                'domain' => $domain,
             ]);
         }
         $user->intranet()->updateOrCreate([
@@ -44,9 +44,8 @@ class IntranetSetupController extends Controller
 
     public function complete() {
         $user = auth()->user();
-        $domain = $user['domain'];
         $user->intranet()->updateOrCreate([
-            'domain' => $domain,
+            'domain' => $user['domain'],
         ], [
             'installed' => 2,
         ]);

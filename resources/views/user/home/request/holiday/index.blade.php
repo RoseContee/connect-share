@@ -12,93 +12,89 @@ $user = auth()->user();
 @endpush
 
 @section('home-content')
-    <div class="row">
-        <div class="col-12">
-            <div class="card mt-3">
-                <div class="card-header">
-                    <a href="{{ route('new-holiday-request') }}" class="btn btn-primary">
-                        <i class="fa fa-plus"></i> New Request
-                    </a>
-                </div>
-                <div class="card-body">
-                    <table id="requests" class="table table-bordered table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th style="width: 20px;">No</th>
-                            <th>Title</th>
-                            <th>Period</th>
-                            <th>Note</th>
-                            <th>Status</th>
-                            <th>Manager</th>
-                            <th style="width: 52px;"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($requests as $index => $request)
-                            @php $r = $request['latestReply'] ?? $request; @endphp
-                            <tr>
-                                <td>{{ ++$index }}</td>
-                                <td>
-                                    {{ $request['title'] }}
-                                    <p class="mb-0">({{ $request['type'] }})</p>
-                                </td>
-                                <td>
-                                    @php $period = explode(' - ', $request['period']); @endphp
-                                    {{ date('m/d/Y', strtotime($period[0])) }} - {{ date('m/d/Y', strtotime($period[1])) }}
-                                </td>
-                                <td>{{ $r['note'] }}</td>
-                                <td>
-                                    @if ($r['status'] === 'pending')
-                                        <span class="badge badge-info">Pending</span>
-                                    @elseif ($r['status'] === 'approved')
-                                        <span class="badge badge-success">Approved</span>
-                                    @else
-                                        <span class="badge badge-danger">Rejected</span>
-                                        @if ($r['reason'])
-                                            <p class="mb-0">{{ $r['reason'] }}</p>
-                                        @endif
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($request['manager'])
-                                        <a href="mailto:{{ $request['manager']['email'] }}">
-                                            {{ $request['manager']['given_name'].' '.$request['manager']['family_name'] }}
-                                        </a>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($r['status'] === 'rejected')
-                                        <a href="{{ route('resend-holiday-request', $request['id']) }}"
-                                           class="btn btn-primary btn-sm px-1 py-0" title="Resend">
-                                            <i class="fa fa-reply"></i>
-                                        </a>
-                                    @endif
-                                    <button class="btn btn-danger btn-sm px-1 py-0"
-                                            onclick="deleteRequest({{ $request['id'] }})" title="Delete">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Title</th>
-                            <th>Period</th>
-                            <th>Note</th>
-                            <th>Status</th>
-                            <th>Manager</th>
-                            <th></th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+    <div class="card">
+        <div class="card-header">
+            <a href="{{ route('new-holiday-request') }}" class="btn btn-primary">
+                <i class="fa fa-plus"></i> New Request
+            </a>
         </div>
+        <div class="card-body">
+            <table id="requests" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 20px;">No</th>
+                    <th>Title</th>
+                    <th>Period</th>
+                    <th>Note</th>
+                    <th>Status</th>
+                    <th>Manager</th>
+                    <th style="width: 52px;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($requests as $index => $request)
+                    @php $r = $request['latestReply'] ?? $request; @endphp
+                    <tr>
+                        <td>{{ ++$index }}</td>
+                        <td>
+                            {{ $request['title'] }}
+                            <p class="mb-0">({{ $request['type'] }})</p>
+                        </td>
+                        <td>
+                            @php $period = explode(' - ', $request['period']); @endphp
+                            {{ date('m/d/Y', strtotime($period[0])) }} - {{ date('m/d/Y', strtotime($period[1])) }}
+                        </td>
+                        <td>{{ $r['note'] }}</td>
+                        <td>
+                            @if ($r['status'] === 'pending')
+                                <span class="badge badge-info">Pending</span>
+                            @elseif ($r['status'] === 'approved')
+                                <span class="badge badge-success">Approved</span>
+                            @else
+                                <span class="badge badge-danger">Rejected</span>
+                                @if ($r['reason'])
+                                    <p class="mb-0">{{ $r['reason'] }}</p>
+                                @endif
+                            @endif
+                        </td>
+                        <td>
+                            @if ($request['manager'])
+                                <a href="mailto:{{ $request['manager']['email'] }}">
+                                    {{ $request['manager']['given_name'].' '.$request['manager']['family_name'] }}
+                                </a>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($r['status'] === 'rejected')
+                                <a href="{{ route('resend-holiday-request', $request['id']) }}"
+                                   class="btn btn-primary btn-sm px-1 py-0" title="Resend">
+                                    <i class="fa fa-reply"></i>
+                                </a>
+                            @endif
+                            <button class="btn btn-danger btn-sm px-1 py-0"
+                                    onclick="deleteRequest({{ $request['id'] }})" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>No</th>
+                    <th>Title</th>
+                    <th>Period</th>
+                    <th>Note</th>
+                    <th>Status</th>
+                    <th>Manager</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
     </div>
+    <!-- /.card -->
 
     <!-- Delete Modal -->
     <div id="delete-modal" class="modal fade">

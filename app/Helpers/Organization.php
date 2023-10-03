@@ -44,11 +44,19 @@ class Organization
     }
 
     protected function getHierarchyUser($user) {
+        $manager = $this->findManager($user);
         return [
             'id' => $user['google_id'],
             'name' => $user['given_name'].' '.$user['family_name'],
+            'given_name' => $user['given_name'],
+            'family_name' => $user['family_name'],
+            'email' => $user['email'],
+            'phone' => $user['phone'],
             'avatar' => $user['avatar'],
+            'org_title' => $user['org_title'],
+            'org_department' => $user['org_department'],
             'isAdmin' => !empty($user['is_admin']),
+            'manager' => $manager['google_id'] ?? null,
             'children' => $this->getHierarchyUserChildren($user),
         ];
     }
@@ -56,7 +64,9 @@ class Organization
     protected function findManager($user) {
         if (empty($user['manager_id'])) return null;
         foreach ($this->members as $member) {
-            if ($member['google_id'] == $user['manager_id']) return $member;
+            if ($member['google_id'] == $user['manager_id']) {
+                return $member;
+            }
         }
         return null;
     }

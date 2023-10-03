@@ -1,3 +1,9 @@
+.banner {
+    width: 100%;
+    height: 250px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .navbar-expand .navbar-nav .nav-link {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
@@ -227,16 +233,28 @@
 
 .orgchart .node .card-body .info {
     width: 100%;
+    display: flex;
+    justify-content: space-around;
     position: absolute;
     left: 0;
     bottom: 0.3rem;
     line-height: 1;
     font-size: 80%;
 }
+
+.orgchart .node .card-body .info .user-info {
+    color: #17a2b8;
+    cursor: pointer;
+}
+
+.orgchart .node .card-body .info .user-hide {
+    color: #dc3545;
+    cursor: pointer;
+}
 /* End OrgChart */
 
 .right-sidebar {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     height: 100vh;

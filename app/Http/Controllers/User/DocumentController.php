@@ -22,15 +22,22 @@ class DocumentController extends Controller
     }
 
     public function create() {
+        $user = auth()->user();
+        if (!$user['is_admin']) {
+            return redirect()->route('documents.index');
+        }
         return view('user.home.documents.add');
     }
 
     public function store(Request $request) {
+        $user = auth()->user();
+        if (!$user['is_admin']) {
+            return redirect()->route('documents.index');
+        }
         $request->validate([
             'title' => ['required'],
             'link' => ['required', 'url'],
         ]);
-        $user = auth()->user();
         $user->documents()->create([
             'domain' => $user['domain'],
             'title' => $request['title'],
@@ -41,22 +48,24 @@ class DocumentController extends Controller
     }
 
     public function edit($id) {
-        $document = auth()->user()
-            ->documents()
-            ->where('id', $id)
-            ->first();
-        if (!$document) return back();
+        $user = auth()->user();
+        if (!$user['is_admin']
+            || !($document = $user->documents()->where('id', $id)->first())
+        ) {
+            return redirect()->route('documents.index');
+        }
         return view('user.home.documents.add', [
             'document' => $document,
         ]);
     }
 
     public function update(Request $request, $id) {
-        $document = auth()->user()
-            ->documents()
-            ->where('id', $id)
-            ->first();
-        if (!$document) return back();
+        $user = auth()->user();
+        if (!$user['is_admin']
+            || !($document = $user->documents()->where('id', $id)->first())
+        ) {
+            return redirect()->route('documents.index');
+        }
         $request->validate([
             'title' => ['required'],
             'link' => ['required', 'url'],
@@ -69,11 +78,12 @@ class DocumentController extends Controller
     }
 
     public function destroy($id) {
-        $document = auth()->user()
-            ->documents()
-            ->where('id', $id)
-            ->first();
-        if (!$document) return back();
+        $user = auth()->user();
+        if (!$user['is_admin']
+            || !($document = $user->documents()->where('id', $id)->first())
+        ) {
+            return redirect()->route('documents.index');
+        }
         $document->delete();
         return back()->with('error_message', 'Document has been removed.');
     }

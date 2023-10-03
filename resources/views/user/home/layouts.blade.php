@@ -1,11 +1,22 @@
 @extends('user.layouts')
 
+@php
+$dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile']);
+@endphp
+
 @push('before-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
 @endpush
 
 @section('content')
     <div class="wrapper">
+        @if ($dashboardPage)
+            <nav class="main-header navbar p-0">
+                <div class="banner"
+                     style="background-image: url('{{ getBannerImage($settings['banner_image'] ?? '') }}')">
+                </div>
+            </nav>
+        @endif
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <ul class="navbar-nav">
@@ -15,7 +26,7 @@
                     </a>
                 </li>
             </ul>
-            @if (in_array(request()->route()->getName(), ['dashboard', 'profile']))
+            @if ($dashboardPage)
                 @include('user.home.partials.storage-usage')
             @endif
         </nav>
@@ -45,13 +56,20 @@
                         </li>
                         <li class="nav-item @if ($menu == 'People') menu-open @endif">
                             <a href="#" class="nav-link @if ($menu == 'People') active @endif">
-                                <i class="nav-icon fas fa-users"></i>
+                                <i class="nav-icon fas fa-user-friends"></i>
                                 <p>
                                     People
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('members') }}"
+                                       class="nav-link pl-4 @if (($submenu ?? '') == 'Members') active @endif">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>Members</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{ route('organization') }}"
                                        class="nav-link pl-4 @if (($submenu ?? '') == 'Organization') active @endif">
@@ -150,10 +168,8 @@
         </aside>
 
         <div class="content-wrapper">
-            <div class="content">
-                <div class="container-fluid">
-                    @yield('home-content')
-                </div>
+            <div class="content pt-3">
+                @yield('home-content')
             </div>
         </div>
 

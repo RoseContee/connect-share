@@ -10,7 +10,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
 
 @section('content')
     <div class="wrapper">
-        @if ($dashboardPage)
+        @if (empty($settings['hide_banner']) && $dashboardPage)
             <nav class="main-header navbar p-0">
                 <div class="banner"
                      style="background-image: url('{{ getBannerImage($settings['banner_image'] ?? '') }}')">

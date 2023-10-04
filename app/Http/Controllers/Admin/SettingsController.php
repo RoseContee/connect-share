@@ -29,6 +29,7 @@ class SettingsController extends Controller
         Setting::saveSetting([
             //'contact_email' => $request['contact_email'],
             //'contact_phone' => $request['contact_phone'],
+            'hide_banner' => !empty($request['hide_banner']),
             'shortcut' => !empty($request['shortcut']),
         ]);
         $settings = Setting::getSetting(['favicon', 'logo', 'banner_image']);

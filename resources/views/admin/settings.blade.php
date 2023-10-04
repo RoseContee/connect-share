@@ -93,6 +93,14 @@
                                         @enderror
                                     </div>--}}
                                     <div class="form-group">
+                                        <div class="form-check">
+                                            <input type="checkbox" id="hide_banner" name="hide_banner"
+                                                   class="form-check-input" value="1"
+                                                   @if ($settings['hide_banner']) checked @endif>
+                                            <label for="hide_banner" class="form-check-label">Hide Banner</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="banner_image">Banner Image</label>
                                         <div class="banner mb-2"
                                              style="background-image: url('{{ getBannerImage($settings['banner_image'] ?? null) }}')">

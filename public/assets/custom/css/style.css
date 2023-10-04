@@ -260,6 +260,7 @@
     height: 100vh;
     display: flex;
     align-items: center;
+    z-index: 1035;
 }
 
 .icon-32 {

@@ -18,9 +18,8 @@
                 <!-- Navbar Search -->
                 <li class="nav-item">
                     <div class="custom-control custom-switch custom-switch-on-dark">
-                        <input type="checkbox" id="dark-mode"
-                               @if ($dark_mode) checked @endif
-                               class="custom-control-input">
+                        <input type="checkbox" id="dark-mode" class="custom-control-input"
+                            @checked($dark_mode)>
                         <label class="custom-control-label" for="dark-mode">Dark Mode</label>
                     </div>
                 </li>
@@ -46,20 +45,62 @@
                                 <p>Dashboard</p>
                             </a>
                         </li>
+                        <li class="nav-item @if($menu == 'Domains') menu-open @endif">
+                            <a href="#" class="nav-link @if ($menu == 'Domains') active @endif">
+                                <i class="nav-icon fas fa-building"></i>
+                                <p>
+                                    Domains
+                                    <i class="fas fa-angle-left right"></i>
+                                    <span class="badge badge-info right">
+                                        {{ request()->domain_request_number }}
+                                    </span>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.domains.index') }}"
+                                       class="nav-link pl-4 @if (($type ?? '') == 'Installed') active @endif">
+                                        <i class="nav-icon fas fa-rocket"></i>
+                                        <p>Installed</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.domains.index', ['type' => 'Allowed']) }}"
+                                       class="nav-link pl-4 @if (($type ?? '') == 'Allowed') active @endif">
+                                        <i class="nav-icon fas fa-check-circle"></i>
+                                        <p>Allowed</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.domains.index', ['type' => 'Blocked']) }}"
+                                       class="nav-link pl-4 @if (($type ?? '') == 'Blocked') active @endif">
+                                        <i class="nav-icon fas fa-ban"></i>
+                                        <p>Blocked</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.domains.index', ['type' => 'Request']) }}"
+                                       class="nav-link pl-4 @if (($type ?? '') == 'Request') active @endif">
+                                        <i class="nav-icon fas fa-hourglass-half"></i>
+                                        <p>Request</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.shortcuts.index') }}" class="nav-link @if($menu == 'Shortcuts') active @endif">
+                            <a href="{{ route('admin.shortcuts.index') }}" class="nav-link @if ($menu == 'Shortcuts') active @endif">
                                 <i class="nav-icon fas fa-link"></i>
                                 <p>Shortcuts</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.settings.index') }}" class="nav-link @if($menu == 'Settings') active @endif">
+                            <a href="{{ route('admin.settings.index') }}" class="nav-link @if ($menu == 'Settings') active @endif">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>Settings</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.profile') }}" class="nav-link @if($menu == 'Profile') active @endif">
+                            <a href="{{ route('admin.profile') }}" class="nav-link @if ($menu == 'Profile') active @endif">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>Profile</p>
                             </a>
@@ -91,7 +132,7 @@
 </body>
 @endsection
 
-@push('before-scripts')
+@push('after-scripts')
     <script type="text/javascript">
         $(() => {
             $('#dark-mode').on('change', function() {

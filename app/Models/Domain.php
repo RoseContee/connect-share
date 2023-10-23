@@ -10,7 +10,8 @@ class Domain extends Model
     use HasFactory;
 
     protected $fillable = [
-        'domain', 'installed',
+        'domain', 'installed', 'hide_banner', 'banner_image', 'widgets',
+        'token', 'requested_email', 'notify_to', 'status', 'reason',
     ];
 
     public function scopeDomain($query, $domain) {
@@ -19,6 +20,18 @@ class Domain extends Model
 
     public function scopeInstalled($query) {
         $query->where('installed', 2);
+    }
+
+    public function scopePending($query) {
+        $query->where('status', 'pending');
+    }
+
+    public function scopeActive($query) {
+        $query->where('status', 'active');
+    }
+
+    public function scopeBlocked($query) {
+        $query->where('status', 'blocked');
     }
 
     public function users() {

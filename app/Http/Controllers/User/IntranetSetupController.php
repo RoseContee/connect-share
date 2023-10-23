@@ -13,8 +13,8 @@ class IntranetSetupController extends Controller
         return view('user.setup.users');
     }
 
-    public function installUsers() {
-        $user = auth()->user();
+    public function installUsers(Request $request) {
+        $user = $request->user();
         $domain = $user['domain'];
         $google = new Google($user['access_token'], $user['refresh_token']);
         $members = $google->getUsers($domain);
@@ -42,8 +42,8 @@ class IntranetSetupController extends Controller
         return redirect()->route('intranet.setup.complete');
     }
 
-    public function complete() {
-        $user = auth()->user();
+    public function complete(Request $request) {
+        $user = $request->user();
         $user->intranet()->updateOrCreate([
             'domain' => $user['domain'],
         ], [

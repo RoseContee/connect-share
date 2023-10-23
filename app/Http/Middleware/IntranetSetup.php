@@ -16,7 +16,7 @@ class IntranetSetup
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        $user = auth()->user();
+        $user = $request->user();
         if ($user['is_admin']) {
             $intranet = $user['intranet'];
             if ($role === 'admin') {

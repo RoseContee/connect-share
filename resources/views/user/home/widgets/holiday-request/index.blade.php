@@ -1,7 +1,7 @@
 @extends('user.home.layouts')
 
 @php
-$user = auth()->user();
+$user = request()->user();
 @endphp
 
 @section('title', 'Holiday Requests')
@@ -134,7 +134,7 @@ $user = auth()->user();
     <script>
         const deleteModal = $('#delete-modal');
 
-        $(function () {
+        $(() => {
             $('#requests').DataTable({
                 autoWidth: false,
                 responsive: true,
@@ -145,12 +145,12 @@ $user = auth()->user();
                 ]
             });
 
-            deleteModal.on('hidden.bs.modal', function() {
+            deleteModal.on('hidden.bs.modal', () => {
                 deleteModal.find('#request').val('');
             });
         });
 
-        function deleteRequest(id) {
+        const deleteRequest = id => {
             deleteModal.modal('show').find('#request').val(id);
         }
     </script>

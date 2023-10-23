@@ -11,8 +11,8 @@ class DocumentController extends Controller
         view()->share('menu', 'Documents');
     }
 
-    public function index() {
-        $documents = auth()->user()
+    public function index(Request $request) {
+        $documents = $request->user()
             ->documents()
             ->orderBy('created_at', 'desc')
             ->get();
@@ -21,16 +21,15 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function create() {
-        $user = auth()->user();
-        if (!$user['is_admin']) {
+    public function create(Request $request) {
+        if (!$request->user()->is_admin) {
             return redirect()->route('documents.index');
         }
         return view('user.home.documents.add');
     }
 
     public function store(Request $request) {
-        $user = auth()->user();
+        $user = $request->user();
         if (!$user['is_admin']) {
             return redirect()->route('documents.index');
         }
@@ -47,8 +46,8 @@ class DocumentController extends Controller
         return redirect()->route('documents.index')->with('success_message', 'New document has been added.');
     }
 
-    public function edit($id) {
-        $user = auth()->user();
+    public function edit(Request $request, $id) {
+        $user = $request->user();
         if (!$user['is_admin']
             || !($document = $user->documents()->where('id', $id)->first())
         ) {
@@ -60,7 +59,7 @@ class DocumentController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $user = auth()->user();
+        $user = $request->user();
         if (!$user['is_admin']
             || !($document = $user->documents()->where('id', $id)->first())
         ) {
@@ -77,8 +76,8 @@ class DocumentController extends Controller
         return back()->with('info_message', 'Document has been updated.');
     }
 
-    public function destroy($id) {
-        $user = auth()->user();
+    public function destroy(Request $request, $id) {
+        $user = $request->user();
         if (!$user['is_admin']
             || !($document = $user->documents()->where('id', $id)->first())
         ) {

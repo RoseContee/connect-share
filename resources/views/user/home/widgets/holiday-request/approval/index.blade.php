@@ -1,7 +1,7 @@
 @extends('user.home.layouts')
 
 @php
-$user = auth()->user();
+$user = request()->user();
 @endphp
 
 @section('title', 'Holiday Approval')
@@ -117,7 +117,7 @@ $user = auth()->user();
     <script>
         const acceptModal = $('#accept-modal');
 
-        $(function () {
+        $(() => {
             $('#approvals').DataTable({
                 autoWidth: false,
                 responsive: true,
@@ -128,12 +128,12 @@ $user = auth()->user();
                 ]
             });
 
-            acceptModal.on('hidden.bs.modal', function() {
+            acceptModal.on('hidden.bs.modal', () => {
                 acceptModal.find('#request').val('');
             });
         });
 
-        function acceptRequest(id) {
+        const acceptRequest = id => {
             acceptModal.find('#request').val(id);
             acceptModal.modal('show');
         }

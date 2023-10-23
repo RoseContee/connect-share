@@ -20,8 +20,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function storageUsage() {
-        $user = auth()->user();
+    public function storageUsage(Request $request) {
+        $user = $request->user();
         $google = new Google($user['access_token'], $user['refresh_token']);
         $usage = $google->getStorageUsage();
         $user['drive_usage'] = $usage['drive_usage'];

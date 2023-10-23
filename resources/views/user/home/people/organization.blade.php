@@ -1,7 +1,7 @@
 @extends('user.home.layouts')
 
 @php
-$user = auth()->user();
+$user = request()->user();
 @endphp
 
 @section('title', 'Organization Chart')
@@ -127,7 +127,7 @@ $user = auth()->user();
 
 @push('after-scripts')
     <script type="text/javascript">
-        $(function () {
+        $(() => {
             const orgChartData = {!! json_encode($organization) !!};
 
             const nodeTemplate = function (node) {

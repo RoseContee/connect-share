@@ -28,11 +28,16 @@ class FetchMembers extends Command
     public function handle()
     {
         $google = new Google();
-        $admins = User::where('is_admin', true)
+        $workspace_admins = User::with([
+            'intranet' => function ($q) {
+                $q->where('installed', '!=', 0)
+                    ->where('status', 'active');
+            }
+        ])->where('is_admin', true)
             ->whereNotNull('refresh_token')
             ->groupBy('domain')
             ->get();
-        foreach ($admins as $admin) {
+        foreach ($workspace_admins as $admin) {
             $google->setAccessToken($admin['access_token']);
             $google->setRefreshToken($admin['refresh_token']);
             $domain = $admin['domain'];

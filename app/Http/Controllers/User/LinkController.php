@@ -12,8 +12,8 @@ class LinkController extends Controller
         view()->share('menu', 'Links');
     }
 
-    public function index() {
-        $links = auth()->user()
+    public function index(Request $request) {
+        $links = $request->user()
             ->links()
             ->orderBy('created_at', 'desc')
             ->get();
@@ -22,16 +22,15 @@ class LinkController extends Controller
         ]);
     }
 
-    public function create() {
-        $user = auth()->user();
-        if (!$user['is_admin']) {
+    public function create(Request $request) {
+        if (!$request->user()->is_admin) {
             return redirect()->route('useful-links.index');
         }
         return view('user.home.links.add');
     }
 
     public function store(Request $request) {
-        $user = auth()->user();
+        $user = $request->user();
         if (!$user['is_admin']) {
             return redirect()->route('useful-links.index');
         }
@@ -46,8 +45,8 @@ class LinkController extends Controller
         return redirect()->route('useful-links.index')->with('success_message', 'New link has been added.');
     }
 
-    public function edit($id) {
-        $user = auth()->user();
+    public function edit(Request $request, $id) {
+        $user = $request->user();
         if (!$user['is_admin']
             || !($link = $user->links()->where('id', $id)->first())
         ) {
@@ -59,7 +58,7 @@ class LinkController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $user = auth()->user();
+        $user = $request->user();
         if (!$user['is_admin']
             || !($link = $user->links()->where('id', $id)->first())
         ) {
@@ -74,8 +73,8 @@ class LinkController extends Controller
         return back()->with('info_message', 'Link has been updated.');
     }
 
-    public function destroy($id) {
-        $user = auth()->user();
+    public function destroy(Request $request, $id) {
+        $user = $request->user();
         if (!$user['is_admin']
             || !($link = $user->links()->where('id', $id)->first())
         ) {

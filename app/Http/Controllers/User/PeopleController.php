@@ -14,7 +14,7 @@ class PeopleController extends Controller
 
     public function members(Request $request) {
         $keyword = $request['q'];
-        $users = auth()->user()
+        $users = $request->user()
             ->users()
             ->where(function ($query) use ($keyword) {
                 if ($keyword) {
@@ -30,8 +30,8 @@ class PeopleController extends Controller
         ]);
     }
 
-    public function organization() {
-        $user = auth()->user();
+    public function organization(Request $request) {
+        $user = $request->user();
         $organization = new Organization();
         $members = $user->users()->showInOrg()->get();
         $organization->setMembers($members);
@@ -46,7 +46,7 @@ class PeopleController extends Controller
     }
 
     public function removeOrganization(Request $request) {
-        auth()->user()->users()
+        $request->user()->users()
             ->where('google_id', $request['user'])
             ->update(['show_in_org' => false]);
         return back()->with('info_message', 'Member has been removed from chart.');

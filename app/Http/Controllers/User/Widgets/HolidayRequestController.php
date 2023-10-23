@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\User\Widgets;
 
 use App\Http\Controllers\Controller;
 use App\Mail\HolidayRequest as HolidayRequestMail;
@@ -16,20 +16,19 @@ class HolidayRequestController extends Controller
         view()->share('submenu', 'HolidayRequest');
     }
 
-    public function index() {
-        $user = auth()->user();
+    public function index(Request $request) {
         $holiday_requests = HolidayRequest::with(['latestReply', 'manager'])
-            ->owner($user['google_id'])
+            ->owner($request->user()->google_id)
             ->whereNull('parent')
             ->orderBy('period', 'desc')
             ->get();
-        return view('user.home.request.holiday.index', [
+        return view('user.home.widgets.holiday-request.index', [
             'requests' => $holiday_requests,
         ]);
     }
 
     public function send() {
-        return view('user.home.request.holiday.new');
+        return view('user.home.widgets.holiday-request.new');
     }
 
     public function submit(Request $request) {
@@ -45,7 +44,7 @@ class HolidayRequestController extends Controller
         ]);
         $start_date = date('Y-m-d', strtotime($request['start_date']));
         $end_date = date('Y-m-d', strtotime($request['end_date']));
-        $user = auth()->user();
+        $user = $request->user();
         $holiday_request = $user->holidayRequests()
             ->create([
                 'manager_id' => $user['manager_id'],
@@ -61,23 +60,22 @@ class HolidayRequestController extends Controller
             ->with('success_message', 'New request has been sent.');
     }
 
-    public function resend($id) {
-        $user = auth()->user();
+    public function resend(Request $request, $id) {
         $holiday_request = HolidayRequest::with(['latestReply'])
-            ->owner($user['google_id'])
+            ->owner($request->user()->google_id)
             ->where('id', $id)
             ->rejected()
             ->first();
         if (!$holiday_request || ($holiday_request['latestReply']['status'] ?? 'rejected') != 'rejected') {
             return back();
         }
-        return view('user.home.request.holiday.resend', [
+        return view('user.home.widgets.holiday-request.resend', [
             'request' => $holiday_request,
         ]);
     }
 
     public function resubmit(Request $request, $id) {
-        $user = auth()->user();
+        $user = $request->user();
         $holiday_request = HolidayRequest::with(['latestReply', 'manager'])
             ->owner($user['google_id'])
             ->where('id', $id)
@@ -104,7 +102,7 @@ class HolidayRequestController extends Controller
     }
 
     public function destroy(Request $request) {
-        $user = auth()->user();
+        $user = $request->user();
         $holiday_request = $user->holidayRequests()
             ->where('id', $request['request'])
             ->whereNull('parent')
@@ -119,7 +117,7 @@ class HolidayRequestController extends Controller
 
     private function sendNotification($holiday_request) {
         try {
-            $user = auth()->user();
+            $user = request()->user();
             $manager = $holiday_request['manager'];
             Mail::to($manager['email'])->send(new HolidayRequestMail([
                 'user' => $user['given_name'].' '.$user['family_name'],

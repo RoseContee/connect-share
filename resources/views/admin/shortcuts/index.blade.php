@@ -36,9 +36,20 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{ route('admin.shortcuts.create') }}" class="btn btn-primary">
-                            <i class="fa fa-plus"></i> New Shortcut
-                        </a>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <a href="{{ route('admin.shortcuts.create') }}" class="btn btn-primary">
+                                    <i class="fa fa-plus"></i> New Shortcut
+                                </a>
+                            </div>
+                            <div class="col-sm-6 d-flex align-items-center justify-content-end">
+                                <div class="form-check">
+                                    <input type="checkbox" id="show-shortcuts" class="form-check-input"
+                                           @checked($settings['shortcut'])>
+                                    <label for="show-shortcuts" class="form-check-label">Show Shortcuts</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <table id="shortcuts" class="table table-bordered table-striped table-hover">
@@ -147,6 +158,19 @@
                     { targets: [0, 3], searchable: false },
                     { targets: [3], orderable: false },
                 ]
+            });
+
+            $('#show-shortcuts').on('change', function() {
+                const show = $(this).prop('checked');
+                $.ajax({
+                    url: '{{ route('admin.update-show-shortcuts') }}',
+                    method: 'POST',
+                    data: {
+                        show: show,
+                    },
+                }).error(() => {
+                    location.reload();
+                });
             });
 
             deleteModal.on('hidden.bs.modal', function() {

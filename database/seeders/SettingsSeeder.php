@@ -21,7 +21,7 @@ class SettingsSeeder extends Seeder
             'value' => null,
         ], [
             'key' => 'contact_email',
-            'value' => null,
+            'value' => 'info@connectshare.it',
         ], [
             'key' => 'contact_phone',
             'value' => null,

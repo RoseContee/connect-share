@@ -1,7 +1,7 @@
 @extends('user.home.layouts')
 
 @php
-$user = auth()->user();
+$user = request()->user();
 $add = empty($document);
 $route = $add ? route('documents.store') : route('documents.update', $document['id']);
 @endphp

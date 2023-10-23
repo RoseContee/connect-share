@@ -39,7 +39,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>Current Email</label>
-                                        <div class="form-control" readonly>{{ auth()->user()->email }}</div>
+                                        <div class="form-control" readonly>{{ request()->user()->email }}</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">New Email <span class="required">*</span></label>

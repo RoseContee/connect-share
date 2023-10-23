@@ -21,34 +21,34 @@ class SettingsController extends Controller
     public function store(Request $request) {
         $request->validate([
             'favicon' => ['nullable', 'image'],
-            /*'logo' => ['nullable', 'image'],
+            // 'logo' => ['nullable', 'image'],
             'contact_email' => ['required', 'email'],
-            'contact_phone' => ['required'],*/
+            // 'contact_phone' => ['required'],
             'banner_image' => ['nullable', 'image'],
         ]);
         Setting::saveSetting([
-            //'contact_email' => $request['contact_email'],
-            //'contact_phone' => $request['contact_phone'],
+            'contact_email' => $request['contact_email'],
+            // 'contact_phone' => $request['contact_phone'],
             'hide_banner' => !empty($request['hide_banner']),
             'shortcut' => !empty($request['shortcut']),
         ]);
         $settings = Setting::getSetting(['favicon', 'logo', 'banner_image']);
         if ($request->hasFile('favicon')) {
-            if ($settings['favicon'] && file_exists(public_path($settings['favicon']))) {
+            if (getPath($settings['favicon'])) {
                 unlink(public_path($settings['favicon']));
             }
             $favicon = 'uploads/'.$request->file('favicon')->store('settings');
             Setting::saveSetting('favicon', $favicon);
         }
         /*if ($request->hasFile('logo')) {
-            if ($settings['logo'] && file_exists(public_path($settings['logo']))) {
+            if (getPath($settings['logo'])) {
                 unlink(public_path($settings['logo']));
             }
             $logo = 'uploads/'.$request->file('logo')->store('settings');
             Setting::saveSetting('logo', $logo);
         }*/
         if ($request->hasFile('banner_image')) {
-            if ($settings['banner_image'] && file_exists(public_path($settings['banner_image']))) {
+            if (getPath($settings['banner_image'])) {
                 unlink(public_path($settings['banner_image']));
             }
             $banner_image = 'uploads/'.$request->file('banner_image')->store('banner');
@@ -59,6 +59,13 @@ class SettingsController extends Controller
 
     public function updateTheme(Request $request) {
         Setting::saveSetting('dark_mode', $request['darkMode'] == 'true');
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function updateShowShortcuts(Request $request) {
+        Setting::saveSetting('shortcut', $request['show'] == 'true');
         return response()->json([
             'success' => true,
         ]);

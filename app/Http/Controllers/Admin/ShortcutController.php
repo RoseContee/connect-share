@@ -33,8 +33,7 @@ class ShortcutController extends Controller
         ]);
         $shortcut = new Shortcut();
         if ($request->hasFile('icon')) {
-            $icon = 'uploads/'.$request->file('icon')->store('side-icons');
-            $shortcut['icon'] = $icon;
+            $shortcut['icon'] = 'uploads/'.$request->file('icon')->store('side-icons');
         }
         $shortcut['title'] = $request['title'];
         $shortcut['link'] = $request['link'];
@@ -60,11 +59,10 @@ class ShortcutController extends Controller
             'link' => ['required', 'url'],
         ]);
         if ($request->hasFile('icon')) {
-            if ($shortcut['icon'] && file_exists(public_path($shortcut['icon']))) {
+            if (getPath($shortcut['icon'])) {
                 unlink(public_path($shortcut['icon']));
             }
-            $icon = 'uploads/'.$request->file('icon')->store('side-icons');
-            $shortcut['icon'] = $icon;
+            $shortcut['icon'] = 'uploads/'.$request->file('icon')->store('side-icons');
         }
         $shortcut['title'] = $request['title'];
         $shortcut['link'] = $request['link'];
@@ -76,7 +74,7 @@ class ShortcutController extends Controller
     public function destroy($id) {
         $shortcut = Shortcut::find($id);
         if (!$shortcut) return back();
-        if ($shortcut['icon'] && file_exists(public_path($shortcut['icon']))) {
+        if (getPath($shortcut['icon'])) {
             unlink(public_path($shortcut['icon']));
         }
         $shortcut->delete();

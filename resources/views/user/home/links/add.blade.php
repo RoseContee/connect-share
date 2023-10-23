@@ -1,7 +1,7 @@
 @extends('user.home.layouts')
 
 @php
-$user = auth()->user();
+$user = request()->user();
 $add = empty($link);
 $route = $add ? route('useful-links.store') : route('useful-links.update', $link['id']);
 @endphp

@@ -2,6 +2,10 @@
 
 @section('title', 'Admin Login')
 
+@push('before-styles')
+    <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+@endpush
+
 @section('content')
     <p class="login-box-msg">Sign in</p>
 
@@ -48,7 +52,7 @@
             <div class="col-sm-6">
                 <div class="icheck-primary">
                     <input type="checkbox" id="remember" name="remember"
-                           value="1" @if (old('remember')) checked @endif>
+                           value="1" @checked(old('remember'))>
                     <label for="remember">
                         Remember Me
                     </label>

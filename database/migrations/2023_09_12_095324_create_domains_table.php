@@ -15,6 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('domain')->unique();
             $table->tinyInteger('installed')->default(0);
+            $table->boolean('hide_banner')->default(false);
+            $table->string('banner_image')->nullable();
+            $table->string('widgets')->nullable();
+            $table->string('token')->nullable();
+            $table->string('requested_email')->nullable();
+            $table->string('notify_to')->nullable();
+            $table->enum('status', ['pending', 'active', 'blocked'])->default('pending');
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
     }

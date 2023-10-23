@@ -1,6 +1,8 @@
 @extends('user.layouts')
 
 @php
+$user = request()->user();
+$widgets = explode(',', $user['intranet']['widgets'] ?? '');
 $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile']);
 @endphp
 
@@ -10,10 +12,10 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
 
 @section('content')
     <div class="wrapper">
-        @if (empty($settings['hide_banner']) && $dashboardPage)
+        @if (empty($settings['hide_banner']) && empty($user['intranet']['hide_banner']) && $dashboardPage)
             <nav class="main-header navbar p-0">
                 <div class="banner"
-                     style="background-image: url('{{ getBannerImage($settings['banner_image'] ?? '') }}')">
+                     style="background-image: url('{{ getBannerImage($user['intranet']['banner_image'] ?? null, $settings['banner_image'] ?? '') }}')">
                 </div>
             </nav>
         @endif
@@ -79,30 +81,26 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item @if ($menu == 'Request') menu-open @endif">
-                            <a href="#" class="nav-link @if ($menu == 'Request') active @endif">
-                                <i class="nav-icon fas fa-paper-plane"></i>
-                                <p>
-                                    Request
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('holiday-requests') }}"
-                                       class="nav-link pl-4 @if (($submenu ?? '') == 'HolidayRequest') active @endif">
-                                        <i class="nav-icon fas fa-plane"></i>
-                                        <p>Holiday Request</p>
-                                    </a>
-                                </li>
-                                {{--<li class="nav-item">
-                                    <a href="{{ route('travel-requests') }}" class="nav-link pl-4 @if (($submenu ?? '') == 'Travel') active @endif">
-                                        <i class="nav-icon fas fa-car"></i>
-                                        <p>Travel Request</p>
-                                    </a>
-                                </li>--}}
-                            </ul>
-                        </li>
+                        @if (in_array(\App\Helpers\Widgets::HOLIDAY_REQUEST, $widgets))
+                            <li class="nav-item @if ($menu == 'Request') menu-open @endif">
+                                <a href="#" class="nav-link @if ($menu == 'Request') active @endif">
+                                    <i class="nav-icon fas fa-paper-plane"></i>
+                                    <p>
+                                        Request
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('holiday-requests') }}"
+                                           class="nav-link pl-4 @if (($submenu ?? '') == 'HolidayRequest') active @endif">
+                                            <i class="nav-icon fas fa-plane"></i>
+                                            <p>Holiday Request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a href="{{ route('useful-links.index') }}" class="nav-link @if ($menu == 'Links') active @endif">
                                 <i class="nav-icon fas fa-link"></i>
@@ -115,19 +113,10 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 <p>Company Documents</p>
                             </a>
                         </li>
-                        @if (auth()->user()->members()->count())
+                        @if (in_array(\App\Helpers\Widgets::HOLIDAY_REQUEST, $widgets) && request()->user_members_number)
                             @php
-                                $holidayRequests = \App\Models\HolidayRequest::with(['latestReply'])
-                                    ->where('manager_id', auth()->user()->google_id)
-                                    ->where('status', '<>', 'approved')
-                                    ->whereNull('parent')
-                                    ->get();
-                                $holiday_number = 0;
-                                foreach ($holidayRequests as $request) {
-                                    $r = $request['latestReply'] ?? $request;
-                                    if ($r['status'] === 'pending') $holiday_number++;
-                                }
-                                $total = $holiday_number;
+                                $holiday_requests_number = request()->holiday_requests_number;
+                                $total = $holiday_requests_number;
                             @endphp
                             @if ($total)
                                 <li class="nav-item @if ($menu == 'Approval') menu-open @endif">
@@ -146,7 +135,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                                 <i class="nav-icon fas fa-plane"></i>
                                                 <p>
                                                     Holiday Approval
-                                                    <span class="badge badge-info right">{{ $holiday_number }}</span>
+                                                    <span class="badge badge-info right">{{ $holiday_requests_number }}</span>
                                                 </p>
                                             </a>
                                         </li>

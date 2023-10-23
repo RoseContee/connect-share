@@ -45,12 +45,10 @@ $title = ($add ? 'Add' : 'Edit').' Shortcut';
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="icon">Icon @if ($add)<span class="required">*</span>@endif</label>
-                                        @if (!$add)
-                                            <div class="ml-2 mb-2">
-                                                <img src="{{ asset($shortcut['icon']) }}" alt="icon"
-                                                     class="icon-32" />
-                                            </div>
-                                        @endif
+                                        <div id="preview" class="ml-2 mb-2" @if ($add) style="display: none" @endif>
+                                            <img src="{{ asset($shortcut['icon'] ?? '') }}" alt="icon"
+                                                 class="icon-32" />
+                                        </div>
                                         <div class="custom-file">
                                             <input type="file" id="icon" name="icon" accept="image/*"
                                                    @if ($add) required @endif
@@ -89,16 +87,13 @@ $title = ($add ? 'Add' : 'Edit').' Shortcut';
                                     </div>
                                     <div class="form-group">
                                         <label for="status">Status</label>
+                                        @php $old = old('status', $shortcut['active'] ?? 1); @endphp
                                         <select id="status" name="status"
                                                 class="form-control @error('status') is-invalid @enderror">
-                                            <option value="1" @if (old('status', $shortcut['active'] ?? 1)) selected @endif>
-                                                Enable
-                                            </option>
-                                            <option value="0" @if (!old('status', $shortcut['active'] ?? 1)) selected @endif>
-                                                Disable
-                                            </option>
+                                            <option value="1" @selected($old)>Enable</option>
+                                            <option value="0" @selected(!$old)>Disable</option>
                                         </select>
-                                        @error('reply')
+                                        @error('status')
                                             <label for="status" class="text-danger small mb-0 font-weight-normal">
                                                 {{ $message }}
                                             </label>
@@ -122,3 +117,28 @@ $title = ($add ? 'Add' : 'Edit').' Shortcut';
     </div>
     <!-- /.content-wrapper -->
 @endsection
+
+@push('after-scripts')
+    <!-- bs-custom-file-input -->
+    <script src="{{ asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+    <script type="text/javascript">
+        $(() => {
+            bsCustomFileInput.init();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(() => {
+            $('#icon').on('change', e => {
+                const files = (e.target || window.event.srcElement).files;
+                if (FileReader && files && files.length) {
+                    const fr = new FileReader();
+                    fr.onload = function () {
+                        $('#preview').show().find('img').attr('src', fr.result);
+                    }
+                    fr.readAsDataURL(files[0]);
+                }
+            });
+        });
+    </script>
+@endpush

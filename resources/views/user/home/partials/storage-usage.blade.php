@@ -1,5 +1,5 @@
 @php
-$user = auth()->user();
+$user = request()->user();
 $total_usage = $user['drive_usage'] + $user['gmail_usage'] + $user['photos_usage'];
 @endphp
 

@@ -30,16 +30,16 @@
                             <label for="type">Type <span class="required">*</span></label>
                             <select id="type" name="type" required
                                     class="form-control @error('type') is-invalid @enderror">
-                                <option value="Paid Vacation" @if (old('type') == 'Paid Vacation') selected @endif>
+                                <option value="Paid Vacation" @selected(old('type') == 'Paid Vacation')>
                                     Paid Vacation
                                 </option>
-                                <option value="Unpaid Leave" @if (old('type') == 'Unpaid Leave') selected @endif>
+                                <option value="Unpaid Leave" @selected(old('type') == 'Unpaid Leave')>
                                     Unpaid Leave
                                 </option>
-                                <option value="Sick Leave" @if (old('type') == 'Sick Leave') selected @endif>
+                                <option value="Sick Leave" @selected(old('type') == 'Sick Leave')>
                                     Sick Leave
                                 </option>
-                                <option value="Other" @if (old('type') == 'Other') selected @endif>
+                                <option value="Other" @selected(old('type') == 'Other')>
                                     Other
                                 </option>
                             </select>
@@ -92,7 +92,7 @@
 
 @push('after-scripts')
     <script type="text/javascript">
-        $(function () {
+        $(() => {
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             $('#period').daterangepicker({

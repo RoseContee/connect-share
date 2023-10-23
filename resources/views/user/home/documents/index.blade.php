@@ -1,7 +1,7 @@
 @extends('user.home.layouts')
 
 @php
-$user = auth()->user();
+$user = request()->user();
 @endphp
 
 @section('title', 'Company Documents')
@@ -116,7 +116,7 @@ $user = auth()->user();
         const $deleteModal = $('#delete-modal');
         @endif
 
-        $(function () {
+        $(() => {
             $('#documents').DataTable({
                 autoWidth: false,
                 responsive: true,
@@ -130,14 +130,14 @@ $user = auth()->user();
             });
 
             @if ($user['is_admin'])
-            $deleteModal.on('hidden.bs.modal', function() {
+            $deleteModal.on('hidden.bs.modal', () => {
                 $deleteModal.attr('action', '');
             });
             @endif
         });
 
         @if ($user['is_admin'])
-        function deleteDocument(id) {
+        const deleteDocument = id => {
             $deleteModal.modal('show').find('form').attr('action', '{{ route('documents.index') }}/' + id);
         }
         @endif

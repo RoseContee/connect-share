@@ -1,33 +1,42 @@
 <?php
-if (!function_exists('getFavicon')) {
-    function getFavicon($favicon) {
-        if ($favicon && file_exists(public_path($favicon))) {
-            return asset($favicon);
+if (!function_exists('getPath')) {
+    function getPath($file) {
+        if ($file && file_exists(public_path($file))) {
+            return $file;
         }
-        return asset('favicon.ico');
+        return null;
+    }
+}
+
+if (!function_exists('getFavicon')) {
+    function getFavicon($favicon): string {
+        return asset(getPath($favicon) ?? 'favicon.ico');
     }
 }
 
 if (!function_exists('getLogo')) {
-    function getLogo($logo) {
-        if ($logo && file_exists(public_path($logo))) {
-            return asset($logo);
-        }
-        return asset('assets/img/logo.png');
+    function getLogo($logo): string {
+        return asset(getPath($logo) ?? 'assets/img/logo.png');
+    }
+}
+
+if (!function_exists('getDefaultBannerImage')) {
+    function getDefaultBannerImage($image): string {
+        return asset(getPath($image) ?? 'assets/img/banner-bg.jpg');
     }
 }
 
 if (!function_exists('getBannerImage')) {
-    function getBannerImage($image) {
-        if ($image && file_exists(public_path($image))) {
+    function getBannerImage($image, $setting): string {
+        if ($image = getPath($image)) {
             return asset($image);
         }
-        return asset('assets/img/banner-bg.jpg');
+        return getDefaultBannerImage($setting);
     }
 }
 
 if (!function_exists('byte_format')) {
-    function byte_formate($byte) {
+    function byte_formate($byte): string {
         if ($byte < 1024) return round($byte, 2).' bytes';
         $byte /= 1024;
         if ($byte < 1024) return round($byte, 2).' KB';

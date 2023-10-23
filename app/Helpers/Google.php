@@ -32,7 +32,7 @@ class Google
         ]);
         $result = $response->json();
         if (($this->accessToken = $result['access_token'] ?? null)
-            && ($user = auth()->user())
+            && ($user = request()->user())
         ) {
             $user['access_token'] = $this->accessToken;
             $user->save();

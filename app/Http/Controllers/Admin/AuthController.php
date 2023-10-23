@@ -24,7 +24,7 @@ class AuthController extends Controller
         if (auth('admin')->attempt($credentials, !!$request['remember'])) {
             return redirect()->route(RouteServiceProvider::ADMIN_HOME);
         }
-        return back()->withErrors(['email' => [__('auth.failed')]])->onlyInput('email');
+        return back()->withInput()->withErrors(['email' => [__('auth.failed')]]);
     }
 
     public function forgot() {

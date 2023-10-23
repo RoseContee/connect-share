@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     @stack('before-styles')
     <link rel="stylesheet" href="{{ asset('assets/theme/css/theme.min.css') }}">
-    @stack('after-styles')
     <link rel="stylesheet" href="{{ asset('assets/custom/css/style.css') }}">
+    @stack('after-styles')
 </head>
 
 @yield('body')
@@ -31,6 +31,6 @@
         },
     });
 </script>
-@stack('after-scripts')
 <script src="{{ asset('assets/custom/js/main.js') }}"></script>
+@stack('after-scripts')
 </html>

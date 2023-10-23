@@ -13,7 +13,7 @@ class HolidayRequest extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $data;
+    protected array $data;
 
     /**
      * Create a new message instance.
@@ -40,9 +40,7 @@ class HolidayRequest extends Mailable
     {
         return new Content(
             markdown: 'emails.holiday-request',
-            with: [
-                'data' => $this->data,
-            ],
+            with: $this->data,
         );
     }
 

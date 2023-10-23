@@ -100,6 +100,8 @@ class DomainController extends Controller
         if ($domain = Domain::pending()->where('token', $token)->first()) {
             return redirect()->route('admin.domains.edit', $domain['id']);
         }
+        $domain['token'] = null;
+        $domain->save();
         return redirect()->route('admin.domains.index', ['type' => 'Request']);
     }
 

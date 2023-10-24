@@ -4,6 +4,7 @@
 $add = empty($domain);
 $route = $add ? route('admin.domains.store') : route('admin.domains.update', $domain['id']);
 $title = ($add ? 'Add' : 'Edit').' Domain';
+$currentBanner = getBannerImage($domain['banner_image'] ?? null, $settings['banner_image'] ?? null);
 @endphp
 
 @section('title', $title)
@@ -75,7 +76,7 @@ $title = ($add ? 'Add' : 'Edit').' Domain';
                                     <div class="form-group">
                                         <label for="banner_image">Banner Image</label>
                                         <div class="banner mb-2">
-                                            <img src="{{ getBannerImage($domain['banner_image'] ?? null, $settings['banner_image'] ?? null) }}"
+                                            <img src="{{ $currentBanner }}"
                                                  alt="Banner"/>
                                         </div>
                                         <div class="custom-file">
@@ -183,14 +184,7 @@ $title = ($add ? 'Add' : 'Edit').' Domain';
     <script type="text/javascript">
         $(() => {
             $('#banner_image').on('change', e => {
-                const files = (e.target || window.event.srcElement).files;
-                if (FileReader && files && files.length) {
-                    const fr = new FileReader();
-                    fr.onload = function () {
-                        $('.banner img').attr('src', fr.result);
-                    }
-                    fr.readAsDataURL(files[0]);
-                }
+                imagePreview(e.target.files, $('#banner img'), '{{ $currentBanner }}');
             });
 
             @if (!$add)

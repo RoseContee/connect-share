@@ -2,6 +2,12 @@
 
 @section('title', 'Admin Settings')
 
+@php
+$currentFavicon = getFavicon($settings['favicon'] ?? null);
+$currentLogo = getLogo($settings['logo'] ?? null);
+$currentBanner = getDefaultBannerImage($settings['banner_image'] ?? null);
+@endphp
+
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -37,7 +43,7 @@
                                     <div class="form-group">
                                         <label for="favicon">Favicon</label>
                                         <div class="ml-2 mb-2">
-                                            <img id="favicon-preview" src="{{ getFavicon($settings['favicon'] ?? null) }}"
+                                            <img id="favicon-preview" src="{{ $currentFavicon }}"
                                                  alt="favicon"
                                                  style="width: 40px; height: 40px;" />
                                         </div>
@@ -55,7 +61,7 @@
                                     {{--<div class="form-group">
                                         <label for="logo">Logo</label>
                                         <div class="ml-2 mb-2">
-                                            <img id="logo-preview" src="{{ getLogo($settings['logo'] ?? null) }}"
+                                            <img id="logo-preview" src="{{ $currentLogo }}"
                                                  alt="logo"
                                                  style="width: 200px; height: 40px;" />
                                         </div>
@@ -107,7 +113,7 @@
                                     <div class="form-group">
                                         <label for="banner_image">Default Banner Image</label>
                                         <div class="banner mb-2">
-                                            <img src="{{ getDefaultBannerImage($settings['banner_image'] ?? null) }}"
+                                            <img src="{{ $currentBanner }}"
                                                  alt="Banner Image" />
                                         </div>
                                         <div class="custom-file">
@@ -159,36 +165,15 @@
     <script type="text/javascript">
         $(() => {
             $('#favicon').on('change', e => {
-                const files = (e.target || window.event.srcElement).files;
-                if (FileReader && files && files.length) {
-                    const fr = new FileReader();
-                    fr.onload = function () {
-                        $('#favicon-preview').attr('src', fr.result);
-                    }
-                    fr.readAsDataURL(files[0]);
-                }
+                imagePreview(e.target.files, $('#favicon-preview'), '{{ $currentFavicon }}');
             });
 
             /*$('#logo').on('change', e => {
-                const files = (e.target || window.event.srcElement).files;
-                if (FileReader && files && files.length) {
-                    const fr = new FileReader();
-                    fr.onload = function () {
-                        $('#logo-preview').attr('src', fr.result);
-                    }
-                    fr.readAsDataURL(files[0]);
-                }
+                imagePreview(e.target.files, $('#logo-preview'), '{{ $currentLogo }}');
             });*/
 
             $('#banner_image').on('change', e => {
-                const files = (e.target || window.event.srcElement).files;
-                if (FileReader && files && files.length) {
-                    const fr = new FileReader();
-                    fr.onload = function () {
-                        $('.banner img').attr('src', fr.result);
-                    }
-                    fr.readAsDataURL(files[0]);
-                }
+                imagePreview(e.target.files, $('#banner img'), '{{ $currentBanner }}');
             });
         });
     </script>

@@ -1,3 +1,15 @@
+function imagePreview (files, $imgElem, defaultImage) {
+    if (!files.length) {
+        $imgElem.attr('src', defaultImage);
+        return;
+    }
+    const fr = new FileReader();
+    fr.onload = () => {
+        $imgElem.attr('src', fr.result);
+    };
+    fr.readAsDataURL(files[0]);
+}
+
 function showFullLoading() {
     $('#full-loading').show();
 }

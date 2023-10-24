@@ -4,6 +4,7 @@
 $add = empty($shortcut);
 $route = $add ? route('admin.shortcuts.store') : route('admin.shortcuts.update', $shortcut['id']);
 $title = ($add ? 'Add' : 'Edit').' Shortcut';
+$currentIcon = asset($shortcut['icon'] ?? '');
 @endphp
 
 @section('title', $title)
@@ -46,7 +47,7 @@ $title = ($add ? 'Add' : 'Edit').' Shortcut';
                                     <div class="form-group">
                                         <label for="icon">Icon @if ($add)<span class="required">*</span>@endif</label>
                                         <div id="preview" class="ml-2 mb-2" @if ($add) style="display: none" @endif>
-                                            <img src="{{ asset($shortcut['icon'] ?? '') }}" alt="icon"
+                                            <img src="{{ $currentIcon }}" alt="icon"
                                                  class="icon-32" />
                                         </div>
                                         <div class="custom-file">
@@ -130,13 +131,13 @@ $title = ($add ? 'Add' : 'Edit').' Shortcut';
     <script type="text/javascript">
         $(() => {
             $('#icon').on('change', e => {
-                const files = (e.target || window.event.srcElement).files;
-                if (FileReader && files && files.length) {
-                    const fr = new FileReader();
-                    fr.onload = function () {
-                        $('#preview').show().find('img').attr('src', fr.result);
-                    }
-                    fr.readAsDataURL(files[0]);
+                const $preview = $('#preview');
+                const files = e.target.files;
+                imagePreview(files, $preview.find('img'), '{{ $currentIcon }}');
+                if (files.length) {
+                    $preview.show();
+                } else {
+                    $preview.hide();
                 }
             });
         });

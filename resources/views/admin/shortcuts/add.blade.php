@@ -134,7 +134,7 @@ $currentIcon = asset($shortcut['icon'] ?? '');
                 const $preview = $('#preview');
                 const files = e.target.files;
                 imagePreview(files, $preview.find('img'), '{{ $currentIcon }}');
-                if (files.length) {
+                if (files.length || '{{ $currentIcon }}') {
                     $preview.show();
                 } else {
                     $preview.hide();

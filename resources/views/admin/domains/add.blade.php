@@ -184,7 +184,7 @@ $currentBanner = getBannerImage($domain['banner_image'] ?? null, $settings['bann
     <script type="text/javascript">
         $(() => {
             $('#banner_image').on('change', e => {
-                imagePreview(e.target.files, $('#banner img'), '{{ $currentBanner }}');
+                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentBanner }}');
             });
 
             @if (!$add)

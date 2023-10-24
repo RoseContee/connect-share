@@ -173,7 +173,7 @@ $currentBanner = getDefaultBannerImage($settings['banner_image'] ?? null);
             });*/
 
             $('#banner_image').on('change', e => {
-                imagePreview(e.target.files, $('#banner img'), '{{ $currentBanner }}');
+                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentBanner }}');
             });
         });
     </script>

@@ -18,7 +18,7 @@ class GlobalShare
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($user = $request->user()) {
+        if ($request->isMethod('GET') && !$request->expectsJson() && $user = $request->user()) {
             if ($request->routeIs('admin.*')) {
                 $request['domain_request_number'] = Domain::pending()->count();
             } else {

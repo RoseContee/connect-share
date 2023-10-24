@@ -8,8 +8,6 @@ use App\Http\Controllers\User\HomeController as UserHome;
 use App\Http\Controllers\User\PeopleController as UserPeople;
 use App\Http\Controllers\User\LinkController as UserUsefulLink;
 use App\Http\Controllers\User\DocumentController as UserDocument;
-use App\Http\Controllers\User\Widgets\HolidayRequestController as UserHolidayRequest;
-use App\Http\Controllers\User\Widgets\HolidayApprovalController as UserHolidayApproval;
 use App\Http\Controllers\Admin\AuthController as AdminAuth;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\DomainController as AdminDomain;
@@ -18,6 +16,10 @@ use App\Http\Controllers\Admin\SettingsController as AdminSettings;
 use App\Http\Controllers\Admin\ProfileController as AdminProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\User\Widgets\HolidayRequestController as UserHolidayRequest;
+use App\Http\Controllers\User\Widgets\HolidayApprovalController as UserHolidayApproval;
+use App\Http\Controllers\User\Widgets\WeatherController as UserWeather;
 
 /*
 |--------------------------------------------------------------------------
@@ -124,6 +126,13 @@ Route::group([
                 ->name('holiday-reject');
             Route::put('holiday-reject/{id}/reply', [UserHolidayApproval::class, 'reject']);
         });
+    });
+
+    Route::group([
+        'middleware' => ['widget:'.Widgets::WEATHER],
+    ], function () {
+        Route::get('weather/cities', [UserWeather::class, 'cities'])
+            ->name('weather-cities');
     });
 });
 

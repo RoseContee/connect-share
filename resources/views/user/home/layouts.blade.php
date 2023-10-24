@@ -12,27 +12,27 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
 
 @section('content')
     <div class="wrapper">
-        @if (empty($settings['hide_banner']) && empty($user['intranet']['hide_banner']) && $dashboardPage)
-            <nav class="main-header navbar p-0">
+        <div class="main-header">
+            @if (empty($settings['hide_banner']) && empty($user['intranet']['hide_banner']) && $dashboardPage)
                 <div class="banner"
                      style="background-image: url('{{ getBannerImage($user['intranet']['banner_image'] ?? null, $settings['banner_image'] ?? '') }}')">
                 </div>
-            </nav>
-        @endif
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                        <i class="fas fa-bars"></i>
-                    </a>
-                </li>
-            </ul>
-            @if ($dashboardPage)
-                @include('user.home.partials.storage-usage')
             @endif
-        </nav>
-        <!-- /.navbar -->
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand navbar-white navbar-light">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </li>
+                </ul>
+                @if ($dashboardPage)
+                    @include('user.home.partials.storage-usage')
+                @endif
+            </nav>
+            <!-- /.navbar -->
+        </div>
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-primary elevation-4">
@@ -81,7 +81,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 </li>
                             </ul>
                         </li>
-                        @if (in_array(\App\Helpers\Widgets::HOLIDAY_REQUEST, $widgets))
+                        @if (in_array(Widgets::HOLIDAY_REQUEST, $widgets))
                             <li class="nav-item @if ($menu == 'Request') menu-open @endif">
                                 <a href="#" class="nav-link @if ($menu == 'Request') active @endif">
                                     <i class="nav-icon fas fa-paper-plane"></i>
@@ -113,7 +113,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 <p>Company Documents</p>
                             </a>
                         </li>
-                        @if (in_array(\App\Helpers\Widgets::HOLIDAY_REQUEST, $widgets) && request()->user_members_number)
+                        @if (in_array(Widgets::HOLIDAY_REQUEST, $widgets) && request()->user_members_number)
                             @php
                                 $holiday_requests_number = request()->holiday_requests_number;
                                 $total = $holiday_requests_number;
@@ -161,6 +161,18 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                 @yield('home-content')
             </div>
         </div>
+
+        @if (in_array(Widgets::WEATHER, $widgets) || in_array(Widgets::TRADINGVIEW, $widgets))
+            <footer class="main-footer d-block d-md-flex align-items-center justify-content-around">
+                @if (in_array(Widgets::WEATHER, $widgets))
+                    @include('user.home.widgets.weather')
+                @endif
+
+                @if (in_array(Widgets::TRADINGVIEW, $widgets))
+                    @include('user.home.widgets.tradingview')
+                @endif
+            </footer>
+        @endif
 
         @if ($settings['shortcut'])
             @include('user.home.partials.short-cut-links')

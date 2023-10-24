@@ -75,7 +75,7 @@ $title = ($add ? 'Add' : 'Edit').' Domain';
                                     <div class="form-group">
                                         <label for="banner_image">Banner Image</label>
                                         <div class="banner mb-2">
-                                            <img src="{{ getBannerImage($domain['image'] ?? null, $settings['banner_image'] ?? null) }}"
+                                            <img src="{{ getBannerImage($domain['banner_image'] ?? null, $settings['banner_image'] ?? null) }}"
                                                  alt="Banner"/>
                                         </div>
                                         <div class="custom-file">

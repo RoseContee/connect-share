@@ -36,8 +36,11 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-primary elevation-4">
-            <a href="{{ route('dashboard') }}" class="brand-link text-center font-weight-bold text-uppercase">
-                {{ config('app.name') }}
+            <a href="{{ route('dashboard') }}" class="brand-link text-center">
+                {{--<span class="font-weight-bold text-uppercase">
+                    {{ config('app.name') }}
+                </span>--}}
+                <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="img-fluid" />
             </a>
             <!-- Sidebar -->
             <div class="sidebar">

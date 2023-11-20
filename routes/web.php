@@ -66,9 +66,7 @@ Route::group([
         Route::group([
             'middleware' => ['intranet.setup:all'],
         ], function () {
-            Route::get('/', function () {
-                return redirect()->route('dashboard');
-            })->name('home');
+            Route::get('/', [UserHome::class, 'index'])->name('home');
             Route::get('dashboard', [UserHome::class, 'dashboard'])
                 ->name('dashboard');
             Route::get('profile', [UserHome::class, 'profile'])

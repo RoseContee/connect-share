@@ -23,6 +23,14 @@ class Google
         $this->refreshToken = $refreshToken;
     }
 
+    public function accessToken() {
+        return $this->accessToken;
+    }
+
+    public function refreshToken() {
+        return $this->refreshToken;
+    }
+
     protected function refreshAccessToken() {
         $response = Http::post('https://oauth2.googleapis.com/token', [
             'client_id' => config('services.google.client_id'),
@@ -31,20 +39,27 @@ class Google
             'grant_type' => 'refresh_token',
         ]);
         $result = $response->json();
-        if (($this->accessToken = $result['access_token'] ?? null)
-            && ($user = request()->user())
-        ) {
+        return $this->accessToken = $result['access_token'] ?? null;
+    }
+
+    protected function refreshAuthUserToken() {
+        $this->refreshAccessToken();
+        $this->saveAuthUserToken(request()->user());
+        return $this->accessToken;
+    }
+
+    public function saveAuthUserToken($user) {
+        if ($user && $user['access_token'] != $this->accessToken) {
             $user['access_token'] = $this->accessToken;
             $user->save();
         }
-        return $this->accessToken;
     }
 
     public function getUser(string $email) {
         for ($i = 0; $i < 2; $i++) {
             $response = Http::withToken($this->accessToken)
                 ->get("https://admin.googleapis.com/admin/directory/v1/users/{$email}");
-            if (!$response->unauthorized() || (!$i && !$this->refreshAccessToken())) break;
+            if (!$response->unauthorized() || (!$i && !$this->refreshAuthUserToken())) break;
         }
         $user = $response->json();
         return !empty($user['id']) ? $user : null;
@@ -60,7 +75,7 @@ class Google
                         'domain' => $domain,
                         'pageToken' => $pageToken,
                     ]);
-                if (!$response->unauthorized() || (!$i && !$this->refreshAccessToken())) break;
+                if (!$response->unauthorized() || (!$i && !$this->refreshAuthUserToken())) break;
             }
             $result = $response->json();
             if ($result['users'] ?? null) {
@@ -113,7 +128,7 @@ class Google
         for ($i = 0; $i < 2; $i++) {
             $response = Http::withToken($this->accessToken)
                 ->get('https://www.googleapis.com/drive/v2/about');
-            if (!$response->unauthorized() || (!$i && !$this->refreshAccessToken())) break;
+            if (!$response->unauthorized() || (!$i && !$this->refreshAuthUserToken())) break;
         }
         $result = $response->json();
         foreach ($result['quotaBytesByService'] ?? [] as $item) {
@@ -133,5 +148,27 @@ class Google
             'gmail_usage' => $gmail_usage,
             'photos_usage' => $photos_usage,
         ];
+    }
+
+    public function getEvents(string $email, int $limit = 6) {
+        for ($i = 0; $i < 2; $i++) {
+            $response = Http::withToken($this->accessToken)
+                ->get("https://www.googleapis.com/calendar/v3/calendars/{$email}/events", [
+                    'maxResults' => $limit,
+                    'orderBy' => 'startTime',
+                    'singleEvents' => 'true',
+                    'timeMin' => date('c'),
+                ]);
+            if (!$response->unauthorized() || (!$i && !$this->refreshAccessToken())) break;
+        }
+        $result = $response->json();
+        $alerts = [];
+        foreach ($result['items'] ?? [] as $item) {
+            $alerts[] = [
+                'date' => $item['start']['dateTime'],
+                'description' => $item['summary'],
+            ];
+        }
+        return $alerts;
     }
 }

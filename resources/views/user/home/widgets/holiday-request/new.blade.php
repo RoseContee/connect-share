@@ -13,7 +13,7 @@
                 <div class="card-header">
                     <h3 class="card-title">New holiday request</h3>
                 </div>
-                <form action="{{ route('new-holiday-request') }}" method="POST">
+                <form action="{{ route('widget.new-holiday-request') }}" method="POST">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
@@ -75,7 +75,7 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <a href="{{ route('holiday-requests') }}" class="btn btn-danger">Cancel</a>
+                        <a href="{{ route('widget.holiday-requests') }}" class="btn btn-danger">Cancel</a>
                     </div>
                 </form>
                 <!-- /.card-body -->

@@ -17,9 +17,10 @@ use App\Http\Controllers\Admin\ProfileController as AdminProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\User\Widgets\HolidayRequestController as UserHolidayRequest;
-use App\Http\Controllers\User\Widgets\HolidayApprovalController as UserHolidayApproval;
-use App\Http\Controllers\User\Widgets\WeatherController as UserWeather;
+use App\Http\Controllers\User\Widgets\HolidayRequestController as WidgetHolidayRequest;
+use App\Http\Controllers\User\Widgets\HolidayApprovalController as WidgetHolidayApproval;
+use App\Http\Controllers\User\Widgets\WeatherController as WidgetWeather;
+use App\Http\Controllers\User\Widgets\AlertsController as WidgetAlerts;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,9 +67,8 @@ Route::group([
         Route::group([
             'middleware' => ['intranet.setup:all'],
         ], function () {
-            Route::get('/', [UserHome::class, 'index'])->name('home');
-            Route::get('dashboard', [UserHome::class, 'dashboard'])
-                ->name('dashboard');
+            Route::get('/', [UserHome::class, 'index'])
+                ->name('home');
             Route::get('profile', [UserHome::class, 'profile'])
                 ->name('profile');
             Route::get('storage-usage', [UserHome::class, 'storageUsage'])
@@ -95,42 +95,59 @@ Route::group([
     });
 
     Route::group([
-        'middleware' => 'widget:'.Widgets::HOLIDAY_REQUEST,
+        'prefix' => 'widget',
+        'as' => 'widget.',
     ], function () {
-        Route::get('manager-accept-holiday/{token}', [UserHolidayApproval::class, 'acceptFromEmail'])
-            ->name('manager-accept-holiday-from-email');
-        Route::get('manager-reject-holiday/{token}', [UserHolidayApproval::class, 'rejectFromEmail'])
-            ->name('manager-reject-holiday-from-email');
+        Route::group([
+            'middleware' => 'widget:'.Widgets::HOLIDAY_REQUEST,
+        ], function () {
+            Route::get('manager-accept-holiday/{token}', [WidgetHolidayApproval::class, 'acceptFromEmail'])
+                ->name('manager-accept-holiday-from-email');
+            Route::get('manager-reject-holiday/{token}', [WidgetHolidayApproval::class, 'rejectFromEmail'])
+                ->name('manager-reject-holiday-from-email');
+
+            Route::group([
+                'middleware' => ['auth', 'intranet.setup:all'],
+            ], function () {
+                Route::get('holiday-requests', [WidgetHolidayRequest::class, 'index'])
+                    ->name('holiday-requests');
+                Route::get('new-holiday-request', [WidgetHolidayRequest::class, 'send'])
+                    ->name('new-holiday-request');
+                Route::post('new-holiday-request', [WidgetHolidayRequest::class, 'submit']);
+                Route::get('holiday-requests/{id}/resend', [WidgetHolidayRequest::class, 'resend'])
+                    ->name('resend-holiday-request');
+                Route::post('holiday-requests/{id}/resend', [WidgetHolidayRequest::class, 'resubmit']);
+                Route::delete('holiday-requests', [WidgetHolidayRequest::class, 'destroy'])
+                    ->name('delete-holiday-request');
+
+                Route::get('holiday-approvals', [WidgetHolidayApproval::class, 'index'])
+                    ->name('holiday-approvals');
+                Route::put('holiday-accept', [WidgetHolidayApproval::class, 'accept'])
+                    ->name('holiday-accept');
+                Route::get('holiday-reject/{id}/reply', [WidgetHolidayApproval::class, 'rejectForm'])
+                    ->name('holiday-reject');
+                Route::put('holiday-reject/{id}/reply', [WidgetHolidayApproval::class, 'reject']);
+            });
+        });
 
         Route::group([
-            'middleware' => ['auth', 'intranet.setup:all'],
+            'middleware' => ['auth', 'widget:'.Widgets::WEATHER],
         ], function () {
-            Route::get('holiday-requests', [UserHolidayRequest::class, 'index'])
-                ->name('holiday-requests');
-            Route::get('new-holiday-request', [UserHolidayRequest::class, 'send'])
-                ->name('new-holiday-request');
-            Route::post('new-holiday-request', [UserHolidayRequest::class, 'submit']);
-            Route::get('holiday-requests/{id}/resend', [UserHolidayRequest::class, 'resend'])
-                ->name('resend-holiday-request');
-            Route::post('holiday-requests/{id}/resend', [UserHolidayRequest::class, 'resubmit']);
-            Route::delete('holiday-requests', [UserHolidayRequest::class, 'destroy'])
-                ->name('delete-holiday-request');
-
-            Route::get('holiday-approvals', [UserHolidayApproval::class, 'index'])
-                ->name('holiday-approvals');
-            Route::put('holiday-accept', [UserHolidayApproval::class, 'accept'])
-                ->name('holiday-accept');
-            Route::get('holiday-reject/{id}/reply', [UserHolidayApproval::class, 'rejectForm'])
-                ->name('holiday-reject');
-            Route::put('holiday-reject/{id}/reply', [UserHolidayApproval::class, 'reject']);
+            Route::get('weather/cities', [WidgetWeather::class, 'cities'])
+                ->name('weather-cities');
         });
-    });
 
-    Route::group([
-        'middleware' => ['widget:'.Widgets::WEATHER],
-    ], function () {
-        Route::get('weather/cities', [UserWeather::class, 'cities'])
-            ->name('weather-cities');
+        Route::group([
+            'middleware' => ['auth', 'widget:'.Widgets::ALERTS],
+        ], function () {
+            Route::get('alerts', [WidgetAlerts::class, 'index'])
+                ->name('alerts');
+            Route::get('alerts/auth/google', [WidgetAlerts::class, 'login'])
+                ->name('alerts.auth.google');
+            Route::get('alerts/auth/google/callback', [WidgetAlerts::class, 'callback'])
+                ->name('alerts.auth.google.callback');
+            Route::delete('alerts', [WidgetAlerts::class, 'destroy']);
+        });
     });
 });
 

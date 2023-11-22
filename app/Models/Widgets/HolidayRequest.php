@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Widgets;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class HolidayRequest extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $table = 'widget_holiday_requests';
 
     protected $fillable = [
         'google_id', 'manager_id',

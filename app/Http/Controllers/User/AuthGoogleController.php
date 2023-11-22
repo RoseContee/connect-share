@@ -20,9 +20,12 @@ class AuthGoogleController extends Controller
             ->scopes([
                 'https://www.googleapis.com/auth/admin.directory.user.readonly',
                 'https://www.googleapis.com/auth/drive',
-            ])->with([
+                'https://www.googleapis.com/auth/calendar.readonly',
+            ])
+            ->with([
                 'access_type' => 'offline',
-            ])->redirect();
+            ])
+            ->redirect();
     }
 
     public function callback() {

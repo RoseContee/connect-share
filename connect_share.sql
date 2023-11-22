@@ -119,7 +119,7 @@ CREATE TABLE `domains` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `domains_domain_unique` (`domain`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,6 +128,7 @@ CREATE TABLE `domains` (
 
 LOCK TABLES `domains` WRITE;
 /*!40000 ALTER TABLE `domains` DISABLE KEYS */;
+INSERT INTO `domains` VALUES (1,'aforadsudmilano.org',2,0,'uploads/banner/iDt4zwqG2gVHxg69S48Q0HkRPbtbWkKFcmUvTV5R.png','1,2,3','vcThv4r3nOnGeDtwkRKirLsFki7Vl3zQ','pierluigi.pisanti@aforadsudmilano.org',NULL,'active',NULL,'2023-10-23 12:59:29','2023-10-24 10:55:51');
 /*!40000 ALTER TABLE `domains` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,41 +162,6 @@ LOCK TABLES `failed_jobs` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `holiday_requests`
---
-
-DROP TABLE IF EXISTS `holiday_requests`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `holiday_requests` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `google_id` varchar(255) NOT NULL,
-  `manager_id` varchar(255) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL COMMENT 'paid vacation, unpaid leave, sick leave, other',
-  `period` varchar(255) DEFAULT NULL,
-  `note` text DEFAULT NULL,
-  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
-  `reason` text DEFAULT NULL,
-  `parent` bigint(20) DEFAULT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `holiday_requests`
---
-
-LOCK TABLES `holiday_requests` WRITE;
-/*!40000 ALTER TABLE `holiday_requests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `holiday_requests` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `migrations`
 --
 
@@ -207,7 +173,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,7 +182,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2023_09_06_223726_create_admins_table',1),(6,'2023_09_07_180418_create_settings_table',1),(7,'2023_09_12_095324_create_domains_table',1),(8,'2023_09_21_160646_create_useful_links_table',1),(9,'2023_09_21_160715_create_company_documents_table',1),(10,'2023_09_22_165026_create_holiday_requests_table',1),(11,'2023_09_29_181229_create_admin_password_reset_tokens_table',1),(12,'2023_09_29_181422_create_shortcuts_table',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2023_09_06_223726_create_admins_table',1),(6,'2023_09_07_180418_create_settings_table',1),(7,'2023_09_12_095324_create_domains_table',1),(8,'2023_09_21_160646_create_useful_links_table',1),(9,'2023_09_21_160715_create_company_documents_table',1),(10,'2023_09_22_165026_create_widget_holiday_requests_table',1),(11,'2023_09_29_181229_create_admin_password_reset_tokens_table',1),(12,'2023_09_29_181422_create_shortcuts_table',1),(13,'2023_11_21_173554_create_widget_alerts_table',2);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -392,7 +358,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -401,7 +367,73 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'114510716024122432257','pierluigi.pisanti@aforadsudmilano.org','pierluigi','pisanti','3387825309','https://lh3.google.com/ao/AOOqTwLYFT28mO83AhBamoRsN-XMNOdcespIQCHwRMKxRe-PC7Td59qdnAe6npDr1Nd9=s96-c','Head of IT Department','IT','1250','0','0','107273722462308117379',1,1,'aforadsudmilano.org','ya29.a0AfB_byAICokeeXmHJY4da6X_WKHndlLsLrQpovDinozj4ncAGwUdUal6BLxD5OymL46r5BJV9SxBPmQQuqSgMBRtjWODpaxHID8KzYuORzhb8RL57lBZuL6AvBLNenepme6Buq8XFoVOv1BtZGoq6n1LsWbM05xlGCgaCgYKAfsSARASFQHGX2Mii3XkqnD68zfQcb83ZlyCHA0170',NULL,NULL,'2023-10-23 13:11:11','2023-11-21 07:54:43'),(2,'116369677540036106213','admin@aforadsudmilano.org','Pierluigi','Pisanti',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'107273722462308117379',1,1,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(3,'106667401027630338887','antonio.dama@aforadsudmilano.org','Antonio','Dama','3381917446',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(4,'100340775085679770455','enrico.gualdi@aforadsudmilano.org','Enrico','Gualdi','3398292317',NULL,NULL,'Formazione',NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(5,'104823686477522259316','formazione@aforadsudmilano.org','Formazione','Aforad','3474628717',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(6,'113952317719742401178','franco.malanchini@aforadsudmilano.org','Franco','Malanchini','3357281734',NULL,'Tesoriere','FInance',NULL,NULL,NULL,'107273722462308117379',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(7,'105643730176926060463','maurizio.ornaghi@aforadsudmilano.org','Maurizio','Ornaghi','3474628717','https://lh3.googleusercontent.com/a-/ALV-UjU6LwzpspKngYe56OuvrYr4cXT0Isl9CG1HWY_bcGVksQ=s96-c',NULL,NULL,NULL,NULL,NULL,'107273722462308117379',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(8,'100572751295620359298','paolo.castagna@aforadsudmilano.org','paolo','castagna','3479670028','https://lh3.google.com/ao/AOOqTwLAic2i6jmtEOZUuaiFEJyNxF5Bfqe5SaBP9Ucf1iwHLTYPlniAU1ywlHAGL0_O=s96-c','IT manager','IT',NULL,NULL,NULL,'114510716024122432257',1,1,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(9,'107273722462308117379','presidente@aforadsudmilano.org','Ivan','Brivio','3281003080','https://lh3.googleusercontent.com/a-/ALV-UjVHjEuJsiTeiWCD78gVaRvo2lH1ChSgiGgiZxBQc_GUQQ=s96-c','Presidente',NULL,NULL,NULL,NULL,NULL,1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(10,'102334154634005897898','segreteria@aforadsudmilano.org','segreteria','aforad',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(11,'117270652333808361548','tesoreria@aforadsudmilano.org','Tesoreria','Aforad','3357281734',NULL,NULL,NULL,NULL,NULL,NULL,'113952317719742401178',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(12,'112211604848499509887','test.rubrica@aforadsudmilano.org','test','rubrica',NULL,'https://lh3.googleusercontent.com/a-/ALV-UjU7Vrpqu3OViycvMzVvnbLQljvNJe5bVeBKWNq4Yr2xZg=s96-c',NULL,NULL,NULL,NULL,NULL,'114510716024122432257',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(13,'105563183055311395607','walter.broleri@aforadsudmilano.org','walter','broleri','3285641487',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(14,'116800362237243583864','zoom@aforadsudmilano.org','Zoom','Aforad','3479670028',NULL,NULL,NULL,NULL,NULL,NULL,'100572751295620359298',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(15,'113938323130778770118','zoomaforad@aforadsudmilano.org','Aforad','Zoom',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'100572751295620359298',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `widget_alerts`
+--
+
+DROP TABLE IF EXISTS `widget_alerts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `widget_alerts` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `domain` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `access_token` varchar(255) DEFAULT NULL,
+  `refresh_token` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `widget_alerts_domain_unique` (`domain`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_alerts`
+--
+
+LOCK TABLES `widget_alerts` WRITE;
+/*!40000 ALTER TABLE `widget_alerts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `widget_alerts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `widget_holiday_requests`
+--
+
+DROP TABLE IF EXISTS `widget_holiday_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `widget_holiday_requests` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `google_id` varchar(255) NOT NULL,
+  `manager_id` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL COMMENT 'paid vacation, unpaid leave, sick leave, other',
+  `period` varchar(255) DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `reason` text DEFAULT NULL,
+  `parent` bigint(20) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_holiday_requests`
+--
+
+LOCK TABLES `widget_holiday_requests` WRITE;
+/*!40000 ALTER TABLE `widget_holiday_requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `widget_holiday_requests` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -413,4 +445,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-23 13:49:02
+-- Dump completed on 2023-11-22 21:59:33

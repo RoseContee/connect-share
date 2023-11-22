@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Widgets\Alert as WidgetAlert;
+use App\Models\Widgets\HolidayRequest as WidgetHolidayRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,19 +46,30 @@ class User extends Authenticatable
         return $this->hasMany(self::class, 'manager_id', 'google_id');
     }
 
-    public function holidayRequests() {
-        return $this->hasMany(HolidayRequest::class, 'google_id', 'google_id');
-    }
-
-    public function holidayApprovals() {
-        return $this->hasMany(HolidayRequest::class, 'manager_id', 'google_id');
-    }
-
     public function links() {
         return $this->hasMany(UsefulLink::class, 'domain', 'domain');
     }
 
     public function documents() {
         return $this->hasMany(CompanyDocument::class, 'domain', 'domain');
+    }
+
+    /*
+     * Widgets relation
+     */
+    public function holidayRequests() {
+        return $this->hasMany(WidgetHolidayRequest::class, 'google_id', 'google_id');
+    }
+
+    public function holidayApprovals() {
+        return $this->hasMany(WidgetHolidayRequest::class, 'manager_id', 'google_id');
+    }
+
+    public function alert() {
+        return $this->belongsTo(WidgetAlert::class, 'domain', 'domain');
+    }
+
+    public function hasWidget($widget) {
+        return in_array($widget, explode(',', $this['intranet']['widgets'] ?? ''));
     }
 }

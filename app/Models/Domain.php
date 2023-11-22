@@ -37,4 +37,8 @@ class Domain extends Model
     public function users() {
         return $this->hasMany(User::class, 'domain', 'domain');
     }
+
+    public function hasWidget($widget) {
+        return in_array($widget, explode(',', $this['widgets']));
+    }
 }

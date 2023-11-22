@@ -2,7 +2,6 @@
 
 @php
 $user = request()->user();
-$widgets = explode(',', $user['intranet']['widgets'] ?? '');
 $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile']);
 @endphp
 
@@ -36,7 +35,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-primary elevation-4">
-            <a href="{{ route('dashboard') }}" class="brand-link text-center">
+            <a href="{{ route('home') }}" class="brand-link text-center">
                 {{--<span class="font-weight-bold text-uppercase">
                     {{ config('app.name') }}
                 </span>--}}
@@ -47,12 +46,6 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="{{ route('dashboard') }}" class="nav-link @if ($menu == 'Dashboard') active @endif">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="{{ route('profile') }}" class="nav-link @if ($menu == 'Profile') active @endif">
                                 <i class="nav-icon fas fa-user-circle"></i>
@@ -84,7 +77,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 </li>
                             </ul>
                         </li>
-                        @if (in_array(Widgets::HOLIDAY_REQUEST, $widgets))
+                        @if ($user->hasWidget(Widgets::HOLIDAY_REQUEST))
                             <li class="nav-item @if ($menu == 'Request') menu-open @endif">
                                 <a href="#" class="nav-link @if ($menu == 'Request') active @endif">
                                     <i class="nav-icon fas fa-paper-plane"></i>
@@ -95,13 +88,21 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ route('holiday-requests') }}"
-                                           class="nav-link pl-4 @if (($submenu ?? '') == 'HolidayRequest') active @endif">
+                                        <a href="{{ route('widget.holiday-requests') }}"
+                                           class="nav-link pl-4 @if (($submenu ?? '') == 'WidgetHolidayRequest') active @endif">
                                             <i class="nav-icon fas fa-plane"></i>
                                             <p>Holiday Request</p>
                                         </a>
                                     </li>
                                 </ul>
+                            </li>
+                        @endif
+                        @if ($user['is_admin'] && $user->hasWidget(Widgets::ALERTS))
+                            <li class="nav-item">
+                                <a href="{{ route('widget.alerts') }}" class="nav-link @if ($menu == 'WidgetAlerts') active @endif">
+                                    <i class="nav-icon fas fa-calendar-week"></i>
+                                    <p>Alerts Setting</p>
+                                </a>
                             </li>
                         @endif
                         <li class="nav-item">
@@ -116,7 +117,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 <p>Company Documents</p>
                             </a>
                         </li>
-                        @if (in_array(Widgets::HOLIDAY_REQUEST, $widgets) && request()->user_members_number)
+                        @if ($user->hasWidget(Widgets::HOLIDAY_REQUEST) && request()->user_members_number)
                             @php
                                 $holiday_requests_number = request()->holiday_requests_number;
                                 $total = $holiday_requests_number;
@@ -133,8 +134,8 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
-                                            <a href="{{ route('holiday-approvals') }}"
-                                               class="nav-link pl-4 @if (($submenu ?? '') == 'HolidayApproval') active @endif">
+                                            <a href="{{ route('widget.holiday-approvals') }}"
+                                               class="nav-link pl-4 @if (($submenu ?? '') == 'WidgetHolidayApproval') active @endif">
                                                 <i class="nav-icon fas fa-plane"></i>
                                                 <p>
                                                     Holiday Approval
@@ -165,17 +166,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
             </div>
         </div>
 
-        @if (in_array(Widgets::WEATHER, $widgets) || in_array(Widgets::TRADINGVIEW, $widgets))
-            <footer class="main-footer d-block d-md-flex align-items-center justify-content-around">
-                @if (in_array(Widgets::WEATHER, $widgets))
-                    @include('user.home.widgets.weather')
-                @endif
-
-                @if (in_array(Widgets::TRADINGVIEW, $widgets))
-                    @include('user.home.widgets.tradingview')
-                @endif
-            </footer>
-        @endif
+        @include('user.home.partials.footer', ['class' => 'main-footer'])
 
         @if ($settings['shortcut'])
             @include('user.home.partials.short-cut-links')

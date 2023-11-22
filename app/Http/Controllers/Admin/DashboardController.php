@@ -29,9 +29,7 @@ class DashboardController extends Controller
         foreach ($allWidgets as $key => $w) {
             $widgets[$w] = 0;
             foreach ($domains as $domain) {
-                if (in_array($key, explode(',', $domain['widgets']))) {
-                    $widgets[$w]++;
-                }
+                if ($domain->hasWidget($key)) $widgets[$w]++;
             }
         }
         $totalWidgets = count($widgets);

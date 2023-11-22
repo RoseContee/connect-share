@@ -8,7 +8,7 @@
             <h1>Welcome!</h1>
             <p class="mb-5">You are all set to use. Your domain users can use our service.</p>
             <div class="mb-1">
-                <a href="{{ route('dashboard') }}" class="btn btn-success">Go to Dashboard</a>
+                <a href="{{ route('home') }}" class="btn btn-success">Go to Dashboard</a>
             </div>
             <p>This page will be redirected to your dashboard in <span id="seconds">3</span> seconds.</p>
         </div>
@@ -28,7 +28,7 @@
                 $('#seconds').text(seconds);
                 setTimeout(countdown, 1000);
             } else {
-                location.href = '{{ route('dashboard') }}';
+                location.href = '{{ route('home') }}';
             }
         }
     </script>

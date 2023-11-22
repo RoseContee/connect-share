@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Reject holiday request</h3>
                 </div>
-                <form action="{{ route('holiday-reject', $request['id']) }}" method="POST">
+                <form action="{{ route('widget.holiday-reject', $request['id']) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card-body">
@@ -57,7 +57,7 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <a href="{{ route('holiday-approvals') }}" class="btn btn-danger">Cancel</a>
+                        <a href="{{ route('widget.holiday-approvals') }}" class="btn btn-danger">Cancel</a>
                     </div>
                 </form>
                 <!-- /.card-body -->

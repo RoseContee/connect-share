@@ -7,7 +7,7 @@ $widgetId = 85924;
 @endpush
 
 <!-- weather widget start -->
-<div class="weather-widget-container d-block d-sm-flex align-items-center justify-content-center">
+<div class="weather-widget-container d-block d-sm-flex align-items-center justify-content-center py-2">
     <div class="d-flex justify-content-center">
         <input type="text" id="weather-city" class="form-control" style="max-width: 200px;">
     </div>
@@ -94,7 +94,7 @@ $widgetId = 85924;
                     }
                     $.ajax({
                         method: 'GET',
-                        url: '{{ route('weather-cities') }}',
+                        url: '{{ route('widget.weather-cities') }}',
                         dataType: 'json',
                         data: { q: q },
                         success: data => {

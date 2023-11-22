@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\HolidayRequest;
+use App\Models\Widgets\HolidayRequest as WidgetHolidayRequest;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +16,13 @@ class Widget
      */
     public function handle(Request $request, Closure $next, string $widget): Response
     {
-        $route = $request->route()->getName();
-        if (in_array($route, ['manager-accept-holiday-from-email', 'manager-reject-holiday-from-email'])) {
+        if (
+            in_array($request->route()->getName(), [
+                'widget.manager-accept-holiday-from-email', 'widget.manager-reject-holiday-from-email'
+            ])
+        ) {
             $token = $request->route()->parameter('token');
-            $holiday_request = HolidayRequest::with(['latestReply', 'manager'])
+            $holiday_request = WidgetHolidayRequest::with(['latestReply', 'manager'])
                 ->where('token', $token)
                 ->first();
             $r = $holiday_request['latestReply'] ?? $holiday_request;
@@ -29,9 +32,7 @@ class Widget
             auth()->login($manager);
             $request['holiday_request'] = $holiday_request;
         }
-        $user = $request->user();
-        $widgets = explode(',', $user['intranet']['widgets'] ?? '');
-        if (!in_array($widget, $widgets)) {
+        if (!$request->user()->hasWidget($widget)) {
             abort(404);
         }
         return $next($request);

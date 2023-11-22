@@ -3,18 +3,36 @@
 namespace App\Http\Controllers\User;
 
 use App\Helpers\Google;
+use App\Helpers\Widgets;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
-    public function index() {
-        return view('user.home.index');
-    }
+    protected int $alertsLifetime = 60 * 10; //seconds
 
-    public function dashboard() {
-        return view('user.home.dashboard', [
-            'menu' => 'Dashboard',
+    public function index(Request $request) {
+        $user = $request->user();
+        $isAlertsWidgetEnabled = $user->hasWidget(Widgets::ALERTS);
+        $alerts = [];
+        if ($isAlertsWidgetEnabled && ($alert = $user['alert'])) {
+            $alerts = Cache::remember($alert['email'], $this->alertsLifetime, function () use ($alert) {
+                $google = new Google($alert['access_token'], $alert['refresh_token']);
+                $alerts = $google->getEvents($alert['email']);
+                $google->saveAuthUserToken($alert);
+                return $alerts;
+            });
+        }
+        $myEvents = Cache::remember($user['email'], $this->alertsLifetime, function () use ($user, $isAlertsWidgetEnabled) {
+            $google = new Google($user['access_token'], $user['refresh_token']);
+            $myEvents = $google->getEvents($user['email'], $isAlertsWidgetEnabled ? 1 : 3);
+            $google->saveAuthUserToken($user);
+            return $myEvents;
+        });
+        return view('user.home.index', [
+            'alerts' => $alerts,
+            'myEvents' => $myEvents,
         ]);
     }
 

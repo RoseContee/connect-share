@@ -2,7 +2,6 @@
 
 @php
 $user = request()->user();
-$widgets = explode(',', $user['intranet']['widgets'] ?? '');
 @endphp
 
 @section('content')
@@ -26,8 +25,8 @@ $widgets = explode(',', $user['intranet']['widgets'] ?? '');
                             />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('dashboard') }}" class="dropdown-item">
-                                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                            <a href="{{ route('profile') }}" class="dropdown-item">
+                                <i class="fas fa-user-circle mr-2"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="{{ route('logout') }}" class="dropdown-item">
@@ -40,96 +39,61 @@ $widgets = explode(',', $user['intranet']['widgets'] ?? '');
             <main>
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="w-100 h-100 img-rounded d-md-flex align-items-end d-none"
-                             style="background: url('{{ asset('assets/img/banner-bg.jpg') }}') no-repeat fixed center;">
-                            <h3 class="text-white ml-3 mb-3">Add Title Here</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-4 text-center py-4">
-                        <h4 class="text-center mb-3">
-                            {{ $user['given_name'].' '.$user['family_name'] }}
-                        </h4>
-                        <p class="text-center">
-                            <img src="{{ $user['avatar'] ?? asset('assets/img/profile.png') }}" alt="Profile"
-                                 class="profile-user-img img-circle"
-                            />
-                        </p>
-                        <p class="mb-0">
-                            <a href="{{ route('dashboard') }}" class="btn btn-primary">
-                                My Page
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row mt-5">
-                    <div class="col-md-8">
-                        <h5>Alerts <i class="fa fa-chevron-right"></i></h5>
-                        <div id="alerts" class="carousel" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-target="#alerts" data-slide-to="0" class="active"></li>
-                                <li data-target="#alerts" data-slide-to="1"></li>
-                                <li data-target="#alerts" data-slide-to="2"></li>
-                            </ol>
-                            <div class="carousel-inner row flex-nowrap">
-                                <div class="carousel-item col-md-6 active">
-                                    <div class="card">
-                                        <div class="card-body d-flex align-items-center bg-gray-light p-2">
-                                            <div class="img-rounded bg-primary text-center px-3 py-1">
-                                                <h6 class="mb-0">6</h6>
-                                                <p class="small m-0">Dec</p>
-                                            </div>
-                                            <p class="ml-3 mb-0">There is upcoming event.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item col-md-6">
-                                    <div class="card">
-                                        <div class="card-body d-flex align-items-center bg-gray-light p-2">
-                                            <div class="img-rounded bg-primary text-center px-3 py-1">
-                                                <h6 class="mb-0">8</h6>
-                                                <p class="small m-0">Dec</p>
-                                            </div>
-                                            <p class="ml-3 mb-0">There is upcoming event1.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item col-md-6">
-                                    <div class="card">
-                                        <div class="card-body d-flex align-items-center bg-gray-light p-2">
-                                            <div class="img-rounded bg-primary text-center px-3 py-1">
-                                                <h6 class="mb-0">10</h6>
-                                                <p class="small m-0">Dec</p>
-                                            </div>
-                                            <p class="ml-3 mb-0">There is upcoming event2.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{--<a class="carousel-control-prev" href="#alerts" role="button" data-slide="prev">
-                                <span class="carousel-control-custom-icon" aria-hidden="true">
-                                  <i class="fas fa-chevron-left"></i>
-                                </span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#alerts" role="button" data-slide="next">
-                                <span class="carousel-control-custom-icon" aria-hidden="true">
-                                  <i class="fas fa-chevron-right"></i>
-                                </span>
-                                <span class="sr-only">Next</span>
-                            </a>--}}
+                        <div class="home-banner d-none d-md-flex align-items-end">
+                            <img src="{{ asset('assets/img/banner-bg.jpg') }}" alt="Image" />
+                            <h3 class="banner-title">Add Title Here</h3>
                         </div>
                     </div>
                     <div class="col-md-4">
+                        <div class="card text-center mb-0">
+                            <div class="card-body">
+                                <h4 class="mb-3">
+                                    {{ $user['given_name'].' '.$user['family_name'] }}
+                                </h4>
+                                <div class="mb-3">
+                                    <img src="{{ $user['avatar'] ?? asset('assets/img/profile.png') }}" alt="Profile"
+                                         class="profile-user-img img-circle"/>
+                                </div>
+                                <p class="mb-0">
+                                    <a href="{{ route('profile') }}" class="btn btn-primary">
+                                        My Page
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    @if ($user->hasWidget(Widgets::ALERTS))
+                        @include('user.home.widgets.alerts.index', [
+                            'class' => 'col-md-8 mt-5',
+                            'alerts' => $alerts,
+                        ])
+                    @endif
+                    <div class="@if ($user->hasWidget(Widgets::ALERTS)) col-md-4 @else col-md-12 @endif mt-5">
                         <h5>Upcoming meetings</h5>
-                        <div class="callout callout-success d-flex p-2 mb-2">
-                            <span class="mr-2">14:00</span>
-                            <h5>I am an info callout!</h5>
+                        <div class="row">
+                            @forelse ($myEvents as $event)
+                                <div class="@if ($user->hasWidget(Widgets::ALERTS)) col-md-4 @else col-md-12 @endif">
+                                    <div class="callout callout-success d-flex align-items-center bg-gray-light p-2 mb-2">
+                                        <div class="text-center px-2 py-1 mr-2">
+                                            <h6 class="text-nowrap m-0">{{ date('j M', strtotime($event['date'])) }}</h6>
+                                            <p class="small m-0">{{ date('H:i', strtotime($event['date'])) }}</p>
+                                        </div>
+                                        <h5 class="text-truncate m-0">{{ $event['description'] }}</h5>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-12">
+                                    <p class="font-italic py-3 mb-2">No Events</p>
+                                </div>
+                            @endforelse
                         </div>
                         <a href="https://calendar.google.com/calendar/" target="_blank">View full list</a>
                     </div>
                 </div>
-                <div class="row mt-5">
-                    <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-8 mt-5">
                         <h5>News <i class="fa fa-chevron-right"></i></h5>
                         <div class="row">
                             <div class="col-md-4">
@@ -179,7 +143,7 @@ $widgets = explode(',', $user['intranet']['widgets'] ?? '');
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-5">
                         <h5>Link Useful</h5>
                         <div class="row">
                             <div class="col-md-6">
@@ -219,11 +183,7 @@ $widgets = explode(',', $user['intranet']['widgets'] ?? '');
                 </div>
             </main>
 
-            @if (in_array(Widgets::WEATHER, $widgets))
-                <footer class="d-block d-md-flex align-items-center justify-content-around mt-4">
-                    @include('user.home.widgets.weather')
-                </footer>
-            @endif
+            @include('user.home.partials.footer', ['class' => 'py-3'])
         </div>
     </div>
 @endsection

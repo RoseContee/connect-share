@@ -55,7 +55,7 @@ $user = request()->user();
                                     onclick="acceptRequest({{ $request['id'] }})" title="Accept">
                                 <i class="fa fa-check"></i>
                             </button>
-                            <a href="{{ route('holiday-reject', $request['id']) }}"
+                            <a href="{{ route('widget.holiday-reject', $request['id']) }}"
                                class="btn btn-danger btn-sm px-1 py-0" title="Reject">
                                 <i class="fa fa-ban"></i>
                             </a>
@@ -83,7 +83,7 @@ $user = request()->user();
     <div id="accept-modal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('holiday-accept') }}" method="POST">
+                <form action="{{ route('widget.holiday-accept') }}" method="POST">
                     @csrf
                     @method('PUT')
                     <input type="hidden" id="request" name="request">

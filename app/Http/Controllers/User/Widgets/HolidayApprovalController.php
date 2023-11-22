@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\User\Widgets;
 
 use App\Http\Controllers\Controller;
-use App\Mail\HolidayApproval as HolidayApprovalMail;
-use App\Models\HolidayRequest;
+use App\Mail\HolidayApproval as WidgetHolidayApprovalMail;
+use App\Models\Widgets\HolidayRequest as WidgetHolidayRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -12,7 +12,7 @@ class HolidayApprovalController extends Controller
 {
     public function __construct() {
         view()->share('menu', 'Approval');
-        view()->share('submenu', 'HolidayApproval');
+        view()->share('submenu', 'WidgetHolidayApproval');
     }
 
     public function index(Request $request) {
@@ -28,7 +28,7 @@ class HolidayApprovalController extends Controller
         $request->validate([
             'request' => ['required'],
         ]);
-        $holiday_request = HolidayRequest::with(['latestReply'])
+        $holiday_request = WidgetHolidayRequest::with(['latestReply'])
             ->where('id', $request['request'])
             ->where('manager_id', $request->user()->google_id)
             ->where('status', '<>', 'approved')
@@ -43,12 +43,12 @@ class HolidayApprovalController extends Controller
     public function acceptFromEmail(Request $request) {
         $holiday_request = $request['holiday_request'];
         $this->acceptRequest($holiday_request);
-        return redirect()->route('holiday-approvals')
+        return redirect()->route('widget.holiday-approvals')
             ->with('success_message', 'User request has been approved.');
     }
 
     public function rejectForm(Request $request, $id) {
-        $holiday_request = HolidayRequest::with(['latestReply', 'user'])
+        $holiday_request = WidgetHolidayRequest::with(['latestReply', 'user'])
             ->where('id', $id)
             ->where('manager_id', $request->user()->google_id)
             ->where('status', '<>', 'approved')
@@ -65,7 +65,7 @@ class HolidayApprovalController extends Controller
         $request->validate([
             'reason' => ['required'],
         ]);
-        $holiday_request = HolidayRequest::with(['latestReply'])
+        $holiday_request = WidgetHolidayRequest::with(['latestReply'])
             ->where('id', $id)
             ->where('manager_id', $request->user()->google_id)
             ->where('status', '<>', 'approved')
@@ -74,13 +74,13 @@ class HolidayApprovalController extends Controller
         $r = $holiday_request['latestReply'] ?? $holiday_request;
         if (!$r || $r['status'] != 'pending' || !$holiday_request['user']) return back();
         $this->rejectRequest($holiday_request, $request['reason']);
-        return redirect()->route('holiday-approvals')
+        return redirect()->route('widget.holiday-approvals')
             ->with('error_message', 'User request has been rejected.');
     }
 
     public function rejectFromEmail(Request $request) {
         $holiday_request = $request['holiday_request'];
-        return redirect()->route('holiday-reject', $holiday_request['id']);
+        return redirect()->route('widget.holiday-reject', $holiday_request['id']);
     }
 
     private function acceptRequest($holiday_request) {
@@ -110,7 +110,7 @@ class HolidayApprovalController extends Controller
             $holiday_request['reason'] = $r['reason'];
             $manager = request()->user();
             $user = $holiday_request['user'];
-            Mail::to($user['email'])->send(new HolidayApprovalMail([
+            Mail::to($user['email'])->send(new WidgetHolidayApprovalMail([
                 'user' => $user['given_name'].' '.$user['family_name'],
                 'manager' => $manager['given_name'].' '.$manager['family_name'],
                 'title' => $holiday_request['title'],

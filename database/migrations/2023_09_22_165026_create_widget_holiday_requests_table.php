@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('holiday_requests', function (Blueprint $table) {
+        Schema::create('widget_holiday_requests', function (Blueprint $table) {
             $table->id();
             $table->string('google_id');
             $table->string('manager_id')->nullable();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('holiday_requests');
+        Schema::dropIfExists('widget_holiday_requests');
     }
 };

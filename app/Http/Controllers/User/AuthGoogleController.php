@@ -35,6 +35,7 @@ class AuthGoogleController extends Controller
             return redirect()->route('login')
                 ->with('error_message', 'You do not have access permission.');
         }
+        logger($googleUser);
         $googleId = $googleUser['id'];
         $email = $googleUser['email'];
         $accessToken = $googleUser['token'];

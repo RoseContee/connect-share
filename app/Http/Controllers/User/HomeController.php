@@ -23,6 +23,7 @@ class HomeController extends Controller
                 $google->saveAuthUserToken($alert);
                 return $alerts;
             });
+            logger($alerts);
         }
         $myEvents = Cache::remember($user['email'].'-own', $this->alertsLifetime, function () use ($user, $isAlertsWidgetEnabled) {
             $google = new Google($user['access_token'], $user['refresh_token']);

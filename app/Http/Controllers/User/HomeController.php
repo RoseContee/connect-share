@@ -14,9 +14,9 @@ class HomeController extends Controller
 
     public function index(Request $request) {
         $user = $request->user();
-        $isAlertsWidgetEnabled = $user->hasWidget(Widgets::ALERTS);
         $alerts = [];
-        if ($isAlertsWidgetEnabled && ($alert = $user['alert'])) {
+        if ($user->hasWidget(Widgets::ALERTS) && ($alert = $user['alert'])) {
+            logger($alert);
             $alerts = Cache::remember($alert['email'].'-alerts', $this->alertsLifetime, function () use ($alert) {
                 $google = new Google($alert['access_token'], $alert['refresh_token']);
                 $alerts = $google->getEvents($alert['email']);
@@ -25,9 +25,9 @@ class HomeController extends Controller
             });
             logger($alerts);
         }
-        $myEvents = Cache::remember($user['email'].'-own', $this->alertsLifetime, function () use ($user, $isAlertsWidgetEnabled) {
+        $myEvents = Cache::remember($user['email'].'-own', $this->alertsLifetime, function () use ($user) {
             $google = new Google($user['access_token'], $user['refresh_token']);
-            $myEvents = $google->getEvents($user['email'], $isAlertsWidgetEnabled ? 1 : 3);
+            $myEvents = $google->getEvents($user['email'], $user->hasWidget(Widgets::ALERTS) ? 1 : 3);
             $google->saveAuthUserToken($user);
             return $myEvents;
         });

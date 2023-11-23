@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
-    protected int $alertsLifetime = 60 * 10; //seconds
+    protected int $alertsLifetime = 10; //minutes
 
     public function index(Request $request) {
         $user = $request->user();

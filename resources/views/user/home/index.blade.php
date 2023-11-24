@@ -10,7 +10,7 @@ $user = request()->user();
             <nav class="navbar navbar-expand navbar-white navbar-light px-0">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="navbar-brand" href="#">
+                        <a class="navbar-brand" href="/">
                             <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="navbar-img" />
                         </a>
                     </li>

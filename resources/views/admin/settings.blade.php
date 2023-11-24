@@ -5,7 +5,8 @@
 @php
 $currentFavicon = getFavicon($settings['favicon'] ?? null);
 $currentLogo = getLogo($settings['logo'] ?? null);
-$currentBanner = getDefaultBannerImage($settings['banner_image'] ?? null);
+$currentHomeBanner = getDefaultBannerImage($settings['home_banner_image'] ?? null);
+$currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] ?? null);
 @endphp
 
 @section('content')
@@ -78,7 +79,7 @@ $currentBanner = getDefaultBannerImage($settings['banner_image'] ?? null);
                                     </div>--}}
                                     <div class="form-group">
                                         <label for="contact_email">Contact Email <span class="required">*</span></label>
-                                        <input type="text" id="contact_email" name="contact_email" required
+                                        <input type="email" id="contact_email" name="contact_email" required
                                                class="form-control @error('contact_email') is-invalid @enderror"
                                                value="{{ old('contact_email', $settings['contact_email'] ?? '') }}"
                                                placeholder="Contact Email">
@@ -101,28 +102,57 @@ $currentBanner = getDefaultBannerImage($settings['banner_image'] ?? null);
                                         @enderror
                                     </div>--}}
                                     <div class="form-group">
+                                        <label for="home_banner_title">Default Home Banner Title <span class="required">*</span></label>
+                                        <input type="text" id="home_banner_title" name="home_banner_title" required
+                                               class="form-control @error('home_banner_title') is-invalid @enderror"
+                                               value="{{ old('home_banner_title', $settings['home_banner_title'] ?? '') }}"
+                                               placeholder="Home Banner Title">
+                                        @error('home_banner_title')
+                                            <label for="home_banner_title" class="text-danger small mb-0 font-weight-normal">
+                                                {{ $message }}
+                                            </label>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="home_banner_image">Default Home Banner Image</label>
+                                        <div class="banner mb-2">
+                                            <img src="{{ $currentHomeBanner }}"
+                                                 alt="Banner Image" />
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" id="home_banner_image" name="home_banner_image" accept="image/*"
+                                                   class="custom-file-input @error('home_banner_image') is-invalid @enderror">
+                                            <label for="home_banner_image" class="custom-file-label">Choose file</label>
+                                        </div>
+                                        @error('home_banner_image')
+                                            <label for="home_banner_image" class="text-danger small mb-0 font-weight-normal">
+                                                {{ $message }}
+                                            </label>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <div class="form-check">
-                                            <input type="checkbox" id="hide_banner" name="hide_banner"
+                                            <input type="checkbox" id="hide_profile_banner" name="hide_profile_banner"
                                                 class="form-check-input" value="1"
-                                                @checked($settings['hide_banner'])>
-                                            <label for="hide_banner" class="form-check-label font-weight-bold">
-                                                Hide Banner
+                                                @checked($settings['hide_profile_banner'])>
+                                            <label for="hide_profile_banner" class="form-check-label font-weight-bold">
+                                                Hide Profile Banner
                                             </label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="banner_image">Default Banner Image</label>
+                                        <label for="profile_banner_image">Default Profile Banner Image</label>
                                         <div class="banner mb-2">
-                                            <img src="{{ $currentBanner }}"
+                                            <img src="{{ $currentProfileBanner }}"
                                                  alt="Banner Image" />
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" id="banner_image" name="banner_image" accept="image/*"
-                                                   class="custom-file-input @error('banner_image') is-invalid @enderror">
-                                            <label for="banner_image" class="custom-file-label">Choose file</label>
+                                            <input type="file" id="profile_banner_image" name="profile_banner_image" accept="image/*"
+                                                   class="custom-file-input @error('profile_banner_image') is-invalid @enderror">
+                                            <label for="profile_banner_image" class="custom-file-label">Choose file</label>
                                         </div>
-                                        @error('banner_image')
-                                            <label for="banner_image" class="text-danger small mb-0 font-weight-normal">
+                                        @error('profile_banner_image')
+                                            <label for="profile_banner_image" class="text-danger small mb-0 font-weight-normal">
                                                 {{ $message }}
                                             </label>
                                         @enderror
@@ -172,8 +202,12 @@ $currentBanner = getDefaultBannerImage($settings['banner_image'] ?? null);
                 imagePreview(e.target.files, $('#logo-preview'), '{{ $currentLogo }}');
             });*/
 
-            $('#banner_image').on('change', e => {
-                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentBanner }}');
+            $('#home_banner_image').on('change', e => {
+                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentHomeBanner }}');
+            });
+
+            $('#profile_banner_image').on('change', e => {
+                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentProfileBanner }}');
             });
         });
     </script>

@@ -63,7 +63,9 @@ $request_page = $type == 'Request';
                                 <th>Domain</th>
                                 @if (!$request_page)
                                     <th style="width: 40px;">Users</th>
-                                    <th style="width: 150px;">Banner</th>
+                                    <th>Home Title</th>
+                                    <th style="width: 150px;">Home Banner</th>
+                                    <th style="width: 150px;">Profile Banner</th>
                                     <th>Widgets</th>
                                     <th style="width: 60px;">Status</th>
                                 @endif
@@ -75,27 +77,32 @@ $request_page = $type == 'Request';
                             @foreach ($domains as $index => $domain)
                                 <tr>
                                     <td>{{ ++$index }}</td>
-                                    <td>{{ $domain['domain'] }}</td>
+                                    <td class="text-center">{{ $domain['domain'] }}</td>
                                     @if (!$request_page)
-                                        <td>
+                                        <td class="text-center">
                                             @if (count($domain['users']))
                                                 {{ count($domain['users']) }}
                                             @endif
                                         </td>
+                                        <td>{{ $domain['home_banner_title'] }}</td>
                                         <td>
-                                            @if (!$domain['hide_banner'])
-                                                <img src="{{ getBannerImage($domain['banner_image'], $setting['banner_image'] ?? '') }}"
-                                                     alt="Banner Image" style="width: 150px; height: 50px;" />
+                                            <img src="{{ getBannerImage($domain['home_banner_image'], $setting['home_banner_image'] ?? '') }}"
+                                                 alt="Home Banner Image" style="width: 150px; height: 50px;" />
+                                        </td>
+                                        <td>
+                                            @if (!$domain['hide_profile_banner'])
+                                                <img src="{{ getBannerImage($domain['profile_banner_image'], $setting['profile_banner_image'] ?? '') }}"
+                                                     alt="Profile Banner Image" style="width: 150px; height: 50px;" />
                                             @endif
                                         </td>
                                         <td>
                                             @php $domain_widgets = explode(',', $domain['widgets']); @endphp
                                             @foreach ($domain_widgets as $w)
                                                 @continue(!($widget = ($widgets[$w] ?? '')))
-                                                <div class="btn btn-sm btn-default">{{ $widget }}</div>
+                                                <div class="btn btn-sm btn-default px-1 py-0">{{ $widget }}</div>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             @if ($type == 'Installed')
                                                 @if ($domain['status'] == 'active')
                                                     <span class="badge badge-success">Active</span>
@@ -111,7 +118,7 @@ $request_page = $type == 'Request';
                                             @endif
                                         </td>
                                     @endif
-                                    <td>
+                                    <td class="text-center">
                                         @if ($domain['requested_email'])
                                             <a href="mailto:{{ $domain['requested_email'] }}">
                                                 {{ $domain['requested_email'] }}
@@ -120,7 +127,7 @@ $request_page = $type == 'Request';
                                             By Admin
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ route('admin.domains.edit', $domain['id']) }}"
                                            class="btn btn-primary btn-sm px-1 py-0">
                                             <i class="fa fa-edit"></i>
@@ -135,7 +142,9 @@ $request_page = $type == 'Request';
                                 <th>Domain</th>
                                 @if (!$request_page)
                                     <th>Users</th>
-                                    <th>Banner</th>
+                                    <th>Home Title</th>
+                                    <th>Home Banner</th>
+                                    <th>Profile Banner</th>
                                     <th>Widgets</th>
                                     <th>Status</th>
                                 @endif
@@ -172,11 +181,11 @@ $request_page = $type == 'Request';
                 lengthMenu: [[50, 100, 500, -1], [50, 100, 500, 'All']],
                 columnDefs: [
                     {
-                        targets: [0, @if (!$request_page)3, 7 @else 2 @endif],
+                        targets: [0, @if (!$request_page)4, 5, 9 @else 3 @endif],
                         searchable: false
                     },
                     {
-                        targets: [@if (!$request_page) 3, 7 @else 2 @endif],
+                        targets: [@if (!$request_page)4, 5, 9 @else 3 @endif],
                         orderable: false
                     },
                 ]

@@ -8,6 +8,7 @@ use App\Http\Controllers\User\HomeController as UserHome;
 use App\Http\Controllers\User\PeopleController as UserPeople;
 use App\Http\Controllers\User\LinkController as UserUsefulLink;
 use App\Http\Controllers\User\DocumentController as UserDocument;
+use App\Http\Controllers\User\SettingsController as UserSettings;
 use App\Http\Controllers\Admin\AuthController as AdminAuth;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\DomainController as AdminDomain;
@@ -84,6 +85,7 @@ Route::group([
                 'useful-links' => UserUsefulLink::class,
                 'documents' => UserDocument::class,
             ]);
+            Route::resource('settings', UserSettings::class)->only(['index', 'store']);
         });
 
         Route::get('logout', function (Request $request) {

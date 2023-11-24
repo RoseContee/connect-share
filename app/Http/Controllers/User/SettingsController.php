@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class SettingsController extends Controller
+{
+    public function index(Request $request) {
+        $userSettings = $request->user()->intranet;
+        return view('user.home.settings', [
+            'menu' => 'Settings',
+            'userSettings' => $userSettings,
+        ]);
+    }
+
+    public function store(Request $request) {
+        $request->validate([
+            'banner_image' => ['nullable', 'image'],
+        ]);
+        $userSettings = $request->user()->intranet;
+        if ($request['banner_title']) {
+            $userSettings['home_banner_title'] = $request['banner_title'];
+        }
+        if ($request->hasFile('banner_image')) {
+            if (getPath($userSettings['home_banner_image'])) {
+                unlink(public_path($userSettings['home_banner_image']));
+            }
+            $userSettings['home_banner_image'] = 'uploads/'.$request->file('banner_image')->store('banner');
+        }
+        $userSettings->save();
+        return back()->with('success_message', 'Settings have been updated.');
+    }
+}

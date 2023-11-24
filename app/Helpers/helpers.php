@@ -1,7 +1,7 @@
 <?php
 if (!function_exists('getPath')) {
     function getPath($file) {
-        if ($file && file_exists(public_path($file))) {
+        if (is_file(public_path($file))) {
             return $file;
         }
         return null;

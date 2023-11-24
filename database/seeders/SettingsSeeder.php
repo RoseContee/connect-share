@@ -26,10 +26,16 @@ class SettingsSeeder extends Seeder
             'key' => 'contact_phone',
             'value' => null,
         ], [
-            'key' => 'hide_banner',
+            'key' => 'home_banner_title',
+            'value' => 'Connect Share',
+        ], [
+            'key' => 'home_banner_image',
+            'value' => null,
+        ], [
+            'key' => 'hide_profile_banner',
             'value' => false,
         ], [
-            'key' => 'banner_image',
+            'key' => 'profile_banner_image',
             'value' => null,
         ], [
             'key' => 'shortcut',

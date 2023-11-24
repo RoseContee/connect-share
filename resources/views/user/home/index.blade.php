@@ -19,10 +19,8 @@ $user = request()->user();
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                            {{--<i class="far fa-user-circle"></i>--}}
                             <img src="{{ $user['avatar'] ?? asset('assets/img/profile.png') }}" alt="Profile"
-                                 class="navbar-img img-circle w-auto border"
-                            />
+                                 class="navbar-img img-circle w-auto border" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{ route('profile') }}" class="dropdown-item">
@@ -40,8 +38,11 @@ $user = request()->user();
                 <div class="row">
                     <div class="col-md-8">
                         <div class="home-banner d-none d-md-flex align-items-end">
-                            <img src="{{ asset('assets/img/banner-bg.jpg') }}" alt="Image" />
-                            <h3 class="banner-title">Add Title Here</h3>
+                            <img src="{{ getBannerImage($user['intranet']['home_banner_image'], $settings['home_banner_image'] ?? null) }}"
+                                 alt="Image" />
+                            <h3 class="banner-title">
+                                {{ $user['intranet']['home_banner_title'] ?? $settings['home_banner_title'] }}
+                            </h3>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -85,7 +86,7 @@ $user = request()->user();
                                 </div>
                             @empty
                                 <div class="col-12">
-                                    <p class="font-italic py-3 mb-2">No Events</p>
+                                    <p class="font-italic py-3">No Events</p>
                                 </div>
                             @endforelse
                         </div>
@@ -95,95 +96,65 @@ $user = request()->user();
                 <div class="row">
                     <div class="col-md-8 mt-5">
                         <h5>News <i class="fa fa-chevron-right"></i></h5>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card news-item">
-                                    <div class="card-header p-0">
-                                        <img src="{{ asset('assets/img/banner-bg.jpg') }}" alt="Image" />
+                        <div id="news" class="carousel" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                @foreach ($newses as $index => $news)
+                                    <li data-target="#news" data-slide-to="{{ $index }}" @if (!$index) class="active" @endif></li>
+                                @endforeach
+                            </ol>
+                            <div class="carousel-inner row flex-nowrap">
+                                @forelse ($newses as $news)
+                                    <div class="carousel-item col-md-6 col-lg-4 @if ($loop->first) active @endif">
+                                        <a href="{{ $news['link'] }}" class="card news-item">
+                                            <div class="card-header p-0">
+                                                <img src="{{ asset('assets/img/news.jpg') }}" alt="Image" />
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <h6 class="font-weight-bold text-truncate mb-1">
+                                                    {{ $news['title'] }}
+                                                </h6>
+                                                <span class="small">{{ $news['date'] }}</span>
+                                            </div>
+                                        </a>
                                     </div>
-                                    <div class="card-body p-2">
-                                        <h6 class="font-weight-bold mb-1">
-                                            This is news1.
-                                        </h6>
-                                        <span class="small">
-                                            12 Mar 2023
-                                        </span>
+                                @empty
+                                    <div class="col-12">
+                                        <p class="font-italic py-3">No News</p>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card news-item">
-                                    <div class="card-header p-0">
-                                        <img src="{{ asset('assets/img/banner-bg.jpg') }}" alt="Image" />
-                                    </div>
-                                    <div class="card-body p-2">
-                                        <h6 class="font-weight-bold mb-1">
-                                            This is news1.
-                                        </h6>
-                                        <span class="small">
-                                            12 Mar 2023
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card news-item">
-                                    <div class="card-header p-0">
-                                        <img src="{{ asset('assets/img/banner-bg.jpg') }}" alt="Image" />
-                                    </div>
-                                    <div class="card-body p-2">
-                                        <h6 class="font-weight-bold mb-1">
-                                            This is news1.
-                                        </h6>
-                                        <span class="small">
-                                            12 Mar 2023
-                                        </span>
-                                    </div>
-                                </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 mt-5">
                         <h5>Link Useful</h5>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-plane fa-2x"></i>
-                                        <p class="m-0 text-truncate">Holiday Request</p>
-                                    </div>
+                            @forelse ($links as $index => $link)
+                                @break($index === 4)
+                                <div class="col-sm-6">
+                                    <a href="{{ $link['link'] }}" class="card text-dark">
+                                        <div class="card-body text-center">
+                                            <img src="{{ asset('assets/img/icons/useful-link.png') }}" alt="Usefull Link"
+                                                 class="icon-32" />
+                                            <p class="m-0 text-truncate">{{ $link['description'] }}</p>
+                                        </div>
+                                    </a>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-plane fa-2x"></i>
-                                        <p class="m-0 text-truncate">Holiday Request</p>
-                                    </div>
+                            @empty
+                                <div class="col-12">
+                                    <p class="font-italic py-3">No Links</p>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-plane fa-2x"></i>
-                                        <p class="m-0 text-truncate">Holiday Request</p>
-                                    </div>
+                            @endforelse
+                            @if (count($links) > 4)
+                                <div class="col-12">
+                                    <a href="{{ route('useful-links.index') }}">View more links</a>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-plane fa-2x"></i>
-                                        <p class="m-0 text-truncate">Holiday Request</p>
-                                    </div>
-                                </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </main>
 
-            @include('user.home.partials.footer', ['class' => 'py-3'])
+            @include('user.home.partials.footer', ['class' => 'py-3 mt-5'])
         </div>
     </div>
 @endsection

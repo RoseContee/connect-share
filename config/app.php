@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Vedmant\FeedReader\FeedReaderServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -4,7 +4,8 @@
 $add = empty($domain);
 $route = $add ? route('admin.domains.store') : route('admin.domains.update', $domain['id']);
 $title = ($add ? 'Add' : 'Edit').' Domain';
-$currentBanner = getBannerImage($domain['banner_image'] ?? null, $settings['banner_image'] ?? null);
+$currentHomeBanner = getBannerImage($domain['home_banner_image'] ?? null, $settings['home_banner_image'] ?? null);
+$currentProfileBanner = getBannerImage($domain['profile_banner_image'] ?? null, $settings['profile_banner_image'] ?? null);
 @endphp
 
 @section('title', $title)
@@ -64,28 +65,58 @@ $currentBanner = getBannerImage($domain['banner_image'] ?? null, $settings['bann
                                         </div>
                                     @endif
                                     <div class="form-group">
+                                        <label for="home_banner_title">Home Banner Title</label>
+                                        <input type="text" id="home_banner_title" name="home_banner_title"
+                                               class="form-control @error('home_banner_title') is-invalid @enderror"
+                                               value="{{ old('home_banner_title', $domain['home_banner_title'] ?? '') }}"
+                                               placeholder="Home Banner Title">
+                                        @error('home_banner_title')
+                                            <label for="home_banner_title" class="text-danger small mb-0 font-weight-normal">
+                                                {{ $message }}
+                                            </label>
+                                        @enderror
+                                        <p><b>Default Title:</b> {{ $settings['home_banner_title'] }}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="home_banner_image">Home Banner Image</label>
+                                        <div class="banner mb-2">
+                                            <img src="{{ $currentHomeBanner }}"
+                                                 alt="Banner"/>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" id="home_banner_image" name="home_banner_image" accept="image/*"
+                                                   class="custom-file-input @error('home_banner_image') is-invalid @enderror">
+                                            <label for="home_banner_image" class="custom-file-label">Choose file</label>
+                                        </div>
+                                        @error('home_banner_image')
+                                            <label for="home_banner_image" class="text-danger small mb-0 font-weight-normal">
+                                                {{ $message }}
+                                            </label>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <div class="form-check">
-                                            <input type="checkbox" id="hide_banner" name="hide_banner"
+                                            <input type="checkbox" id="hide_profile_banner" name="hide_profile_banner"
                                                    class="form-check-input" value="1"
-                                                @checked(!empty($domain['hide_banner']))>
-                                            <label for="hide_banner" class="form-check-label font-weight-bold">
-                                                Hide Banner
+                                                @checked(!empty($domain['hide_profile_banner']))>
+                                            <label for="hide_profile_banner" class="form-check-label font-weight-bold">
+                                                Hide Profile Banner
                                             </label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="banner_image">Banner Image</label>
+                                        <label for="profile_banner_image">Profile Banner Image</label>
                                         <div class="banner mb-2">
-                                            <img src="{{ $currentBanner }}"
+                                            <img src="{{ $currentProfileBanner }}"
                                                  alt="Banner"/>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" id="banner_image" name="banner_image" accept="image/*"
-                                                   class="custom-file-input @error('banner_image') is-invalid @enderror">
-                                            <label for="banner_image" class="custom-file-label">Choose file</label>
+                                            <input type="file" id="profile_banner_image" name="profile_banner_image" accept="image/*"
+                                                   class="custom-file-input @error('profile_banner_image') is-invalid @enderror">
+                                            <label for="profile_banner_image" class="custom-file-label">Choose file</label>
                                         </div>
-                                        @error('banner_image')
-                                            <label for="banner_image" class="text-danger small mb-0 font-weight-normal">
+                                        @error('profile_banner_image')
+                                            <label for="profile_banner_image" class="text-danger small mb-0 font-weight-normal">
                                                 {{ $message }}
                                             </label>
                                         @enderror
@@ -183,8 +214,12 @@ $currentBanner = getBannerImage($domain['banner_image'] ?? null, $settings['bann
 
     <script type="text/javascript">
         $(() => {
-            $('#banner_image').on('change', e => {
-                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentBanner }}');
+            $('#home_banner_image').on('change', e => {
+                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentHomeBanner }}');
+            });
+
+            $('#profile_banner_image').on('change', e => {
+                imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentProfileBanner }}');
             });
 
             @if (!$add)

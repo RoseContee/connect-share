@@ -10,7 +10,8 @@ class Domain extends Model
     use HasFactory;
 
     protected $fillable = [
-        'domain', 'installed', 'hide_banner', 'banner_image', 'widgets',
+        'domain', 'installed', 'home_banner_title', 'home_banner_image',
+        'hide_profile_banner', 'profile_banner_image', 'widgets',
         'token', 'requested_email', 'notify_to', 'status', 'reason',
     ];
 

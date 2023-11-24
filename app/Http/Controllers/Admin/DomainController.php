@@ -61,7 +61,8 @@ class DomainController extends Controller
     public function store(Request $request) {
         $request->validate([
             'domain' => ['required', 'unique:domains'],
-            'banner_image' => ['nullable', 'image'],
+            'home_banner_image' => ['nullable', 'image'],
+            'profile_banner_image' => ['nullable', 'image'],
             'widgets' => ['nullable', 'array'],
             'widgets.*' => ['nullable', Widgets::getWidgetsRule()],
             'notify_to' => ['nullable', 'email'],
@@ -70,13 +71,18 @@ class DomainController extends Controller
         ]);
         $domain = Domain::create([
             'domain' => $request['domain'],
-            'hide_banner' => !empty($request['hide_banner']),
+            'home_banner_title' => $request['home_banner_title'],
+            'hide_profile_banner' => !empty($request['hide_profile_banner']),
             'widgets' => implode(',', $request['widgets'] ?? []),
             'notify_to' => $request['notify_to'],
             'status' => 'active',
         ]);
-        if ($request->hasFile('banner_image')) {
-            $domain['banner_image'] = 'uploads/'.$request->file('banner_image')->store('banner');
+        if ($request->hasFile('profile_banner_image')) {
+            $domain['profile_banner_image'] = 'uploads/'.$request->file('profile_banner_image')->store('banner');
+            $domain->save();
+        }
+        if ($request->hasFile('home_banner_image')) {
+            $domain['home_banner_image'] = 'uploads/'.$request->file('home_banner_image')->store('banner');
             $domain->save();
         }
         if ($domain['notify_to']) {
@@ -119,7 +125,8 @@ class DomainController extends Controller
         $domain = Domain::find($id);
         if (!$domain) return back();
         $request->validate([
-            'banner_image' => ['nullable', 'image'],
+            'home_banner_image' => ['nullable', 'image'],
+            'profile_banner_image' => ['nullable', 'image'],
             'widgets' => ['nullable', 'array'],
             'widgets.*' => ['nullable', Widgets::getWidgetsRule()],
             'notify_to' => ['nullable', 'email'],
@@ -130,12 +137,19 @@ class DomainController extends Controller
             'reason.required_if' => 'The reason field is required.',
         ]);
         $old_status = $domain['status'];
-        $domain['hide_banner'] = !empty($request['hide_banner']);
-        if ($request->hasFile('banner_image')) {
-            if (getPath($domain['banner_image'])) {
-                unlink(public_path($domain['banner_image']));
+        $domain['home_banner_title'] = $request['home_banner_title'];
+        if ($request->hasFile('home_banner_image')) {
+            if (getPath($domain['home_banner_image'])) {
+                unlink(public_path($domain['home_banner_image']));
             }
-            $domain['banner_image'] = 'uploads/'.$request->file('banner_image')->store('banner');
+            $domain['home_banner_image'] = 'uploads/'.$request->file('home_banner_image')->store('banner');
+        }
+        $domain['hide_profile_banner'] = !empty($request['hide_profile_banner']);
+        if ($request->hasFile('profile_banner_image')) {
+            if (getPath($domain['profile_banner_image'])) {
+                unlink(public_path($domain['profile_banner_image']));
+            }
+            $domain['profile_banner_image'] = 'uploads/'.$request->file('profile_banner_image')->store('banner');
         }
         $domain['widgets'] = implode(',', $request['widgets'] ?? []);
         if (!$domain['requested_email']) {

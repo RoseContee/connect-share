@@ -24,15 +24,18 @@ class SettingsController extends Controller
             // 'logo' => ['nullable', 'image'],
             'contact_email' => ['required', 'email'],
             // 'contact_phone' => ['required'],
-            'banner_image' => ['nullable', 'image'],
+            'home_banner_title' => ['required'],
+            'home_banner_image' => ['nullable', 'image'],
+            'profile_banner_image' => ['nullable', 'image'],
         ]);
         Setting::saveSetting([
             'contact_email' => $request['contact_email'],
             // 'contact_phone' => $request['contact_phone'],
-            'hide_banner' => !empty($request['hide_banner']),
+            'home_banner_title' => $request['home_banner_title'],
+            'hide_profile_banner' => !empty($request['hide_banner']),
             'shortcut' => !empty($request['shortcut']),
         ]);
-        $settings = Setting::getSetting(['favicon', 'logo', 'banner_image']);
+        $settings = Setting::getSetting(['favicon', 'logo', 'profile_banner_image']);
         if ($request->hasFile('favicon')) {
             if (getPath($settings['favicon'])) {
                 unlink(public_path($settings['favicon']));
@@ -47,12 +50,19 @@ class SettingsController extends Controller
             $logo = 'uploads/'.$request->file('logo')->store('settings');
             Setting::saveSetting('logo', $logo);
         }*/
-        if ($request->hasFile('banner_image')) {
-            if (getPath($settings['banner_image'])) {
-                unlink(public_path($settings['banner_image']));
+        if ($request->hasFile('home_banner_image')) {
+            if (getPath($settings['home_banner_image'])) {
+                unlink(public_path($settings['home_banner_image']));
             }
-            $banner_image = 'uploads/'.$request->file('banner_image')->store('banner');
-            Setting::saveSetting('banner_image', $banner_image);
+            $banner_image = 'uploads/'.$request->file('home_banner_image')->store('banner');
+            Setting::saveSetting('home_banner_image', $banner_image);
+        }
+        if ($request->hasFile('profile_banner_image')) {
+            if (getPath($settings['profile_banner_image'])) {
+                unlink(public_path($settings['profile_banner_image']));
+            }
+            $banner_image = 'uploads/'.$request->file('profile_banner_image')->store('banner');
+            Setting::saveSetting('profile_banner_image', $banner_image);
         }
         return back()->with('success_message', 'Settings have been updated.');
     }

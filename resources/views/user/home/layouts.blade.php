@@ -2,7 +2,7 @@
 
 @php
 $user = request()->user();
-$dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile']);
+$profilePage = request()->route()->getName() === 'profile';
 @endphp
 
 @push('before-styles')
@@ -12,9 +12,9 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
 @section('content')
     <div class="wrapper">
         <div class="main-header">
-            @if (empty($settings['hide_banner']) && empty($user['intranet']['hide_banner']) && $dashboardPage)
+            @if (empty($settings['hide_banner']) && empty($user['intranet']['hide_profile_banner']) && $profilePage)
                 <div class="banner"
-                     style="background-image: url('{{ getBannerImage($user['intranet']['banner_image'] ?? null, $settings['banner_image'] ?? '') }}')">
+                     style="background-image: url('{{ getBannerImage($user['intranet']['profile_banner_image'] ?? null, $settings['profile_banner_image'] ?? '') }}')">
                 </div>
             @endif
             <!-- Navbar -->
@@ -26,7 +26,7 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                         </a>
                     </li>
                 </ul>
-                @if ($dashboardPage)
+                @if ($profilePage)
                     @include('user.home.partials.storage-usage')
                 @endif
             </nav>
@@ -97,26 +97,6 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 </ul>
                             </li>
                         @endif
-                        @if ($user['is_admin'] && $user->hasWidget(Widgets::ALERTS))
-                            <li class="nav-item">
-                                <a href="{{ route('widget.alerts') }}" class="nav-link @if ($menu == 'WidgetAlerts') active @endif">
-                                    <i class="nav-icon fas fa-calendar-week"></i>
-                                    <p>Alerts Setting</p>
-                                </a>
-                            </li>
-                        @endif
-                        <li class="nav-item">
-                            <a href="{{ route('useful-links.index') }}" class="nav-link @if ($menu == 'Links') active @endif">
-                                <i class="nav-icon fas fa-link"></i>
-                                <p>Useful Links</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('documents.index') }}" class="nav-link @if ($menu == 'Documents') active @endif">
-                                <i class="nav-icon fas fa-folder-open"></i>
-                                <p>Company Documents</p>
-                            </a>
-                        </li>
                         @if ($user->hasWidget(Widgets::HOLIDAY_REQUEST) && request()->user_members_number)
                             @php
                                 $holiday_requests_number = request()->holiday_requests_number;
@@ -147,6 +127,32 @@ $dashboardPage = in_array(request()->route()->getName(), ['dashboard', 'profile'
                                 </li>
                             @endif
                         @endif
+                        @if ($user['is_admin'] && $user->hasWidget(Widgets::ALERTS))
+                            <li class="nav-item">
+                                <a href="{{ route('widget.alerts') }}" class="nav-link @if ($menu == 'WidgetAlerts') active @endif">
+                                    <i class="nav-icon fas fa-calendar-week"></i>
+                                    <p>Alerts Setting</p>
+                                </a>
+                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ route('useful-links.index') }}" class="nav-link @if ($menu == 'Links') active @endif">
+                                <i class="nav-icon fas fa-link"></i>
+                                <p>Useful Links</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('documents.index') }}" class="nav-link @if ($menu == 'Documents') active @endif">
+                                <i class="nav-icon fas fa-folder-open"></i>
+                                <p>Company Documents</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('settings.index') }}" class="nav-link @if ($menu == 'Settings') active @endif">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>Settings</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('logout') }}" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>

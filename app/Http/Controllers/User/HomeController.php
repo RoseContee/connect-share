@@ -8,13 +8,19 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Vedmant\FeedReader\Facades\FeedReader;
 
 class HomeController extends Controller
 {
     protected int $alertsLifetime = 60 * 10; //minutes
 
-    public function index(Request $request) {
-        $user = User::with(['alert', 'links'])->find(auth()->id());
+    public function index() {
+        $user = User::with([
+            'alert',
+            'links' => function ($query) {
+                $query->orderBy('updated_at', 'desc')->limit(5);
+            }
+        ])->find(auth()->id());
         $alerts = [];
         if ($user->hasWidget(Widgets::ALERTS) && ($alert = $user['alert'])) {
             $alerts = Cache::remember($alert['email'].'-alerts', $this->alertsLifetime, function () use ($alert) {
@@ -30,9 +36,31 @@ class HomeController extends Controller
             $google->saveAuthUserToken($user);
             return $myEvents;
         });
+        $newses = Cache::remember('news', 60 * 30, function () {
+            $rss = FeedReader::read('https://www.ansa.it/sito/ansait_rss.xml');
+            $items = $rss->get_items();
+            $newsItems = [];
+            foreach ($items as $index => $item) {
+                if ($index === 5) break;
+                $newsItems[strtotime($item->get_date())] = [
+                    'title' => $item->get_title(),
+                    'link' => $item->get_link(),
+                    'date' => $item->get_date(),
+                ];
+            }
+            krsort($newsItems);
+            $newses = [];
+            foreach ($newsItems as $index => $item) {
+                if ($index === 5) break;
+                $newses[] = $item;
+            }
+            return $newses;
+        });
         return view('user.home.index', [
             'alerts' => $alerts,
             'myEvents' => $myEvents,
+            'links' => $user['links'],
+            'newses' => $newses,
         ]);
     }
 

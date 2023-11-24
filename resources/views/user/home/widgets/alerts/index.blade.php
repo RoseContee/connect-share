@@ -1,11 +1,37 @@
+@push('after-styles')
+    <style>
+        #alerts.carousel .carousel-indicators {
+            margin-bottom: 0;
+            bottom: -30px;
+        }
+
+        #alerts.carousel .carousel-indicators li {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #007bff;
+        }
+
+        @media (min-width: 768px) {
+            #alerts.carousel .carousel-inner .carousel-item.active,
+            #alerts.carousel .carousel-inner .carousel-item.active + .carousel-item {
+                display: block;
+            }
+
+            #alerts.carousel .carousel-inner .carousel-item {
+                margin-right: 0;
+            }
+        }
+    </style>
+@endpush
+
 <div class="alerts-container {{ $class ?? '' }}">
     <h5>Alerts <i class="fa fa-chevron-right"></i></h5>
     <div id="alerts" class="carousel" data-ride="carousel">
         <ol class="carousel-indicators">
-            @forelse ($alerts as $index => $alert)
-                <li data-target="#alerts" data-slide-to="{{ $index }}" @if ($loop->first) class="active" @endif></li>
-            @empty
-            @endforelse
+            @foreach ($alerts as $index => $alert)
+                <li data-target="#alerts" data-slide-to="{{ $index }}" @if (!$index) class="active" @endif></li>
+            @endforeach
         </ol>
         <div class="carousel-inner row flex-nowrap">
             @forelse ($alerts as $alert)
@@ -22,21 +48,9 @@
                 </div>
             @empty
                 <div class="col-12">
-                    <p class="font-italic py-3 mb-2">No alerts for company.</p>
+                    <p class="font-italic py-3">No alerts for company.</p>
                 </div>
             @endforelse
         </div>
-        {{--<a class="carousel-control-prev" href="#alerts" role="button" data-slide="prev">
-            <span class="carousel-control-custom-icon" aria-hidden="true">
-              <i class="fas fa-chevron-left"></i>
-            </span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#alerts" role="button" data-slide="next">
-            <span class="carousel-control-custom-icon" aria-hidden="true">
-              <i class="fas fa-chevron-right"></i>
-            </span>
-            <span class="sr-only">Next</span>
-        </a>--}}
     </div>
 </div>

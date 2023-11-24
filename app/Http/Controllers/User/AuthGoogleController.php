@@ -35,7 +35,6 @@ class AuthGoogleController extends Controller
             return redirect()->route('login')
                 ->with('error_message', 'You do not have access permission.');
         }
-        logger($googleUser);
         $googleId = $googleUser['id'];
         $email = $googleUser['email'];
         $accessToken = $googleUser['token'];
@@ -83,7 +82,9 @@ class AuthGoogleController extends Controller
         }
         if ($user) {
             $user['access_token'] = $accessToken;
-            $user['refresh_token'] = $refreshToken;
+            if ($refreshToken) {
+                $user['refresh_token'] = $refreshToken;
+            }
             $user->save();
         } else {
             $user = User::create([

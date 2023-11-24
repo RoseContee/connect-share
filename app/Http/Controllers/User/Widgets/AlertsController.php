@@ -31,6 +31,7 @@ class AlertsController extends Controller
             ])
             ->with([
                 'access_type' => 'offline',
+                'approval_prompt' => 'force',
             ])
             ->redirect();
     }
@@ -42,14 +43,20 @@ class AlertsController extends Controller
         $googleUser = json_decode(json_encode($googleUser), true);
         logger($googleUser);
         $user = $request->user();
+        $email = $googleUser['email'];
+        $accessToken = $googleUser['token'];
+        $refreshToken = $googleUser['refreshToken'];
+        if (($email == $user['email']) && !$refreshToken) {
+            $refreshToken = $user['refresh_token'];
+        }
         $alert = $user->alert()
             ->withTrashed()
             ->updateOrCreate([
                 'domain' => $user['domain'],
             ], [
-                'email' => $googleUser['email'],
-                'access_token' => $googleUser['token'],
-                'refresh_token' => $googleUser['refreshToken'],
+                'email' => $email,
+                'access_token' => $accessToken,
+                'refresh_token' => $refreshToken,
                 'deleted_at' => null,
             ]);
         $alert->restore();

@@ -16,14 +16,12 @@ class HomeController extends Controller
         $user = $request->user();
         $alerts = [];
         if ($user->hasWidget(Widgets::ALERTS) && ($alert = $user['alert'])) {
-            logger($alert);
             $alerts = Cache::remember($alert['email'].'-alerts', $this->alertsLifetime, function () use ($alert) {
                 $google = new Google($alert['access_token'], $alert['refresh_token']);
                 $alerts = $google->getEvents($alert['email']);
                 $google->saveAuthUserToken($alert);
                 return $alerts;
             });
-            logger($alerts);
         }
         $myEvents = Cache::remember($user['email'].'-own', $this->alertsLifetime, function () use ($user) {
             $google = new Google($user['access_token'], $user['refresh_token']);

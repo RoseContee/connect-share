@@ -41,7 +41,6 @@ class AlertsController extends Controller
             ->redirectUrl($this->redirectUrl)
             ->user();
         $googleUser = json_decode(json_encode($googleUser), true);
-        logger($googleUser);
         $user = $request->user();
         $email = $googleUser['email'];
         $accessToken = $googleUser['token'];

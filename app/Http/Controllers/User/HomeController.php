@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Google;
 use App\Helpers\Widgets;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -13,7 +14,7 @@ class HomeController extends Controller
     protected int $alertsLifetime = 60 * 10; //minutes
 
     public function index(Request $request) {
-        $user = $request->user();
+        $user = User::with(['alert', 'links'])->find(auth()->id());
         $alerts = [];
         if ($user->hasWidget(Widgets::ALERTS) && ($alert = $user['alert'])) {
             $alerts = Cache::remember($alert['email'].'-alerts', $this->alertsLifetime, function () use ($alert) {

@@ -12,7 +12,7 @@
                 <div class="card-body">
                     @if (!$corporateNews)
                         <p class="mb-0">
-                            Please connect the calendar to show alerts to all members.
+                            Please connect the calendar to show corporate news to all members.
                         </p>
                     @else
                         <p class="mb-0">

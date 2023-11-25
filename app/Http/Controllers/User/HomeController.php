@@ -22,7 +22,7 @@ class HomeController extends Controller
             }
         ])->find(auth()->id());
         $corporateNewses = [];
-        if ($user->hasWidget(Widgets::CORPORATE_NEWS) && ($corporate = $user['alert'])) {
+        if ($user->hasWidget(Widgets::CORPORATE_NEWS) && ($corporate = $user['corporateNews'])) {
             $corporateNewses = Cache::remember($corporate['email'].'-corporate', $this->alertsLifetime, function () use ($corporate) {
                 $google = new Google($corporate['access_token'], $corporate['refresh_token']);
                 $corporateNewses = $google->getEvents($corporate['email']);

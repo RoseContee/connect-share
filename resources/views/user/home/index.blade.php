@@ -130,11 +130,11 @@ $user = request()->user();
                         <div class="row">
                             @forelse ($links as $index => $link)
                                 @break($index === 4)
-                                <div class="col-sm-6">
+                                <div class="col-6">
                                     <a href="{{ $link['link'] }}" class="card text-dark">
                                         <div class="card-body text-center">
                                             <img src="{{ asset('assets/img/icons/useful-link.png') }}" alt="Usefull Link"
-                                                 class="icon-32" />
+                                                 class="icon-64" />
                                             <p class="m-0 text-truncate">{{ $link['description'] }}</p>
                                         </div>
                                     </a>

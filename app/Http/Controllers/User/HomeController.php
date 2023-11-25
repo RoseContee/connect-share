@@ -53,10 +53,10 @@ class HomeController extends Controller
                 ];
             }
             krsort($newsItems);
-            $newses = [];
-            foreach ($newsItems as $index => $item) {
-                if ($index === 5) break;
+            $newses = []; $i = 0;
+            foreach ($newsItems as $item) {
                 $newses[] = $item;
+                if ($i++ === 5) break;
             }
             return $newses;
         });

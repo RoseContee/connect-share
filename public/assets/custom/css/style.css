@@ -284,6 +284,11 @@
     width: 32px;
 }
 
+.icon-64 {
+    width: 64px;
+    height: 64px;
+}
+
 
 /* Widgets */
 .ui-autocomplete-loading {

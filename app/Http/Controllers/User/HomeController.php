@@ -31,13 +31,18 @@ class HomeController extends Controller
                 $google->saveAuthUserToken($corporate);
                 return $corporateNewses;
             });
+            if ($corporate['email'] == $user['email']) {
+                $myEvents = array_slice($corporateNewses, 0, 1);
+            }
         }
-        $myEvents = Cache::remember($user['email'].'-own', $this->alertsLifetime, function () use ($user) {
-            $google = new Google($user['access_token'], $user['refresh_token']);
-            $myEvents = $google->getEvents($user['email'], $user->hasWidget(Widgets::CORPORATE_NEWS) ? 1 : 3);
-            $google->saveAuthUserToken($user);
-            return $myEvents;
-        });
+        if (empty($myEvents)) {
+            $myEvents = Cache::remember($user['email'].'-own', $this->alertsLifetime, function () use ($user) {
+                $google = new Google($user['access_token'], $user['refresh_token']);
+                $myEvents = $google->getEvents($user['email'], $user->hasWidget(Widgets::CORPORATE_NEWS) ? 1 : 3);
+                $google->saveAuthUserToken($user);
+                return $myEvents;
+            });
+        }
         $default_rss_link = Setting::getSetting('rss_link');
         $rss_link = $user['intranet']['rss_link'] ?? $default_rss_link;
         $newses = Cache::remember('news-'.$rss_link, 60 * 30, function () use ($rss_link) {
@@ -47,7 +52,8 @@ class HomeController extends Controller
             $newsItems = [];
             foreach ($items as $item) {
                 $newsItems[strtotime($item->get_date())] = [
-                    'title' => $item->get_title(),
+                    'title' => $rss->get_title(),
+                    'description' => $item->get_title(),
                     'link' => $item->get_link(),
                     'date' => $item->get_date(),
                 ];

@@ -110,8 +110,9 @@ $user = request()->user();
                                                 <img src="{{ asset('assets/img/news.jpg') }}" alt="Image" />
                                             </div>
                                             <div class="card-body p-2">
+                                                <h6 class="text-truncate">{{ $news['title'] }}</h6>
                                                 <h6 class="font-weight-bold text-truncate mb-1">
-                                                    {{ $news['title'] }}
+                                                    {{ $news['description'] }}
                                                 </h6>
                                                 <span class="small">{{ $news['date'] }}</span>
                                             </div>

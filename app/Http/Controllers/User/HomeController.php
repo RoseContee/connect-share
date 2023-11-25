@@ -45,8 +45,7 @@ class HomeController extends Controller
             $rss = FeedReader::read($rss_link);
             $items = $rss->get_items();
             $newsItems = [];
-            foreach ($items as $index => $item) {
-                if ($index === 5) break;
+            foreach ($items as $item) {
                 $newsItems[strtotime($item->get_date())] = [
                     'title' => $item->get_title(),
                     'link' => $item->get_link(),

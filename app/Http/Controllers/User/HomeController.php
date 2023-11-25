@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Google;
 use App\Helpers\Widgets;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -19,7 +20,8 @@ class HomeController extends Controller
             'corporateNews',
             'links' => function ($query) {
                 $query->orderBy('updated_at', 'desc')->limit(5);
-            }
+            },
+            'intranet',
         ])->find(auth()->id());
         $corporateNewses = [];
         if ($user->hasWidget(Widgets::CORPORATE_NEWS) && ($corporate = $user['corporateNews'])) {
@@ -36,8 +38,11 @@ class HomeController extends Controller
             $google->saveAuthUserToken($user);
             return $myEvents;
         });
-        $newses = Cache::remember('news', 60 * 30, function () {
-            $rss = FeedReader::read('https://www.ansa.it/sito/ansait_rss.xml');
+        $default_rss_link = Setting::getSetting('rss_link');
+        $rss_link = $user['intranet']['rss_link'] ?? $default_rss_link;
+        $newses = Cache::remember('news-'.$rss_link, 60 * 30, function () use ($rss_link) {
+            if (!$rss_link) return [];
+            $rss = FeedReader::read($rss_link);
             $items = $rss->get_items();
             $newsItems = [];
             foreach ($items as $index => $item) {

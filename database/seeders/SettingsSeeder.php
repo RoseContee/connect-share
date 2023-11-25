@@ -38,6 +38,9 @@ class SettingsSeeder extends Seeder
             'key' => 'profile_banner_image',
             'value' => null,
         ], [
+            'key' => 'rss_link',
+            'value' => 'https://www.ansa.it/sito/ansait_rss.xml',
+        ], [
             'key' => 'shortcut',
             'value' => true,
         ], [

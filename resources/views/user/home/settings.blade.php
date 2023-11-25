@@ -4,6 +4,7 @@
 
 @php
 $currentBanner = getBannerImage($userSettings['home_banner_image'], $settings['home_banner_image'] ?? null);
+$currentRSS = $userSettings['rss_link'] ?? $settings['rss_link'] ?? '';
 @endphp
 
 @section('home-content')
@@ -45,6 +46,19 @@ $currentBanner = getBannerImage($userSettings['home_banner_image'], $settings['h
                                     {{ $message }}
                                 </label>
                             @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="rss_link">RSS Link</label>
+                            <input type="url" id="rss_link" name="rss_link"
+                                   class="form-control @error('rss_link') is-invalid @enderror"
+                                   value="{{ old('rss_link') }}"
+                                   placeholder="RSS Link">
+                            @error('rss_link')
+                                <label for="rss_link" class="text-danger small mb-0 font-weight-normal">
+                                    {{ $message }}
+                                </label>
+                            @enderror
+                            <p><b>Current Link:</b> <a href="{{ $currentRSS }}" target="_blank">{{ $currentRSS }}</a></p>
                         </div>
                     </div>
                     <div class="card-footer">

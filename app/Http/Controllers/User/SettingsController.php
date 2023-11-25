@@ -18,10 +18,14 @@ class SettingsController extends Controller
     public function store(Request $request) {
         $request->validate([
             'banner_image' => ['nullable', 'image'],
+            'rss_link' => ['nullable', 'url'],
         ]);
         $userSettings = $request->user()->intranet;
         if ($request['banner_title']) {
             $userSettings['home_banner_title'] = $request['banner_title'];
+        }
+        if ($request['rss_link']) {
+            $userSettings['rss_link'] = $request['rss_link'];
         }
         if ($request->hasFile('banner_image')) {
             if (getPath($userSettings['home_banner_image'])) {

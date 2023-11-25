@@ -158,6 +158,18 @@ $currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] 
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label for="rss_link">RSS Link <span class="required">*</span></label>
+                                        <input type="url" id="rss_link" name="rss_link" required
+                                               class="form-control @error('rss_link') is-invalid @enderror"
+                                               value="{{ old('rss_link', $settings['rss_link'] ?? '') }}"
+                                               placeholder="RSS Link">
+                                        @error('rss_link')
+                                            <label for="rss_link" class="text-danger small mb-0 font-weight-normal">
+                                                {{ $message }}
+                                            </label>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <div class="form-check">
                                             <input type="checkbox" id="shortcut" name="shortcut"
                                                 class="form-check-input" value="1"

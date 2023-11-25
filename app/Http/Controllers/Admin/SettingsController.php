@@ -27,12 +27,14 @@ class SettingsController extends Controller
             'home_banner_title' => ['required'],
             'home_banner_image' => ['nullable', 'image'],
             'profile_banner_image' => ['nullable', 'image'],
+            'rss_link' => ['required', 'url'],
         ]);
         Setting::saveSetting([
             'contact_email' => $request['contact_email'],
             // 'contact_phone' => $request['contact_phone'],
             'home_banner_title' => $request['home_banner_title'],
             'hide_profile_banner' => !empty($request['hide_banner']),
+            'rss_link' => $request['rss_link'],
             'shortcut' => !empty($request['shortcut']),
         ]);
         $settings = Setting::getSetting(['favicon', 'logo', 'profile_banner_image']);

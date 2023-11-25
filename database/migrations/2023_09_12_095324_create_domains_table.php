@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('home_banner_image')->nullable();
             $table->boolean('hide_profile_banner')->default(false);
             $table->string('profile_banner_image')->nullable();
+            $table->string('rss_link')->nullable();
             $table->string('widgets')->nullable();
             $table->string('token')->nullable();
             $table->string('requested_email')->nullable();

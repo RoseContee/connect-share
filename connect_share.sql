@@ -130,7 +130,7 @@ CREATE TABLE `domains` (
 
 LOCK TABLES `domains` WRITE;
 /*!40000 ALTER TABLE `domains` DISABLE KEYS */;
-INSERT INTO `domains` VALUES (1,'aforadsudmilano.org',2,NULL,NULL,0,'uploads/banner/iDt4zwqG2gVHxg69S48Q0HkRPbtbWkKFcmUvTV5R.png','1,2,3,4','vcThv4r3nOnGeDtwkRKirLsFki7Vl3zQ','pierluigi.pisanti@aforadsudmilano.org',NULL,'active',NULL,'2023-10-23 12:59:29','2023-11-24 21:26:30');
+INSERT INTO `domains` VALUES (1,'aforadsudmilano.org',2,'Welcome to intranet',NULL,0,'uploads/banner/iDt4zwqG2gVHxg69S48Q0HkRPbtbWkKFcmUvTV5R.png','1,2,3,4','vcThv4r3nOnGeDtwkRKirLsFki7Vl3zQ','pierluigi.pisanti@aforadsudmilano.org',NULL,'active',NULL,'2023-10-23 12:59:29','2023-11-25 05:41:19');
 /*!40000 ALTER TABLE `domains` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +219,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2023_09_06_223726_create_admins_table',1),(6,'2023_09_07_180418_create_settings_table',1),(7,'2023_09_12_095324_create_domains_table',1),(8,'2023_09_21_160646_create_useful_links_table',1),(9,'2023_09_21_160715_create_company_documents_table',1),(10,'2023_09_22_165026_create_widget_holiday_requests_table',1),(11,'2023_09_29_181229_create_admin_password_reset_tokens_table',1),(12,'2023_09_29_181422_create_shortcuts_table',1),(13,'2023_11_21_173554_create_widget_alerts_table',2);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2023_09_06_223726_create_admins_table',1),(6,'2023_09_07_180418_create_settings_table',1),(7,'2023_09_12_095324_create_domains_table',1),(8,'2023_09_21_160646_create_useful_links_table',1),(9,'2023_09_21_160715_create_company_documents_table',1),(10,'2023_09_22_165026_create_widget_holiday_requests_table',1),(11,'2023_09_29_181229_create_admin_password_reset_tokens_table',1),(12,'2023_09_29_181422_create_shortcuts_table',1),(13,'2023_11_21_173554_create_widget_corporate_news_table',2);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,7 +352,7 @@ CREATE TABLE `useful_links` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,7 +361,7 @@ CREATE TABLE `useful_links` (
 
 LOCK TABLES `useful_links` WRITE;
 /*!40000 ALTER TABLE `useful_links` DISABLE KEYS */;
-INSERT INTO `useful_links` VALUES (1,'aforadsudmilano.org','https://www.corriere.it','Corriere della Sera','2023-11-23 10:14:01','2023-11-23 10:14:01'),(2,'aforadsudmilano.org','https://www.repubblica.it','Repubblica','2023-11-23 10:14:30','2023-11-23 10:14:30'),(3,'aforadsudmilano.org','https://www.linkedin.com','Linekdin','2023-11-23 18:41:59','2023-11-23 18:41:59');
+INSERT INTO `useful_links` VALUES (1,'aforadsudmilano.org','https://www.corriere.it','Corriere della Sera','2023-11-23 10:14:01','2023-11-23 10:14:01'),(2,'aforadsudmilano.org','https://www.repubblica.it','Repubblica','2023-11-23 10:14:30','2023-11-23 10:14:30'),(3,'aforadsudmilano.org','https://www.linkedin.com','Linekdin','2023-11-23 18:41:59','2023-11-23 18:41:59'),(4,'aforadsudmilano.org','https://connectshare.it/organization','Org Chart','2023-11-25 05:42:02','2023-11-25 05:42:02'),(5,'aforadsudmilano.org','https://connectshare.it/widget/holiday-requests','Holiday Request','2023-11-25 05:43:12','2023-11-25 05:43:12');
 /*!40000 ALTER TABLE `useful_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,18 +405,18 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'114510716024122432257','pierluigi.pisanti@aforadsudmilano.org','pierluigi','pisanti','3387825309','https://lh3.google.com/ao/AOOqTwLYFT28mO83AhBamoRsN-XMNOdcespIQCHwRMKxRe-PC7Td59qdnAe6npDr1Nd9=s96-c','Head of IT Department','IT','0','0','0','107273722462308117379',1,1,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:11','2023-11-24 18:30:41'),(2,'116369677540036106213','admin@aforadsudmilano.org','Pierluigi','Pisanti',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'107273722462308117379',1,1,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(3,'106667401027630338887','antonio.dama@aforadsudmilano.org','Antonio','Dama','3381917446',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(4,'100340775085679770455','enrico.gualdi@aforadsudmilano.org','Enrico','Gualdi','3398292317',NULL,NULL,'Formazione',NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(5,'104823686477522259316','formazione@aforadsudmilano.org','Formazione','Aforad','3474628717',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(6,'113952317719742401178','franco.malanchini@aforadsudmilano.org','Franco','Malanchini','3357281734',NULL,'Tesoriere','FInance',NULL,NULL,NULL,'107273722462308117379',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(7,'105643730176926060463','maurizio.ornaghi@aforadsudmilano.org','Maurizio','Ornaghi','3474628717','https://lh3.googleusercontent.com/a-/ALV-UjU6LwzpspKngYe56OuvrYr4cXT0Isl9CG1HWY_bcGVksQ=s96-c',NULL,NULL,NULL,NULL,NULL,'107273722462308117379',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(8,'100572751295620359298','paolo.castagna@aforadsudmilano.org','paolo','castagna','3479670028','https://lh3.google.com/ao/AOOqTwLAic2i6jmtEOZUuaiFEJyNxF5Bfqe5SaBP9Ucf1iwHLTYPlniAU1ywlHAGL0_O=s96-c','IT manager','IT',NULL,NULL,NULL,'114510716024122432257',1,1,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(9,'107273722462308117379','presidente@aforadsudmilano.org','Ivan','Brivio','3281003080','https://lh3.googleusercontent.com/a-/ALV-UjVHjEuJsiTeiWCD78gVaRvo2lH1ChSgiGgiZxBQc_GUQQ=s96-c','Presidente',NULL,NULL,NULL,NULL,NULL,1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(10,'102334154634005897898','segreteria@aforadsudmilano.org','segreteria','aforad',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(11,'117270652333808361548','tesoreria@aforadsudmilano.org','Tesoreria','Aforad','3357281734',NULL,NULL,NULL,NULL,NULL,NULL,'113952317719742401178',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(12,'112211604848499509887','test.rubrica@aforadsudmilano.org','test','rubrica',NULL,'https://lh3.googleusercontent.com/a-/ALV-UjU7Vrpqu3OViycvMzVvnbLQljvNJe5bVeBKWNq4Yr2xZg=s96-c',NULL,NULL,NULL,NULL,NULL,'114510716024122432257',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(13,'105563183055311395607','walter.broleri@aforadsudmilano.org','walter','broleri','3285641487',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(14,'116800362237243583864','zoom@aforadsudmilano.org','Zoom','Aforad','3479670028',NULL,NULL,NULL,NULL,NULL,NULL,'100572751295620359298',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(15,'113938323130778770118','zoomaforad@aforadsudmilano.org','Aforad','Zoom',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'100572751295620359298',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16');
+INSERT INTO `users` VALUES (1,'114510716024122432257','pierluigi.pisanti@aforadsudmilano.org','pierluigi','pisanti','3387825309','https://lh3.google.com/ao/AOOqTwLYFT28mO83AhBamoRsN-XMNOdcespIQCHwRMKxRe-PC7Td59qdnAe6npDr1Nd9=s96-c','Head of IT Department','IT','1250','0','0','107273722462308117379',1,1,'aforadsudmilano.org','ya29.a0AfB_byCT9pbzca9hb6kJo5tCdjz0E2XSiJlllq4VDgfQaxl3z1dPFYFTxT-tFlMbKBK0B7sGDKe1OCtS6zdjEq6MrLyZVGPZYh5Og8tfyq3TS1kmKWpRAHKPyoFTOeC5ms1RlkOEzIp0ch2Lz9xsLch9_Rc43n1dmMsaCgYKAeoSARASFQHGX2Misc6-UlourrcPrKUn7g7MGA0170',NULL,NULL,'2023-10-23 13:11:11','2023-11-25 09:14:05'),(2,'116369677540036106213','admin@aforadsudmilano.org','Pierluigi','Pisanti',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'107273722462308117379',1,1,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(3,'106667401027630338887','antonio.dama@aforadsudmilano.org','Antonio','Dama','3381917446',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(4,'100340775085679770455','enrico.gualdi@aforadsudmilano.org','Enrico','Gualdi','3398292317',NULL,NULL,'Formazione',NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(5,'104823686477522259316','formazione@aforadsudmilano.org','Formazione','Aforad','3474628717',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(6,'113952317719742401178','franco.malanchini@aforadsudmilano.org','Franco','Malanchini','3357281734',NULL,'Tesoriere','FInance',NULL,NULL,NULL,'107273722462308117379',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(7,'105643730176926060463','maurizio.ornaghi@aforadsudmilano.org','Maurizio','Ornaghi','3474628717','https://lh3.googleusercontent.com/a-/ALV-UjU6LwzpspKngYe56OuvrYr4cXT0Isl9CG1HWY_bcGVksQ=s96-c',NULL,NULL,NULL,NULL,NULL,'107273722462308117379',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(8,'100572751295620359298','paolo.castagna@aforadsudmilano.org','paolo','castagna','3479670028','https://lh3.google.com/ao/AOOqTwLAic2i6jmtEOZUuaiFEJyNxF5Bfqe5SaBP9Ucf1iwHLTYPlniAU1ywlHAGL0_O=s96-c','IT manager','IT',NULL,NULL,NULL,'114510716024122432257',1,1,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(9,'107273722462308117379','presidente@aforadsudmilano.org','Ivan','Brivio','3281003080','https://lh3.googleusercontent.com/a-/ALV-UjVHjEuJsiTeiWCD78gVaRvo2lH1ChSgiGgiZxBQc_GUQQ=s96-c','Presidente',NULL,NULL,NULL,NULL,NULL,1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(10,'102334154634005897898','segreteria@aforadsudmilano.org','segreteria','aforad',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(11,'117270652333808361548','tesoreria@aforadsudmilano.org','Tesoreria','Aforad','3357281734',NULL,NULL,NULL,NULL,NULL,NULL,'113952317719742401178',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(12,'112211604848499509887','test.rubrica@aforadsudmilano.org','test','rubrica',NULL,'https://lh3.googleusercontent.com/a-/ALV-UjU7Vrpqu3OViycvMzVvnbLQljvNJe5bVeBKWNq4Yr2xZg=s96-c',NULL,NULL,NULL,NULL,NULL,'114510716024122432257',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(13,'105563183055311395607','walter.broleri@aforadsudmilano.org','walter','broleri','3285641487',NULL,NULL,NULL,NULL,NULL,NULL,'105643730176926060463',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(14,'116800362237243583864','zoom@aforadsudmilano.org','Zoom','Aforad','3479670028',NULL,NULL,NULL,NULL,NULL,NULL,'100572751295620359298',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16'),(15,'113938323130778770118','zoomaforad@aforadsudmilano.org','Aforad','Zoom',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'100572751295620359298',1,0,'aforadsudmilano.org',NULL,NULL,NULL,'2023-10-23 13:11:16','2023-10-23 13:11:16');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `widget_alerts`
+-- Table structure for table `widget_corporate_news`
 --
 
-DROP TABLE IF EXISTS `widget_alerts`;
+DROP TABLE IF EXISTS `widget_corporate_news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `widget_alerts` (
+CREATE TABLE `widget_corporate_news` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `domain` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
@@ -431,13 +431,13 @@ CREATE TABLE `widget_alerts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `widget_alerts`
+-- Dumping data for table `widget_corporate_news`
 --
 
-LOCK TABLES `widget_alerts` WRITE;
-/*!40000 ALTER TABLE `widget_alerts` DISABLE KEYS */;
-INSERT INTO `widget_alerts` VALUES (1,'aforadsudmilano.org','pierluigi.pisanti@aforadsudmilano.org','ya29.a0AfB_byB-OTeGLgmtt2p6ncfeyI5otDk79ZyxnV93Q-iTRWzSwmmmIIe5z3o0aa6nMUKl3E4uIUK6VqI4YDrL3gE5mea3nXw6uZ_mlUu2yuz7s2VRYBA2fnC0hFqVbU4CESJm2eid_5xvXZdLT0axdXmeBnwrsuI5LKUw4AaCgYKATQSARASFQHGX2Mi1Zbu7lBzBDH-Xlt_a92Wqg0173','1//09EUKYpzOHvG3CgYIARAAGAkSNwF-L9IrNngzIhvKytXjMl2BBnfN11NucJKgNE94vXXk8D8nlnXi8eC1_usG9nX6VOG8mIeIplM','2023-11-23 10:08:51','2023-11-24 21:03:40',NULL);
-/*!40000 ALTER TABLE `widget_alerts` ENABLE KEYS */;
+LOCK TABLES `widget_corporate_news` WRITE;
+/*!40000 ALTER TABLE `widget_corporate_news` DISABLE KEYS */;
+INSERT INTO `widget_corporate_news` VALUES (1,'aforadsudmilano.org','pierluigi.pisanti@aforadsudmilano.org','ya29.a0AfB_byDKu20fG69YqV5PspxJarqzhokI_xn08z91Q5AjC4ck1Jhx0ObVtuJfdJ8yoemkNIMgq0tO1xzpZIkicfTuOGeMRS3ELkDPB-3jft2iZW11nSnMAMwJRsUqMt09kavlueu2K0YD7VyhlWgYiihsjI0QlZmRalPj_QaCgYKAZMSARASFQHGX2MiqJSwv25mjh2Zfxa2DMIGaA0173','1//09EUKYpzOHvG3CgYIARAAGAkSNwF-L9IrNngzIhvKytXjMl2BBnfN11NucJKgNE94vXXk8D8nlnXi8eC1_usG9nX6VOG8mIeIplM','2023-11-23 10:08:51','2023-11-25 09:14:06',NULL);
+/*!40000 ALTER TABLE `widget_corporate_news` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -484,4 +484,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-25  0:00:52
+-- Dump completed on 2023-11-25 11:27:01

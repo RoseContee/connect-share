@@ -16,23 +16,23 @@ class HomeController extends Controller
 
     public function index() {
         $user = User::with([
-            'alert',
+            'corporateNews',
             'links' => function ($query) {
                 $query->orderBy('updated_at', 'desc')->limit(5);
             }
         ])->find(auth()->id());
-        $alerts = [];
-        if ($user->hasWidget(Widgets::ALERTS) && ($alert = $user['alert'])) {
-            $alerts = Cache::remember($alert['email'].'-alerts', $this->alertsLifetime, function () use ($alert) {
-                $google = new Google($alert['access_token'], $alert['refresh_token']);
-                $alerts = $google->getEvents($alert['email']);
-                $google->saveAuthUserToken($alert);
-                return $alerts;
+        $corporateNewses = [];
+        if ($user->hasWidget(Widgets::CORPORATE_NEWS) && ($corporate = $user['alert'])) {
+            $corporateNewses = Cache::remember($corporate['email'].'-corporate', $this->alertsLifetime, function () use ($corporate) {
+                $google = new Google($corporate['access_token'], $corporate['refresh_token']);
+                $corporateNewses = $google->getEvents($corporate['email']);
+                $google->saveAuthUserToken($corporate);
+                return $corporateNewses;
             });
         }
         $myEvents = Cache::remember($user['email'].'-own', $this->alertsLifetime, function () use ($user) {
             $google = new Google($user['access_token'], $user['refresh_token']);
-            $myEvents = $google->getEvents($user['email'], $user->hasWidget(Widgets::ALERTS) ? 1 : 3);
+            $myEvents = $google->getEvents($user['email'], $user->hasWidget(Widgets::CORPORATE_NEWS) ? 1 : 3);
             $google->saveAuthUserToken($user);
             return $myEvents;
         });
@@ -57,7 +57,7 @@ class HomeController extends Controller
             return $newses;
         });
         return view('user.home.index', [
-            'alerts' => $alerts,
+            'corporateNewses' => $corporateNewses,
             'myEvents' => $myEvents,
             'links' => $user['links'],
             'newses' => $newses,

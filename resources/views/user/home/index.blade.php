@@ -65,17 +65,17 @@ $user = request()->user();
                     </div>
                 </div>
                 <div class="row">
-                    @if ($user->hasWidget(Widgets::ALERTS))
-                        @include('user.home.widgets.alerts.index', [
+                    @if ($user->hasWidget(Widgets::CORPORATE_NEWS))
+                        @include('user.home.widgets.corporate-news.index', [
                             'class' => 'col-md-8 mt-5',
-                            'alerts' => $alerts,
+                            'newses' => $corporateNewses,
                         ])
                     @endif
-                    <div class="@if ($user->hasWidget(Widgets::ALERTS)) col-md-4 @else col-md-12 @endif mt-5">
+                    <div class="@if ($user->hasWidget(Widgets::CORPORATE_NEWS)) col-md-4 @else col-md-12 @endif mt-5">
                         <h5>Upcoming meetings</h5>
                         <div class="row">
                             @forelse ($myEvents as $event)
-                                <div class="@if ($user->hasWidget(Widgets::ALERTS)) col-md-12 @else col-md-4 @endif">
+                                <div class="@if ($user->hasWidget(Widgets::CORPORATE_NEWS)) col-md-12 @else col-md-4 @endif">
                                     <div class="callout callout-success d-flex align-items-center bg-gray-light p-2 mb-2">
                                         <div class="text-center px-2 py-1 mr-2">
                                             <h6 class="text-nowrap m-0">{{ date('j M', strtotime($event['date'])) }}</h6>

@@ -127,11 +127,11 @@ $profilePage = request()->route()->getName() === 'profile';
                                 </li>
                             @endif
                         @endif
-                        @if ($user['is_admin'] && $user->hasWidget(Widgets::ALERTS))
+                        @if ($user['is_admin'] && $user->hasWidget(Widgets::CORPORATE_NEWS))
                             <li class="nav-item">
-                                <a href="{{ route('widget.alerts') }}" class="nav-link @if ($menu == 'WidgetAlerts') active @endif">
+                                <a href="{{ route('widget.corporate-news') }}" class="nav-link @if ($menu == 'WidgetCorporateNews') active @endif">
                                     <i class="nav-icon fas fa-calendar-week"></i>
-                                    <p>Alerts Setting</p>
+                                    <p>Corporate News Setting</p>
                                 </a>
                             </li>
                         @endif

@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\Widgets\HolidayRequestController as WidgetHolidayRequest;
 use App\Http\Controllers\User\Widgets\HolidayApprovalController as WidgetHolidayApproval;
 use App\Http\Controllers\User\Widgets\WeatherController as WidgetWeather;
-use App\Http\Controllers\User\Widgets\AlertsController as WidgetAlerts;
+use App\Http\Controllers\User\Widgets\CorporateNewsController as WidgetCorporateNews;
 
 /*
 |--------------------------------------------------------------------------
@@ -140,15 +140,15 @@ Route::group([
         });
 
         Route::group([
-            'middleware' => ['auth', 'widget:'.Widgets::ALERTS],
+            'middleware' => ['auth', 'widget:'.Widgets::CORPORATE_NEWS],
         ], function () {
-            Route::get('alerts', [WidgetAlerts::class, 'index'])
-                ->name('alerts');
-            Route::get('alerts/auth/google', [WidgetAlerts::class, 'login'])
-                ->name('alerts.auth.google');
-            Route::get('alerts/auth/google/callback', [WidgetAlerts::class, 'callback'])
-                ->name('alerts.auth.google.callback');
-            Route::delete('alerts', [WidgetAlerts::class, 'destroy']);
+            Route::get('corporate-news', [WidgetCorporateNews::class, 'index'])
+                ->name('corporate-news');
+            Route::get('corporate-news/auth/google', [WidgetCorporateNews::class, 'login'])
+                ->name('corporate-news.auth.google');
+            Route::get('corporate-news/auth/google/callback', [WidgetCorporateNews::class, 'callback'])
+                ->name('corporate-news.auth.google.callback');
+            Route::delete('corporate-news', [WidgetCorporateNews::class, 'destroy']);
         });
     });
 });

@@ -6,20 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
-class AlertsController extends Controller
+class CorporateNewsController extends Controller
 {
     protected string $redirectUrl;
 
     public function __construct() {
-        $this->redirectUrl = route('widget.alerts.auth.google.callback').'/';
+        $this->redirectUrl = route('widget.corporate-news.auth.google.callback').'/';
 
-        view()->share('menu', 'WidgetAlerts');
+        view()->share('menu', 'WidgetCorporateNews');
     }
 
     public function index(Request $request) {
-        $alert = $request->user()->alert;
-        return view('user.home.widgets.alerts.setting', [
-            'alert' => $alert,
+        $corporateNews = $request->user()->corporateNews;
+        return view('user.home.widgets.corporate-news.setting', [
+            'corporateNews' => $corporateNews,
         ]);
     }
 
@@ -48,7 +48,7 @@ class AlertsController extends Controller
         if (($email == $user['email']) && !$refreshToken) {
             $refreshToken = $user['refresh_token'];
         }
-        $alert = $user->alert()
+        $corporateNews = $user->corporateNews()
             ->withTrashed()
             ->updateOrCreate([
                 'domain' => $user['domain'],
@@ -58,14 +58,14 @@ class AlertsController extends Controller
                 'refresh_token' => $refreshToken,
                 'deleted_at' => null,
             ]);
-        $alert->restore();
-        return redirect()->route('widget.alerts')
+        $corporateNews->restore();
+        return redirect()->route('widget.corporate-news')
             ->with('success_message', 'Calendar has been connected.');
     }
 
     public function destroy(Request $request) {
-        if ($alert = $request->user()->alert) {
-            $alert->delete();
+        if ($corporateNews = $request->user()->corporateNews) {
+            $corporateNews->delete();
         }
         return back()->with('error_message', 'The account has been removed.');
     }

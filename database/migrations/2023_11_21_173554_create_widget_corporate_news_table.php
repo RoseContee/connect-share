@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('widget_alerts', function (Blueprint $table) {
+        Schema::create('widget_corporate_news', function (Blueprint $table) {
             $table->id();
             $table->string('domain')->unique();
             $table->string('email')->nullable();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('widget_alerts');
+        Schema::dropIfExists('widget_corporate_news');
     }
 };

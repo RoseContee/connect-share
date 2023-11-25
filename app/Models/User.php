@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Widgets\Alert as WidgetAlert;
+use App\Models\Widgets\CorporateNews as WidgetCorporateNews;
 use App\Models\Widgets\HolidayRequest as WidgetHolidayRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -65,8 +65,8 @@ class User extends Authenticatable
         return $this->hasMany(WidgetHolidayRequest::class, 'manager_id', 'google_id');
     }
 
-    public function alert() {
-        return $this->belongsTo(WidgetAlert::class, 'domain', 'domain');
+    public function corporateNews() {
+        return $this->belongsTo(WidgetCorporateNews::class, 'domain', 'domain');
     }
 
     public function hasWidget($widget) {

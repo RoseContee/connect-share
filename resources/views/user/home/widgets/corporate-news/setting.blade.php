@@ -1,28 +1,28 @@
 @extends('user.home.layouts')
 
-@section('title', 'Connect alerts account')
+@section('title', 'Connect corporate news account')
 
 @section('home-content')
     <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Connect alerts account</h3>
+                    <h3 class="card-title">Connect corporate news account</h3>
                 </div>
                 <div class="card-body">
-                    @if (!$alert)
+                    @if (!$corporateNews)
                         <p class="mb-0">
                             Please connect the calendar to show alerts to all members.
                         </p>
                     @else
                         <p class="mb-0">
-                            <b>{{ $alert['email'] }}</b> has been connected.
+                            <b>{{ $corporateNews['email'] }}</b> has been connected.
                         </p>
                     @endif
                 </div>
                 <div class="card-footer">
-                    @if (!$alert)
-                        <a href="{{ route('widget.alerts.auth.google') }}" class="btn btn-primary">
+                    @if (!$corporateNews)
+                        <a href="{{ route('widget.corporate-news.auth.google') }}" class="btn btn-primary">
                             Connect
                         </a>
                     @else
@@ -38,12 +38,12 @@
         </div>
     </div>
 
-    @if ($alert)
+    @if ($corporateNews)
         <!-- Delete Modal -->
         <div id="delete-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="{{ route('widget.alerts') }}" method="POST">
+                    <form action="{{ route('widget.corporate-news') }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <div class="modal-header">

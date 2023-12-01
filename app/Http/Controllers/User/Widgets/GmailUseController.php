@@ -18,16 +18,12 @@ class GmailUseController extends Controller
     }
 
     public function index(Request $request) {
-        Cache::forget($this->membersKey);
-        Cache::forget($this->orgunitsKey);
         $user = $request->user();
         $google = new Google($user['access_token'], $user['refresh_token']);
-        $members = Cache::remember($this->membersKey, 3600, function () use ($user, $google) {
-            return $google->getUsers($user['domain']);
-        });
-        $orgunits = Cache::remember($this->orgunitsKey, 3600, function () use ($google) {
-            return $google->getOrgunits();
-        });
+        $members = $google->getUsers($user['domain']);
+        $orgunits = $google->getOrgunits();
+        Cache::put($this->membersKey, $members);
+        Cache::put($this->orgunitsKey, $orgunits);
         return view('user.home.widgets.gmail-use', [
             'members' => $members,
             'orgunits' => $orgunits,
@@ -37,16 +33,15 @@ class GmailUseController extends Controller
     public function update(Request $request) {
         $user = $request->user();
         $google = new Google($user['access_token'], $user['refresh_token']);
-        $members = Cache::remember($this->membersKey, 3600, function () use ($user, $google) {
-            return $google->getUsers($user['domain']);
-        });
+        $members = Cache::get($this->membersKey, []);
+        $orgunits = Cache::get($this->orgunitsKey, []);
+        if (empty($members) || empty($orgunits)) {
+            return back()->with('error_message', 'Something went wrong.');
+        }
         $emails = [];
         foreach ($members as $member) {
             $emails[] = $member['primaryEmail'];
         }
-        $orgunits = Cache::remember($this->orgunitsKey, 3600, function () use ($google) {
-            return $google->getOrgunits();
-        });
         $rule = [
             'members' => ['required', 'array'],
             'members.*' => ['email', 'in:'.implode(',', $emails)],

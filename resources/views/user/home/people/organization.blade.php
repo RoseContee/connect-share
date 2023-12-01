@@ -26,97 +26,93 @@ $user = request()->user();
     </div>
 
     @if ($user['is_admin'])
-    <!-- User Info Modal -->
-    <div id="user-info-modal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title"></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="user_avatar" class="text-center">
-                        <img src="" alt="Profile Picture"
-                             class="profile-user-img img-fluid img-circle">
-                    </div>
-                    <div id="default_avatar" class="text-center" style="display: none;">
-                        <img src="{{ asset('assets/img/profile.png') }}" alt="Profile Picture"
-                             class="profile-user-img img-fluid img-circle">
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12 py-1">
-                            <div class="row">
-                                <div class="col-4"><b>Given Name:</b></div>
-                                <div id="given_name" class="col-8"></div>
-                            </div>
-                        </div>
-                        <div class="col-12 py-1">
-                            <div class="row">
-                                <div class="col-4"><b>Surname:</b></div>
-                                <div id="family_name" class="col-8"></div>
-                            </div>
-                        </div>
-                        <div class="col-12 py-1">
-                            <div class="row">
-                                <div class="col-4"><b>Title:</b></div>
-                                <div id="org_title" class="col-8"></div>
-                            </div>
-                        </div>
-                        <div class="col-12 py-1">
-                            <div class="row">
-                                <div class="col-4"><b>Department:</b></div>
-                                <div id="org_department" class="col-8"></div>
-                            </div>
-                        </div>
-                        <div class="col-12 py-1">
-                            <div class="row">
-                                <div class="col-4"><b>Email:</b></div>
-                                <div id="user_email" class="col-8"></div>
-                            </div>
-                        </div>
-                        <div class="col-12 py-1">
-                            <div class="row">
-                                <div class="col-4"><b>Phone:</b></div>
-                                <div id="user_phone" class="col-8"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- User Hide Modal -->
-    <div id="user-hide-modal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ route('organization') }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <input type="hidden" name="user">
+        <!-- User Info Modal -->
+        <div id="user-info-modal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Remove User</h4>
+                        <h4 class="modal-title"></h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure to remove this user from organization chart?</p>
+                        <div class="text-center">
+                            <img id="user_avatar" src="" alt="Avatar"
+                                 class="profile-user-img img-fluid img-circle">
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12 py-1">
+                                <div class="row">
+                                    <div class="col-4"><b>Given Name:</b></div>
+                                    <div id="given_name" class="col-8"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 py-1">
+                                <div class="row">
+                                    <div class="col-4"><b>Surname:</b></div>
+                                    <div id="family_name" class="col-8"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 py-1">
+                                <div class="row">
+                                    <div class="col-4"><b>Title:</b></div>
+                                    <div id="org_title" class="col-8"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 py-1">
+                                <div class="row">
+                                    <div class="col-4"><b>Department:</b></div>
+                                    <div id="org_department" class="col-8"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 py-1">
+                                <div class="row">
+                                    <div class="col-4"><b>Email:</b></div>
+                                    <div id="user_email" class="col-8"></div>
+                                </div>
+                            </div>
+                            <div class="col-12 py-1">
+                                <div class="row">
+                                    <div class="col-4"><b>Phone:</b></div>
+                                    <div id="user_phone" class="col-8"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                        <button type="submit" class="btn btn-danger">Yes</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
+
+        <!-- User Hide Modal -->
+        <div id="user-hide-modal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('organization') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="user">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Remove User</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure to remove this user from organization chart?</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     @endif
 @endsection
 
@@ -133,11 +129,10 @@ $user = request()->user();
             const nodeTemplate = function (node) {
                 const isAdmin = {{ $user['is_admin'] ? 1 : 0 }};
                 const children = node.children?.length || 0;
-                const avatar = node.avatar;
                 return `
                     <div class="card" data-admin="${ !!node.isAdmin }" data-children="${ children }">
                         <div class="card-body">
-                            ${ avatar ? `<div class="avatar"><img src="${ avatar }" alt="avatar"></div>` : '' }
+                            <div class="avatar"><img src="${ node.avatar }" alt="avatar"></div>
                             ${ node.name }
                             <div class="info">
                                 <span class="user-info">
@@ -216,10 +211,7 @@ $user = request()->user();
                 const user = getUser(orgChartData, selectedUserId);
                 const $modal = $('#user-info-modal');
                 $modal.find('.modal-title').text(user?.name ?? '');
-                $modal.find('#user_avatar').hide().find('img').attr('src', user?.avatar);
-                $modal.find('#default_avatar').hide();
-                if (user?.avatar) $modal.find('#user_avatar').show();
-                else $modal.find('#default_avatar').show();
+                $modal.find('#user_avatar').attr('src', user?.avatar);
                 $modal.find('#given_name').text(user?.given_name ?? '');
                 $modal.find('#family_name').text(user?.family_name ?? '');
                 $modal.find('#org_title').text(user?.org_title ?? '');

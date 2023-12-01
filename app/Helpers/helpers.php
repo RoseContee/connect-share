@@ -1,10 +1,7 @@
 <?php
 if (!function_exists('getPath')) {
     function getPath($file) {
-        if (is_file(public_path($file))) {
-            return $file;
-        }
-        return null;
+        return is_file(public_path($file)) ? $file : null;
     }
 }
 
@@ -20,18 +17,9 @@ if (!function_exists('getLogo')) {
     }
 }
 
-if (!function_exists('getDefaultBannerImage')) {
-    function getDefaultBannerImage($image): string {
-        return asset(getPath($image) ?? 'assets/img/banner-bg.jpg');
-    }
-}
-
 if (!function_exists('getBannerImage')) {
-    function getBannerImage($image, $setting): string {
-        if ($image = getPath($image)) {
-            return asset($image);
-        }
-        return getDefaultBannerImage($setting);
+    function getBannerImage($image, $default = null): string {
+        return asset(getPath($image) ?? getPath($default) ?? 'assets/img/banner-bg.jpg');
     }
 }
 

@@ -28,9 +28,7 @@ class SettingsController extends Controller
             $userSettings['rss_link'] = $request['rss_link'];
         }
         if ($request->hasFile('banner_image')) {
-            if (getPath($userSettings['home_banner_image'])) {
-                unlink(public_path($userSettings['home_banner_image']));
-            }
+            $userSettings->unlinkHomeBanner();
             $userSettings['home_banner_image'] = 'uploads/'.$request->file('banner_image')->store('banner');
         }
         $userSettings->save();

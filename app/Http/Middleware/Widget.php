@@ -18,7 +18,7 @@ class Widget
     {
         if (
             in_array($request->route()->getName(), [
-                'widget.manager-accept-holiday-from-email', 'widget.manager-reject-holiday-from-email'
+                'widget.holiday-approvals.accept-from-email', 'widget.holiday-approvals.reject-from-email'
             ])
         ) {
             $token = $request->route()->parameter('token');

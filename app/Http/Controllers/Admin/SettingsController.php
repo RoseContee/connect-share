@@ -21,7 +21,7 @@ class SettingsController extends Controller
     public function store(Request $request) {
         $request->validate([
             'favicon' => ['nullable', 'image'],
-            // 'logo' => ['nullable', 'image'],
+            'logo' => ['nullable', 'image'],
             'contact_email' => ['required', 'email'],
             // 'contact_phone' => ['required'],
             'home_banner_title' => ['required'],
@@ -45,13 +45,13 @@ class SettingsController extends Controller
             $favicon = 'uploads/'.$request->file('favicon')->store('settings');
             Setting::saveSetting('favicon', $favicon);
         }
-        /*if ($request->hasFile('logo')) {
+        if ($request->hasFile('logo')) {
             if (getPath($settings['logo'])) {
                 unlink(public_path($settings['logo']));
             }
             $logo = 'uploads/'.$request->file('logo')->store('settings');
             Setting::saveSetting('logo', $logo);
-        }*/
+        }
         if ($request->hasFile('home_banner_image')) {
             if (getPath($settings['home_banner_image'])) {
                 unlink(public_path($settings['home_banner_image']));

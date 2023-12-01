@@ -12,10 +12,11 @@ $profilePage = request()->route()->getName() === 'profile';
 @section('content')
     <div class="wrapper">
         <div class="main-header">
-            @if (empty($settings['hide_banner']) && empty($user['intranet']['hide_profile_banner']) && $profilePage)
-                <div class="banner"
-                     style="background-image: url('{{ getBannerImage($user['intranet']['profile_banner_image'] ?? null, $settings['profile_banner_image'] ?? '') }}')">
-                </div>
+            @if ($profilePage && empty($settings['hide_banner']) && empty($user['intranet']['hide_profile_banner']))
+                @php
+                    $banner = getBannerImage($user['intranet']['profile_banner_image'] ?? null, $settings['profile_banner_image'] ?? null);
+                @endphp
+                <div class="banner" style="background-image: url('{{ $banner }}')"></div>
             @endif
             <!-- Navbar -->
             <nav class="navbar navbar-expand navbar-white navbar-light">
@@ -36,10 +37,7 @@ $profilePage = request()->route()->getName() === 'profile';
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-primary elevation-4">
             <a href="{{ route('home') }}" class="brand-link text-center">
-                {{--<span class="font-weight-bold text-uppercase">
-                    {{ config('app.name') }}
-                </span>--}}
-                <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="img-fluid" />
+                <img src="{{ getLogo($settings['logo'] ?? null) }}" alt="Logo" class="img-fluid" />
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
@@ -52,8 +50,8 @@ $profilePage = request()->route()->getName() === 'profile';
                                 <p>Profile</p>
                             </a>
                         </li>
-                        <li class="nav-item @if ($menu == 'People') menu-open @endif">
-                            <a href="#" class="nav-link @if ($menu == 'People') active @endif">
+                        <li class="nav-item @if (in_array($menu, ['PeopleMembers', 'PeopleOrganization'])) menu-open @endif">
+                            <a href="#" class="nav-link @if (in_array($menu, ['PeopleMembers', 'PeopleOrganization'])) active @endif">
                                 <i class="nav-icon fas fa-user-friends"></i>
                                 <p>
                                     People
@@ -63,23 +61,31 @@ $profilePage = request()->route()->getName() === 'profile';
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('members') }}"
-                                       class="nav-link pl-4 @if (($submenu ?? '') == 'Members') active @endif">
+                                       class="nav-link pl-4 @if ($menu == 'PeopleMembers') active @endif">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>Members</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('organization') }}"
-                                       class="nav-link pl-4 @if (($submenu ?? '') == 'Organization') active @endif">
+                                       class="nav-link pl-4 @if ($menu == 'PeopleOrganization') active @endif">
                                         <i class="nav-icon fas fa-sitemap"></i>
                                         <p>Organization Chart</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        @if ($user['is_admin'] && $user->hasWidget(Widgets::GMAIL_USE))
+                            <li class="nav-item">
+                                <a href="{{ route('widget.gmail-use') }}" class="nav-link @if ($menu == 'WidgetGmailUse') active @endif">
+                                    <i class="nav-icon fab fa-google"></i>
+                                    <p>Gmail Use</p>
+                                </a>
+                            </li>
+                        @endif
                         @if ($user->hasWidget(Widgets::HOLIDAY_REQUEST))
-                            <li class="nav-item @if ($menu == 'Request') menu-open @endif">
-                                <a href="#" class="nav-link @if ($menu == 'Request') active @endif">
+                            <li class="nav-item @if ($menu == 'WidgetHolidayRequest') menu-open @endif">
+                                <a href="#" class="nav-link @if ($menu == 'WidgetHolidayRequest') active @endif">
                                     <i class="nav-icon fas fa-paper-plane"></i>
                                     <p>
                                         Request
@@ -89,7 +95,7 @@ $profilePage = request()->route()->getName() === 'profile';
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a href="{{ route('widget.holiday-requests') }}"
-                                           class="nav-link pl-4 @if (($submenu ?? '') == 'WidgetHolidayRequest') active @endif">
+                                           class="nav-link pl-4 @if ($menu == 'WidgetHolidayRequest') active @endif">
                                             <i class="nav-icon fas fa-plane"></i>
                                             <p>Holiday Request</p>
                                         </a>
@@ -97,42 +103,31 @@ $profilePage = request()->route()->getName() === 'profile';
                                 </ul>
                             </li>
                         @endif
-                        @if ($user->hasWidget(Widgets::HOLIDAY_REQUEST) && request()->user_members_number)
-                            @php
-                                $holiday_requests_number = request()->holiday_requests_number;
-                                $total = $holiday_requests_number;
-                            @endphp
-                            @if ($total)
-                                <li class="nav-item @if ($menu == 'Approval') menu-open @endif">
-                                    <a href="#" class="nav-link @if ($menu == 'Approval') active @endif">
-                                        <i class="nav-icon fas fa-user-check"></i>
-                                        <p>
-                                            Approval
-                                            <i class="fas fa-angle-left right"></i>
-                                            <span class="badge badge-info right">{{ $total }}</span>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="{{ route('widget.holiday-approvals') }}"
-                                               class="nav-link pl-4 @if (($submenu ?? '') == 'WidgetHolidayApproval') active @endif">
-                                                <i class="nav-icon fas fa-plane"></i>
-                                                <p>
-                                                    Holiday Approval
-                                                    <span class="badge badge-info right">{{ $holiday_requests_number }}</span>
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endif
-                        @endif
-                        @if ($user['is_admin'] && $user->hasWidget(Widgets::CORPORATE_NEWS))
-                            <li class="nav-item">
-                                <a href="{{ route('widget.corporate-news') }}" class="nav-link @if ($menu == 'WidgetCorporateNews') active @endif">
-                                    <i class="nav-icon fas fa-calendar-week"></i>
-                                    <p>Corporate News Setting</p>
+                        @if ($user->hasWidget(Widgets::HOLIDAY_REQUEST)
+                            && request()->user_members_number
+                            && ($requests_number = request()->holiday_requests_number)
+                        )
+                            <li class="nav-item @if ($menu == 'WidgetHolidayApproval') menu-open @endif">
+                                <a href="#" class="nav-link @if ($menu == 'WidgetHolidayApproval') active @endif">
+                                    <i class="nav-icon fas fa-user-check"></i>
+                                    <p>
+                                        Approval
+                                        <i class="fas fa-angle-left right"></i>
+                                        <span class="badge badge-info right">{{ $requests_number }}</span>
+                                    </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('widget.holiday-approvals') }}"
+                                           class="nav-link pl-4 @if ($menu == 'WidgetHolidayApproval') active @endif">
+                                            <i class="nav-icon fas fa-plane"></i>
+                                            <p>
+                                                Holiday Approval
+                                                <span class="badge badge-info right">{{ $requests_number }}</span>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         @endif
                         <li class="nav-item">
@@ -147,6 +142,14 @@ $profilePage = request()->route()->getName() === 'profile';
                                 <p>Company Documents</p>
                             </a>
                         </li>
+                        @if ($user['is_admin'] && $user->hasWidget(Widgets::CORPORATE_NEWS))
+                            <li class="nav-item">
+                                <a href="{{ route('widget.corporate-news') }}" class="nav-link @if ($menu == 'WidgetCorporateNews') active @endif">
+                                    <i class="nav-icon fas fa-calendar-week"></i>
+                                    <p>Corporate News Setting</p>
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a href="{{ route('settings.index') }}" class="nav-link @if ($menu == 'Settings') active @endif">
                                 <i class="nav-icon fas fa-cogs"></i>
@@ -174,7 +177,7 @@ $profilePage = request()->route()->getName() === 'profile';
 
         @include('user.home.partials.footer', ['class' => 'main-footer'])
 
-        @if ($settings['shortcut'])
+        @if (!empty($settings['shortcut']))
             @include('user.home.partials.short-cut-links')
         @endif
     </div>

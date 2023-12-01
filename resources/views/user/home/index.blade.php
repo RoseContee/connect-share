@@ -1,5 +1,7 @@
 @extends('user.layouts')
 
+@section('title', 'Welcome')
+
 @php
 $user = request()->user();
 @endphp
@@ -11,7 +13,7 @@ $user = request()->user();
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="navbar-brand" href="/">
-                            <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="navbar-img" />
+                            <img src="{{ getLogo($settings['logo'] ?? null) }}" alt="Logo" class="navbar-img" />
                         </a>
                     </li>
                 </ul>
@@ -19,7 +21,7 @@ $user = request()->user();
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                            <img src="{{ $user['avatar'] ?? asset('assets/img/profile.png') }}" alt="Profile"
+                            <img src="{{ $user['avatar'] }}" alt="Avatar"
                                  class="navbar-img img-circle w-auto border" />
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -38,10 +40,12 @@ $user = request()->user();
                 <div class="row">
                     <div class="col-md-8">
                         <div class="home-banner d-none d-md-flex align-items-end">
-                            <img src="{{ getBannerImage($user['intranet']['home_banner_image'], $settings['home_banner_image'] ?? null) }}"
-                                 alt="Image" />
+                            @php
+                                $banner = getBannerImage($user['intranet']['home_banner_image'] ?? null, $settings['home_banner_image'] ?? null);
+                            @endphp
+                            <img src="{{ $banner }}" alt="Image" />
                             <h3 class="banner-title">
-                                {{ $user['intranet']['home_banner_title'] ?? $settings['home_banner_title'] }}
+                                {{ $user['intranet']['home_banner_title'] ?? $settings['home_banner_title'] ?? '' }}
                             </h3>
                         </div>
                     </div>
@@ -52,7 +56,7 @@ $user = request()->user();
                                     {{ $user['given_name'].' '.$user['family_name'] }}
                                 </h4>
                                 <div class="mb-3">
-                                    <img src="{{ $user['avatar'] ?? asset('assets/img/profile.png') }}" alt="Profile"
+                                    <img src="{{ $user['avatar'] }}" alt="Avatar"
                                          class="profile-user-img img-circle"/>
                                 </div>
                                 <p class="mb-0">

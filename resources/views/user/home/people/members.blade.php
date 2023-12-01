@@ -36,8 +36,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-5 pl-0 text-center">
-                                        <img src="{{ $member['avatar'] ?? asset('assets/img/profile.png') }}"
-                                             alt="Profile Picture"
+                                        <img src="{{ $member['avatar'] }}" alt="Avatar"
                                              class="profile-user-img img-fluid img-circle">
                                     </div>
                                     <div class="col-7">

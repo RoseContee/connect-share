@@ -16,4 +16,13 @@ class Shortcut extends Model
     public function scopeActive($query) {
         $query->where('active', true);
     }
+
+    /*
+     * Functions
+     */
+    public function unlinkIcon() {
+        if (getPath($this->attributes['icon'] ?? null)) {
+            unlink(public_path($this->attributes['icon']));
+        }
+    }
 }

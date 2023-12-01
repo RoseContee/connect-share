@@ -45,7 +45,7 @@
                             <div class="col-sm-6 d-flex align-items-center justify-content-end">
                                 <div class="form-check">
                                     <input type="checkbox" id="show-shortcuts" class="form-check-input"
-                                           @checked($settings['shortcut'])>
+                                           @checked(!empty($settings['shortcut']))>
                                     <label for="show-shortcuts" class="form-check-label">Show Shortcuts</label>
                                 </div>
                             </div>

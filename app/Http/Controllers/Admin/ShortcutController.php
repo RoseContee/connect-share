@@ -51,7 +51,7 @@ class ShortcutController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $shortcut = Shortcut::find($id);
+        $shortcut = Shortcut::query()->find($id);
         if (!$shortcut) return back();
         $request->validate([
             'icon' => ['nullable', 'image'],
@@ -59,9 +59,7 @@ class ShortcutController extends Controller
             'link' => ['required', 'url'],
         ]);
         if ($request->hasFile('icon')) {
-            if (getPath($shortcut['icon'])) {
-                unlink(public_path($shortcut['icon']));
-            }
+            $shortcut->unlinkIcon();
             $shortcut['icon'] = 'uploads/'.$request->file('icon')->store('side-icons');
         }
         $shortcut['title'] = $request['title'];
@@ -72,11 +70,9 @@ class ShortcutController extends Controller
     }
 
     public function destroy($id) {
-        $shortcut = Shortcut::find($id);
+        $shortcut = Shortcut::query()->find($id);
         if (!$shortcut) return back();
-        if (getPath($shortcut['icon'])) {
-            unlink(public_path($shortcut['icon']));
-        }
+        $shortcut->unlinkIcon();
         $shortcut->delete();
         return redirect()->route('admin.shortcuts.index')->with('error_message', 'Shortcut has been removed.');
     }

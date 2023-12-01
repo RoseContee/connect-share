@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Resend holiday request</h3>
                 </div>
-                <form action="{{ route('widget.resend-holiday-request', $request['id']) }}" method="POST">
+                <form action="{{ route('widget.holiday-requests.resend', $request['id']) }}" method="POST">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">

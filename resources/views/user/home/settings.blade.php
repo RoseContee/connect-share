@@ -4,7 +4,6 @@
 
 @php
 $currentBanner = getBannerImage($userSettings['home_banner_image'], $settings['home_banner_image'] ?? null);
-$currentRSS = $userSettings['rss_link'] ?? $settings['rss_link'] ?? '';
 @endphp
 
 @section('home-content')
@@ -14,10 +13,6 @@ $currentRSS = $userSettings['rss_link'] ?? $settings['rss_link'] ?? '';
                 @csrf
                 <div class="card">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label>Current Title</label>
-                            <div class="form-control" readonly>{{ $userSettings['home_banner_title'] ?? $settings['home_banner_title'] }}</div>
-                        </div>
                         <div class="form-group">
                             <label for="banner_title">Banner Title</label>
                             <input type="text" id="banner_title" name="banner_title"
@@ -29,12 +24,15 @@ $currentRSS = $userSettings['rss_link'] ?? $settings['rss_link'] ?? '';
                                     {{ $message }}
                                 </label>
                             @enderror
+                            <p>
+                                <b>Current Title:</b>
+                                {{ $userSettings['home_banner_title'] ?? $settings['home_banner_title'] ?? '' }}
+                            </p>
                         </div>
                         <div class="form-group">
                             <label for="banner_image">Banner Image</label>
                             <div class="banner mb-2">
-                                <img src="{{ $currentBanner }}"
-                                     alt="Banner Image" />
+                                <img src="{{ $currentBanner }}" alt="Banner Image" />
                             </div>
                             <div class="custom-file">
                                 <input type="file" id="banner_image" name="banner_image" accept="image/*"
@@ -58,7 +56,8 @@ $currentRSS = $userSettings['rss_link'] ?? $settings['rss_link'] ?? '';
                                     {{ $message }}
                                 </label>
                             @enderror
-                            <p><b>Current Link:</b> <a href="{{ $currentRSS }}" target="_blank">{{ $currentRSS }}</a></p>
+                            @php $rss_link = $userSettings['rss_link'] ?? $settings['rss_link'] ?? ''; @endphp
+                            <p><b>Current Link:</b> <a href="{{ $rss_link }}" target="_blank">{{ $rss_link }}</a></p>
                         </div>
                     </div>
                     <div class="card-footer">

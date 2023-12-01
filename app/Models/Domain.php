@@ -39,6 +39,24 @@ class Domain extends Model
         return $this->hasMany(User::class, 'domain', 'domain');
     }
 
+    /*
+     * Functions
+     */
+    public function unlinkHomeBanner() {
+        if (getPath($this->attributes['home_banner_image'] ?? null)) {
+            unlink(public_path($this->attributes['home_banner_image']));
+        }
+    }
+
+    public function unlinkProfileBanner() {
+        if (getPath($this->attributes['profile_banner_image'] ?? null)) {
+            unlink(public_path($this->attributes['profile_banner_image']));
+        }
+    }
+
+    /*
+     * Widget related
+     */
     public function hasWidget($widget) {
         return in_array($widget, explode(',', $this['widgets']));
     }

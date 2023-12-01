@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Reject holiday request</h3>
                 </div>
-                <form action="{{ route('widget.holiday-reject', $request['id']) }}" method="POST">
+                <form action="{{ route('widget.holiday-approvals.reject', $request['id']) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card-body">

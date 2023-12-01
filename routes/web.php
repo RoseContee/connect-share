@@ -18,9 +18,10 @@ use App\Http\Controllers\Admin\ProfileController as AdminProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\User\Widgets\WeatherController as WidgetWeather;
+use App\Http\Controllers\User\Widgets\GmailUseController as WidgetGmailUse;
 use App\Http\Controllers\User\Widgets\HolidayRequestController as WidgetHolidayRequest;
 use App\Http\Controllers\User\Widgets\HolidayApprovalController as WidgetHolidayApproval;
-use App\Http\Controllers\User\Widgets\WeatherController as WidgetWeather;
 use App\Http\Controllers\User\Widgets\CorporateNewsController as WidgetCorporateNews;
 
 /*
@@ -103,52 +104,65 @@ Route::group([
         Route::group([
             'middleware' => 'widget:'.Widgets::HOLIDAY_REQUEST,
         ], function () {
-            Route::get('manager-accept-holiday/{token}', [WidgetHolidayApproval::class, 'acceptFromEmail'])
-                ->name('manager-accept-holiday-from-email');
-            Route::get('manager-reject-holiday/{token}', [WidgetHolidayApproval::class, 'rejectFromEmail'])
-                ->name('manager-reject-holiday-from-email');
+            Route::get('holiday-approvals/accept-from-email/{token}', [WidgetHolidayApproval::class, 'acceptFromEmail'])
+                ->name('holiday-approvals.accept-from-email');
+            Route::get('holiday-approvals/reject-from-email/{token}', [WidgetHolidayApproval::class, 'rejectFromEmail'])
+                ->name('holiday-approvals.reject-from-email');
+        });
+
+        Route::group([
+            'middleware' => ['auth', 'intranet.setup:all'],
+        ], function () {
+            Route::group([
+                'middleware' => ['widget:'.Widgets::WEATHER],
+            ], function () {
+                Route::get('weather/cities', [WidgetWeather::class, 'cities'])
+                    ->name('weather-cities');
+            });
+            Route::group([
+                'middleware' => ['widget:'.Widgets::GMAIL_USE],
+            ], function () {
+                Route::get('gmail-use', [WidgetGmailUse::class, 'index'])
+                    ->name('gmail-use');
+                Route::post('gmail-use/update-ou', [WidgetGmailUse::class, 'update'])
+                    ->name('gmail-use.update-ou');
+            });
+
 
             Route::group([
-                'middleware' => ['auth', 'intranet.setup:all'],
+                'middleware' => 'widget:'.Widgets::HOLIDAY_REQUEST,
             ], function () {
                 Route::get('holiday-requests', [WidgetHolidayRequest::class, 'index'])
                     ->name('holiday-requests');
-                Route::get('new-holiday-request', [WidgetHolidayRequest::class, 'send'])
-                    ->name('new-holiday-request');
-                Route::post('new-holiday-request', [WidgetHolidayRequest::class, 'submit']);
+                Route::get('holiday-requests/new', [WidgetHolidayRequest::class, 'send'])
+                    ->name('holiday-requests.new');
+                Route::post('holiday-requests/new', [WidgetHolidayRequest::class, 'submit']);
                 Route::get('holiday-requests/{id}/resend', [WidgetHolidayRequest::class, 'resend'])
-                    ->name('resend-holiday-request');
+                    ->name('holiday-requests.resend');
                 Route::post('holiday-requests/{id}/resend', [WidgetHolidayRequest::class, 'resubmit']);
                 Route::delete('holiday-requests', [WidgetHolidayRequest::class, 'destroy'])
-                    ->name('delete-holiday-request');
+                    ->name('holiday-requests.delete');
 
                 Route::get('holiday-approvals', [WidgetHolidayApproval::class, 'index'])
                     ->name('holiday-approvals');
-                Route::put('holiday-accept', [WidgetHolidayApproval::class, 'accept'])
-                    ->name('holiday-accept');
-                Route::get('holiday-reject/{id}/reply', [WidgetHolidayApproval::class, 'rejectForm'])
-                    ->name('holiday-reject');
-                Route::put('holiday-reject/{id}/reply', [WidgetHolidayApproval::class, 'reject']);
+                Route::put('holiday-approvals/accept', [WidgetHolidayApproval::class, 'accept'])
+                    ->name('holiday-approvals.accept');
+                Route::get('holiday-approvals/{id}/reject', [WidgetHolidayApproval::class, 'rejectForm'])
+                    ->name('holiday-approvals.reject');
+                Route::put('holiday-approvals/{id}/reject', [WidgetHolidayApproval::class, 'reject']);
             });
-        });
 
-        Route::group([
-            'middleware' => ['auth', 'widget:'.Widgets::WEATHER],
-        ], function () {
-            Route::get('weather/cities', [WidgetWeather::class, 'cities'])
-                ->name('weather-cities');
-        });
-
-        Route::group([
-            'middleware' => ['auth', 'widget:'.Widgets::CORPORATE_NEWS],
-        ], function () {
-            Route::get('corporate-news', [WidgetCorporateNews::class, 'index'])
-                ->name('corporate-news');
-            Route::get('corporate-news/auth/google', [WidgetCorporateNews::class, 'login'])
-                ->name('corporate-news.auth.google');
-            Route::get('corporate-news/auth/google/callback', [WidgetCorporateNews::class, 'callback'])
-                ->name('corporate-news.auth.google.callback');
-            Route::delete('corporate-news', [WidgetCorporateNews::class, 'destroy']);
+            Route::group([
+                'middleware' => ['widget:'.Widgets::CORPORATE_NEWS],
+            ], function () {
+                Route::get('corporate-news', [WidgetCorporateNews::class, 'index'])
+                    ->name('corporate-news');
+                Route::get('corporate-news/auth/google', [WidgetCorporateNews::class, 'login'])
+                    ->name('corporate-news.auth.google');
+                Route::get('corporate-news/auth/google/callback', [WidgetCorporateNews::class, 'callback'])
+                    ->name('corporate-news.auth.google.callback');
+                Route::delete('corporate-news', [WidgetCorporateNews::class, 'destroy']);
+            });
         });
     });
 });

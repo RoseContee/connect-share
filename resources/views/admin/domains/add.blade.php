@@ -75,7 +75,7 @@ $currentProfileBanner = getBannerImage($domain['profile_banner_image'] ?? null, 
                                                 {{ $message }}
                                             </label>
                                         @enderror
-                                        <p><b>Default Title:</b> {{ $settings['home_banner_title'] }}</p>
+                                        <p><b>Default Title:</b> {{ $settings['home_banner_title'] ?? '' }}</p>
                                     </div>
                                     <div class="form-group">
                                         <label for="home_banner_image">Home Banner Image</label>

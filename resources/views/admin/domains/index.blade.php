@@ -60,16 +60,17 @@ $request_page = $type == 'Request';
                             <thead>
                             <tr>
                                 <th style="width: 20px;">No</th>
-                                <th>Domain</th>
+                                <th>
+                                    Domain
+                                    @if (!$request_page)<p class="mb-0">(Users)</p>@endif
+                                </th>
                                 @if (!$request_page)
-                                    <th style="width: 40px;">Users</th>
-                                    <th>Home Title</th>
-                                    <th style="width: 150px;">Home Banner</th>
+                                    <th>Home Banner</th>
                                     <th style="width: 150px;">Profile Banner</th>
                                     <th>Widgets</th>
-                                    <th style="width: 60px;">Status</th>
+                                    <th style="width: 50px;">Status</th>
                                 @endif
-                                <th>Requested</th>
+                                <th>Requested By</th>
                                 <th style="width: 26px;"></th>
                             </tr>
                             </thead>
@@ -77,22 +78,22 @@ $request_page = $type == 'Request';
                             @foreach ($domains as $index => $domain)
                                 <tr>
                                     <td>{{ ++$index }}</td>
-                                    <td class="text-center">{{ $domain['domain'] }}</td>
+                                    <td class="text-center">
+                                        {{ $domain['domain'] }}
+                                        @if (!$request_page)
+                                            <p class="mb-0">({{ count($domain['users']) }})</p>
+                                        @endif
+                                    </td>
                                     @if (!$request_page)
-                                        <td class="text-center">
-                                            @if (count($domain['users']))
-                                                {{ count($domain['users']) }}
-                                            @endif
-                                        </td>
-                                        <td>{{ $domain['home_banner_title'] }}</td>
                                         <td>
-                                            <img src="{{ getBannerImage($domain['home_banner_image'], $setting['home_banner_image'] ?? '') }}"
-                                                 alt="Home Banner Image" style="width: 150px; height: 50px;" />
+                                            <p class="mb-1">{{ $domain['home_banner_title'] }}</p>
+                                            <img src="{{ getBannerImage($domain['home_banner_image'], $setting['home_banner_image'] ?? null) }}"
+                                                 alt="Home Banner" style="width: 150px; height: 50px;" />
                                         </td>
                                         <td>
                                             @if (!$domain['hide_profile_banner'])
-                                                <img src="{{ getBannerImage($domain['profile_banner_image'], $setting['profile_banner_image'] ?? '') }}"
-                                                     alt="Profile Banner Image" style="width: 150px; height: 50px;" />
+                                                <img src="{{ getBannerImage($domain['profile_banner_image'], $setting['profile_banner_image'] ?? null) }}"
+                                                     alt="Profile Banner" style="width: 150px; height: 50px;" />
                                             @endif
                                         </td>
                                         <td>
@@ -124,7 +125,7 @@ $request_page = $type == 'Request';
                                                 {{ $domain['requested_email'] }}
                                             </a>
                                         @else
-                                            By Admin
+                                            Admin
                                         @endif
                                     </td>
                                     <td class="text-center">
@@ -139,16 +140,17 @@ $request_page = $type == 'Request';
                             <tfoot>
                             <tr>
                                 <th>No</th>
-                                <th>Domain</th>
+                                <th>
+                                    Domain
+                                    @if (!$request_page)<p class="mb-0">(Users)</p>@endif
+                                </th>
                                 @if (!$request_page)
-                                    <th>Users</th>
-                                    <th>Home Title</th>
                                     <th>Home Banner</th>
                                     <th>Profile Banner</th>
                                     <th>Widgets</th>
                                     <th>Status</th>
                                 @endif
-                                <th>Requested</th>
+                                <th>Requested By</th>
                                 <th></th>
                             </tr>
                             </tfoot>
@@ -181,11 +183,11 @@ $request_page = $type == 'Request';
                 lengthMenu: [[50, 100, 500, -1], [50, 100, 500, 'All']],
                 columnDefs: [
                     {
-                        targets: [0, @if (!$request_page)4, 5, 9 @else 3 @endif],
+                        targets: [0 @if (!$request_page), 3, 7 @else, 3 @endif],
                         searchable: false
                     },
                     {
-                        targets: [@if (!$request_page)4, 5, 9 @else 3 @endif],
+                        targets: [@if (!$request_page), 2, 3, 4, 7 @else, 3 @endif],
                         orderable: false
                     },
                 ]

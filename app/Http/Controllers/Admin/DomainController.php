@@ -122,7 +122,7 @@ class DomainController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $domain = Domain::find($id);
+        $domain = Domain::query()->find($id);
         if (!$domain) return back();
         $request->validate([
             'home_banner_image' => ['nullable', 'image'],
@@ -139,16 +139,12 @@ class DomainController extends Controller
         $old_status = $domain['status'];
         $domain['home_banner_title'] = $request['home_banner_title'];
         if ($request->hasFile('home_banner_image')) {
-            if (getPath($domain['home_banner_image'])) {
-                unlink(public_path($domain['home_banner_image']));
-            }
+            $domain->unlinkHomeBanner();
             $domain['home_banner_image'] = 'uploads/'.$request->file('home_banner_image')->store('banner');
         }
         $domain['hide_profile_banner'] = !empty($request['hide_profile_banner']);
         if ($request->hasFile('profile_banner_image')) {
-            if (getPath($domain['profile_banner_image'])) {
-                unlink(public_path($domain['profile_banner_image']));
-            }
+            $domain->unlinkProfileBanner();
             $domain['profile_banner_image'] = 'uploads/'.$request->file('profile_banner_image')->store('banner');
         }
         $domain['widgets'] = implode(',', $request['widgets'] ?? []);

@@ -171,4 +171,35 @@ class Google
         }
         return $alerts;
     }
+
+    public function getOrgunits() {
+        for ($i = 0; $i < 2; $i++) {
+            $response = Http::withToken($this->accessToken)
+                ->get("https://admin.googleapis.com/admin/directory/v1/customer/my_customer/orgunits", [
+                    'type' => 'ALL_INCLUDING_PARENT',
+                ]);
+            if (!$response->unauthorized() || (!$i && !$this->refreshAuthUserToken())) break;
+        }
+        $orgunits = [];
+        if ($response->status() == 200) {
+            $result = $response->json();
+            foreach ($result['organizationUnits'] as $unit) {
+                $orgunits[$unit['orgUnitPath']] = $unit['name'];
+            }
+        }
+        return $orgunits;
+    }
+
+    public function updateOrgunits(array $emails, string $orgunit) {
+        foreach ($emails as $email) {
+            for ($i = 0; $i < 2; $i++) {
+                $response = Http::withToken($this->accessToken)
+                    ->put("https://admin.googleapis.com/admin/directory/v1/users/{$email}", [
+                        'orgUnitPath' => $orgunit,
+                    ]);
+                if (!$response->unauthorized() || (!$i && !$this->refreshAuthUserToken())) break;
+            }
+            if ($response->unauthorized()) break;
+        }
+    }
 }

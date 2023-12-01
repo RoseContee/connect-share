@@ -22,6 +22,10 @@ class User extends Authenticatable
         'domain', 'access_token', 'refresh_token',
     ];
 
+    public function getAvatarAttribute() {
+        return $this->attributes['avatar'] ?: asset('assets/img/profile.png');
+    }
+
     public function scopeDomain($query, $domain) {
         $query->where('domain', $domain);
     }
@@ -31,7 +35,7 @@ class User extends Authenticatable
     }
 
     public function intranet() {
-        return $this->belongsTo(Domain::class, 'domain', 'domain');
+        return $this->belongsTo(Domain::class, 'domain', 'domain')->withDefault();
     }
 
     public function users() {
@@ -55,7 +59,7 @@ class User extends Authenticatable
     }
 
     /*
-     * Widgets relation
+     * Widgets related
      */
     public function holidayRequests() {
         return $this->hasMany(WidgetHolidayRequest::class, 'google_id', 'google_id');

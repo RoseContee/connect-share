@@ -12,8 +12,7 @@ use Illuminate\Support\Str;
 class HolidayRequestController extends Controller
 {
     public function __construct() {
-        view()->share('menu', 'Request');
-        view()->share('submenu', 'WidgetHolidayRequest');
+        view()->share('menu', 'WidgetHolidayRequest');
     }
 
     public function index(Request $request) {
@@ -126,8 +125,8 @@ class HolidayRequestController extends Controller
                 'type' => $holiday_request['type'],
                 'period' => $holiday_request['period'],
                 'note' => $holiday_request['note'],
-                'accept_url' => route('widget.manager-accept-holiday-from-email', $holiday_request['token']),
-                'reject_url' => route('widget.manager-reject-holiday-from-email', $holiday_request['token']),
+                'accept_url' => route('widget.holiday-approvals.accept-from-email', $holiday_request['token']),
+                'reject_url' => route('widget.holiday-approvals.reject-from-email', $holiday_request['token']),
             ]));
         } catch (\Exception $exception) {
             logger($exception->getMessage());

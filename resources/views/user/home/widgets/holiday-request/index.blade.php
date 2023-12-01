@@ -14,7 +14,7 @@ $user = request()->user();
 @section('home-content')
     <div class="card">
         <div class="card-header">
-            <a href="{{ route('widget.new-holiday-request') }}" class="btn btn-primary">
+            <a href="{{ route('widget.holiday-requests.new') }}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> New Request
             </a>
         </div>
@@ -66,7 +66,7 @@ $user = request()->user();
                         </td>
                         <td>
                             @if ($r['status'] === 'rejected')
-                                <a href="{{ route('widget.resend-holiday-request', $request['id']) }}"
+                                <a href="{{ route('widget.holiday-requests.resend', $request['id']) }}"
                                    class="btn btn-primary btn-sm px-1 py-0" title="Resend">
                                     <i class="fa fa-reply"></i>
                                 </a>
@@ -100,7 +100,7 @@ $user = request()->user();
     <div id="delete-modal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('widget.delete-holiday-request') }}" method="POST">
+                <form action="{{ route('widget.holiday-requests.delete') }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" id="request" name="request">

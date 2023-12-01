@@ -12,8 +12,7 @@ $user = request()->user();
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <img src="{{ $user['avatar'] ?: asset('assets/img/profile.png') }}"
-                             alt="Profile Picture"
+                        <img src="{{ $user['avatar'] }}" alt="Avatar"
                              class="profile-user-img img-fluid img-circle">
                     </div>
                     <hr>

@@ -27,7 +27,7 @@ class SettingsSeeder extends Seeder
             'value' => null,
         ], [
             'key' => 'home_banner_title',
-            'value' => 'Connect Share',
+            'value' => 'Welcome to Connect Share!',
         ], [
             'key' => 'home_banner_image',
             'value' => null,

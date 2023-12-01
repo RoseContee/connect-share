@@ -18,7 +18,8 @@ class AuthGoogleController extends Controller
     public function login() {
         return Socialite::driver('google')
             ->scopes([
-                'https://www.googleapis.com/auth/admin.directory.user.readonly',
+                'https://www.googleapis.com/auth/admin.directory.user',
+                'https://www.googleapis.com/auth/admin.directory.orgunit.readonly',
                 'https://www.googleapis.com/auth/drive',
                 'https://www.googleapis.com/auth/calendar.readonly',
             ])

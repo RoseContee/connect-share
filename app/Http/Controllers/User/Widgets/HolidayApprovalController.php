@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Mail;
 class HolidayApprovalController extends Controller
 {
     public function __construct() {
-        view()->share('menu', 'Approval');
-        view()->share('submenu', 'WidgetHolidayApproval');
+        view()->share('menu', 'WidgetHolidayApproval');
     }
 
     public function index(Request $request) {
@@ -80,7 +79,7 @@ class HolidayApprovalController extends Controller
 
     public function rejectFromEmail(Request $request) {
         $holiday_request = $request['holiday_request'];
-        return redirect()->route('widget.holiday-reject', $holiday_request['id']);
+        return redirect()->route('widget.holiday-approvals.reject', $holiday_request['id']);
     }
 
     private function acceptRequest($holiday_request) {

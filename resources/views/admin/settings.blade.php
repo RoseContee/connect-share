@@ -5,8 +5,8 @@
 @php
 $currentFavicon = getFavicon($settings['favicon'] ?? null);
 $currentLogo = getLogo($settings['logo'] ?? null);
-$currentHomeBanner = getDefaultBannerImage($settings['home_banner_image'] ?? null);
-$currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] ?? null);
+$currentHomeBanner = getBannerImage($settings['home_banner_image'] ?? null);
+$currentProfileBanner = getBannerImage($settings['profile_banner_image'] ?? null);
 @endphp
 
 @section('content')
@@ -59,12 +59,11 @@ $currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] 
                                             </label>
                                         @enderror
                                     </div>
-                                    {{--<div class="form-group">
+                                    <div class="form-group">
                                         <label for="logo">Logo</label>
                                         <div class="ml-2 mb-2">
-                                            <img id="logo-preview" src="{{ $currentLogo }}"
-                                                 alt="logo"
-                                                 style="width: 200px; height: 40px;" />
+                                            <img id="logo-preview" src="{{ $currentLogo }}" alt="logo"
+                                                 style="width: 200px;" />
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" id="logo" name="logo" accept="image/*"
@@ -76,7 +75,7 @@ $currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] 
                                                 {{ $message }}
                                             </label>
                                         @enderror
-                                    </div>--}}
+                                    </div>
                                     <div class="form-group">
                                         <label for="contact_email">Contact Email <span class="required">*</span></label>
                                         <input type="email" id="contact_email" name="contact_email" required
@@ -116,8 +115,7 @@ $currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] 
                                     <div class="form-group">
                                         <label for="home_banner_image">Default Home Banner Image</label>
                                         <div class="banner mb-2">
-                                            <img src="{{ $currentHomeBanner }}"
-                                                 alt="Banner Image" />
+                                            <img src="{{ $currentHomeBanner }}" alt="Banner Image" />
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" id="home_banner_image" name="home_banner_image" accept="image/*"
@@ -143,8 +141,7 @@ $currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] 
                                     <div class="form-group">
                                         <label for="profile_banner_image">Default Profile Banner Image</label>
                                         <div class="banner mb-2">
-                                            <img src="{{ $currentProfileBanner }}"
-                                                 alt="Banner Image" />
+                                            <img src="{{ $currentProfileBanner }}" alt="Banner Image" />
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" id="profile_banner_image" name="profile_banner_image" accept="image/*"
@@ -210,9 +207,9 @@ $currentProfileBanner = getDefaultBannerImage($settings['profile_banner_image'] 
                 imagePreview(e.target.files, $('#favicon-preview'), '{{ $currentFavicon }}');
             });
 
-            /*$('#logo').on('change', e => {
+            $('#logo').on('change', e => {
                 imagePreview(e.target.files, $('#logo-preview'), '{{ $currentLogo }}');
-            });*/
+            });
 
             $('#home_banner_image').on('change', e => {
                 imagePreview(e.target.files, $('.banner').find('img'), '{{ $currentHomeBanner }}');

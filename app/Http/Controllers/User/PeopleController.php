@@ -4,14 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Helpers\Organization;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class PeopleController extends Controller
 {
-    public function __construct() {
-        view()->share('menu', 'People');
-    }
-
     public function members(Request $request) {
         $keyword = $request['q'];
         $users = $request->user()
@@ -24,7 +21,7 @@ class PeopleController extends Controller
             })->paginate(12)
             ->appends(['q' => $keyword]);
         return view('user.home.people.members', [
-            'submenu' => 'Members',
+            'menu' => 'PeopleMembers',
             'keyword' => $keyword,
             'members' => $users,
         ]);
@@ -36,10 +33,11 @@ class PeopleController extends Controller
         $members = $user->users()->showInOrg()->get();
         $organization->setMembers($members);
         return view('user.home.people.organization', [
-            'submenu' => 'Organization',
+            'menu' => 'PeopleOrganization',
             'organization' => [
                 'id' => 1,
                 'name' => $user['domain'],
+                'avatar' => getFavicon(Setting::getSetting('favicon')),
                 'children' => $organization->getHierarchyData(),
             ],
         ]);
